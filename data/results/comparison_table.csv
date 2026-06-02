@@ -1,0 +1,141 @@
+pr_id,repo,lang,model,model_id,generated,ground_truth_patch,status,correct,useful,hallucination,missing_info,relevance,readability,overall_score,notes
+0,Azure/azure-powershell,.cs,groq,llama-3.1-8b-instant,"DOCUMENTATION UPDATE:
+The `AzureVirtualNetworkSubnetConfigBase` class has been updated to improve property names for better readability. Specifically, the `-ResourceId` parameter has been renamed to `-NatGatewayId` to reflect its actual purpose. This change is part of a larger effort to make the Azure PowerShell cmdlets more user-friendly.
+
+REASON:
+This update is needed to improve the human-readability of the Azure PowerShell cmdlets, making it easier for users to understand the purpose of each property and parameter.","@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
+             HelpMessage = ""RouteTable"")]
+         public PSRouteTable RouteTable { get; set; }
+ 
++        [GenericBreakingChange(""Update Property Name"", OldWay = ""-ResourceId"", NewWay = ""-NatGatewayId"")]
++        [Alias(""NatGatewayId"")]
+         [Parameter(
+             Mandatory = false,
+             ValueFromPipelineByPropertyName = true,
+             ParameterSetName = ""SetByResourceId"",
+-            HelpMessage = ""ResourceId"")]
++            HelpMessage = ""NatGatewayId"")]",ok,,,,,,,,
+0,Azure/azure-powershell,.cs,gemini,gemini-2.5-flash,ERROR (Gemini): 429 quota exceeded — зачекай до завтра або заміни модель на gemini-1.5-flash-8b,"@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
+             HelpMessage = ""RouteTable"")]
+         public PSRouteTable RouteTable { get; set; }
+ 
++        [GenericBreakingChange(""Update Property Name"", OldWay = ""-ResourceId"", NewWay = ""-NatGatewayId"")]
++        [Alias(""NatGatewayId"")]
+         [Parameter(
+             Mandatory = false,
+             ValueFromPipelineByPropertyName = true,
+             ParameterSetName = ""SetByResourceId"",
+-            HelpMessage = ""ResourceId"")]
++            HelpMessage = ""NatGatewayId"")]",error,,,,,,,,
+0,Azure/azure-powershell,.cs,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"DOCUMENTATION UPDATE:
+The `ResourceId` parameter has been renamed to `NatGatewayId` in the `AzureVirtualNetworkSubnetConfigBase` class, and its help message has been updated to reflect the new name.
+
+REASON:
+This update is needed to reflect the changes made to the parameter name and help message, ensuring that users of the Azure PowerShell module have accurate and up-to-date information about the available parameters and their meanings.","@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
+             HelpMessage = ""RouteTable"")]
+         public PSRouteTable RouteTable { get; set; }
+ 
++        [GenericBreakingChange(""Update Property Name"", OldWay = ""-ResourceId"", NewWay = ""-NatGatewayId"")]
++        [Alias(""NatGatewayId"")]
+         [Parameter(
+             Mandatory = false,
+             ValueFromPipelineByPropertyName = true,
+             ParameterSetName = ""SetByResourceId"",
+-            HelpMessage = ""ResourceId"")]
++            HelpMessage = ""NatGatewayId"")]",ok,,,,,,,,
+1,PCGen/pcgen,java,groq,llama-3.1-8b-instant,"DOCUMENTATION UPDATE:
+The `copy` method in the `Variable` class now returns a symbolic copy of the variable, excluding tags, and optionally assigns a name. This change allows for more precise control over the copying process. Additionally, the `GenerateVrfAndProof` method now returns an error instead of an empty slice, providing better error handling.
+
+REASON:
+This update is needed to accurately reflect the changes made in the code and provide clear documentation for users of the `Variable` and `Consensus` classes.","@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
+ 
+     # COPYING
+     def copy(self, name=None):
+-        """"""Copy a variable and optionally assign a name.""""""
++        """"""Return a symbolic copy and optionally assign a name.
++
++        Do not copy the tags.",ok,,,,,,,,
+1,PCGen/pcgen,java,gemini,gemini-2.5-flash,ERROR (Gemini): 429 quota exceeded — зачекай до завтра або заміни модель на gemini-1.5-flash-8b,"@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
+ 
+     # COPYING
+     def copy(self, name=None):
+-        """"""Copy a variable and optionally assign a name.""""""
++        """"""Return a symbolic copy and optionally assign a name.
++
++        Do not copy the tags.",error,,,,,,,,
+1,PCGen/pcgen,java,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"DOCUMENTATION UPDATE:
+The `GenerateVrfAndProof` function now returns an error instead of an array of `uint64` values, and the `copy` function has been updated to return a symbolic copy and optionally assign a name, with a note that the tags are not copied.
+
+REASON:
+This update is needed to reflect the changes made to the code, specifically the modification of the `GenerateVrfAndProof` function to return an error instead of an array of values, and the update to the `copy` function to better reflect its functionality.","@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
+ 
+     # COPYING
+     def copy(self, name=None):
+-        """"""Copy a variable and optionally assign a name.""""""
++        """"""Return a symbolic copy and optionally assign a name.
++
++        Do not copy the tags.",ok,,,,,,,,
+2,CleverRaven/Cataclysm-DDA,cpp,groq,llama-3.1-8b-instant,"DOCUMENTATION UPDATE:
+The version of the assembly has been updated to 1.13.2 to reflect the latest changes made to the project.
+
+REASON:
+This update is needed to accurately reflect the current version of the project in the assembly information.","@@ -46,5 +46,5 @@
+ // You can specify all the values or you can default the Build and Revision Numbers 
+ // by using the '*' as shown below:
+ 
+-[assembly: AssemblyVersion(""1.13.1"")]
+-[assembly: AssemblyFileVersion(""1.13.1"")]
++[assembly: AssemblyVersion(""1.13.2"")]",ok,,,,,,,,
+2,CleverRaven/Cataclysm-DDA,cpp,gemini,gemini-2.5-flash,ERROR (Gemini): 429 quota exceeded — зачекай до завтра або заміни модель на gemini-1.5-flash-8b,"@@ -46,5 +46,5 @@
+ // You can specify all the values or you can default the Build and Revision Numbers 
+ // by using the '*' as shown below:
+ 
+-[assembly: AssemblyVersion(""1.13.1"")]
+-[assembly: AssemblyFileVersion(""1.13.1"")]
++[assembly: AssemblyVersion(""1.13.2"")]",error,,,,,,,,
+2,CleverRaven/Cataclysm-DDA,cpp,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"DOCUMENTATION UPDATE:
+The version number of the assembly has been updated to 1.13.2.
+
+REASON:
+This update is needed to reflect the change in the assembly's version number, ensuring that the documentation accurately reflects the current state of the project.","@@ -46,5 +46,5 @@
+ // You can specify all the values or you can default the Build and Revision Numbers 
+ // by using the '*' as shown below:
+ 
+-[assembly: AssemblyVersion(""1.13.1"")]
+-[assembly: AssemblyFileVersion(""1.13.1"")]
++[assembly: AssemblyVersion(""1.13.2"")]",ok,,,,,,,,
+3,FRRouting/frr,c,groq,llama-3.1-8b-instant,"DOCUMENTATION UPDATE:
+A new metric, `PluginEnabled`, has been added to monitor which plugin(s) are enabled. This metric is a gauge vector that tracks the plugin status. The existing metrics for request and response sizes have been left unchanged.
+
+REASON:
+This update is needed to document the new metric added to the codebase, ensuring that users are aware of the new metric and its purpose.","@@ -65,6 +65,12 @@ var (
+ 		Name:      ""panic_count_total"",
+ 		Help:      ""A metrics that counts the number of panics."",
+ 	})
++
++	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
++		Namespace: plugin.Namespace,
++		Name:      ""plugin_enabled"",
++		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",ok,,,,,,,,
+3,FRRouting/frr,c,gemini,gemini-2.5-flash,ERROR (Gemini): 429 quota exceeded — зачекай до завтра або заміни модель на gemini-1.5-flash-8b,"@@ -65,6 +65,12 @@ var (
+ 		Name:      ""panic_count_total"",
+ 		Help:      ""A metrics that counts the number of panics."",
+ 	})
++
++	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
++		Namespace: plugin.Namespace,
++		Name:      ""plugin_enabled"",
++		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",error,,,,,,,,
+3,FRRouting/frr,c,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"DOCUMENTATION UPDATE:
+Added a new gauge metric ""PluginEnabled"" to monitor which plugin(s) are enabled, and updated the existing metrics to include additional information about the plugin namespace.
+
+REASON:
+This update is needed to provide a clear and accurate understanding of the new metric and its relationship to the existing metrics, ensuring that users can effectively utilize the plugin namespace in their monitoring and analysis.","@@ -65,6 +65,12 @@ var (
+ 		Name:      ""panic_count_total"",
+ 		Help:      ""A metrics that counts the number of panics."",
+ 	})
++
++	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
++		Namespace: plugin.Namespace,
++		Name:      ""plugin_enabled"",
++		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",ok,,,,,,,,

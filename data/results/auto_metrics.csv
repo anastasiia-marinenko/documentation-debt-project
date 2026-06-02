@@ -1,0 +1,9 @@
+rouge1_f,rougeL_f,pr_id,repo,model
+0.148,0.13,0,Azure/azure-powershell,groq
+0.143,0.082,0,Azure/azure-powershell,huggingface
+0.254,0.22,1,PCGen/pcgen,groq
+0.274,0.21,1,PCGen/pcgen,huggingface
+0.198,0.148,2,CleverRaven/Cataclysm-DDA,groq
+0.22,0.171,2,CleverRaven/Cataclysm-DDA,huggingface
+0.324,0.19,3,FRRouting/frr,groq
+0.362,0.171,3,FRRouting/frr,huggingface

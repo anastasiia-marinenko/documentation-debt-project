@@ -1,0 +1,36 @@
+repo,lang,category,readme_patch
+Azure/azure-powershell,.cs,How,"@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
+             HelpMessage = ""RouteTable"")]
+         public PSRouteTable RouteTable { get; set; }
+ 
++        [GenericBreakingChange(""Update Property Name"", OldWay = ""-ResourceId"", NewWay = ""-NatGatewayId"")]
++        [Alias(""NatGatewayId"")]
+         [Parameter(
+             Mandatory = false,
+             ValueFromPipelineByPropertyName = true,
+             ParameterSetName = ""SetByResourceId"",
+-            Hel"
+PCGen/pcgen,java,How,"@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
+ 
+     # COPYING
+     def copy(self, name=None):
+-        """"""Copy a variable and optionally assign a name.""""""
++        """"""Return a symbolic copy and optionally assign a name.
++
++        Do not copy the tags."
+CleverRaven/Cataclysm-DDA,cpp,How,"@@ -46,5 +46,5 @@
+ // You can specify all the values or you can default the Build and Revision Numbers 
+ // by using the '*' as shown below:
+ 
+-[assembly: AssemblyVersion(""1.13.1"")]
+-[assembly: AssemblyFileVersion(""1.13.1"")]
++[assembly: AssemblyVersion(""1.13.2"")]"
+FRRouting/frr,c,How,"@@ -65,6 +65,12 @@ var (
+ 		Name:      ""panic_count_total"",
+ 		Help:      ""A metrics that counts the number of panics."",
+ 	})
++
++	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
++		Namespace: plugin.Namespace,
++		Name:      ""plugin_enabled"",
++		Help:      ""A metric that monitors which plugin(s) is(are) enabled."","

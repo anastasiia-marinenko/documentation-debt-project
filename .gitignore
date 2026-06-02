@@ -1,0 +1,9 @@
+data/raw/
+data/processed/
+*.parquet
+*.jsonl
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+.env
