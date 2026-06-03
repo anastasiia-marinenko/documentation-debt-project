@@ -1,3 +1,5 @@
+// Original file — FRRouting/frr
+
 package vars
 
 import (
@@ -79,7 +81,3 @@ const (
 	// Dropped indicates we dropped the query before any handling. It has no closing dot, so it can not be a valid zone.
 	Dropped = "dropped"
 )
-
----
-<!-- LLM-generated update (huggingface) -->
-Added a new gauge metric "PluginEnabled" to monitor which plugin(s) are enabled, and updated the existing metrics to include additional information about the plugin namespace.

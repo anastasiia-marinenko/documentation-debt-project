@@ -1,0 +1,151 @@
+pr_id,repo,lang,model,model_id,generated,ground_truth_patch,status,correct,useful,hallucination,missing_info,relevance,readability,overall_score,notes
+0,Azure/azure-powershell,.cs,groq,llama-3.1-8b-instant,"DOCUMENTATION UPDATE:
+The `AzureVirtualNetworkSubnetConfigBase` class has been updated to improve human-readability by renaming the `ResourceId` parameter to `NatGatewayId` in the `SetByResourceId` parameter set. This change is reflected in the parameter's help message and alias. Additionally, the `GenericBreakingChange` attribute has been added to document the breaking change.
+
+REASON:
+This update is needed to make the code more human-readable and to document the breaking change introduced by the rename of the `ResourceId` parameter to `NatGatewayId`.","@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
+             HelpMessage = ""RouteTable"")]
+         public PSRouteTable RouteTable { get; set; }
+ 
++        [GenericBreakingChange(""Update Property Name"", OldWay = ""-ResourceId"", NewWay = ""-NatGatewayId"")]
++        [Alias(""NatGatewayId"")]
+         [Parameter(
+             Mandatory = false,
+             ValueFromPipelineByPropertyName = true,
+             ParameterSetName = ""SetByResourceId"",
+-            HelpMessage = ""ResourceId"")]
++            HelpMessage = ""NatGatewayId"")]",ok,,,,,,,,
+0,Azure/azure-powershell,.cs,gemini,gemini-2.5-flash,"DOCUMENTATION UPDATE:
+The `ResourceId` parameter has been updated to be more specific. It is now aliased as `-NatGatewayId` and its `HelpMessage` has been changed to ""","@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
+             HelpMessage = ""RouteTable"")]
+         public PSRouteTable RouteTable { get; set; }
+ 
++        [GenericBreakingChange(""Update Property Name"", OldWay = ""-ResourceId"", NewWay = ""-NatGatewayId"")]
++        [Alias(""NatGatewayId"")]
+         [Parameter(
+             Mandatory = false,
+             ValueFromPipelineByPropertyName = true,
+             ParameterSetName = ""SetByResourceId"",
+-            HelpMessage = ""ResourceId"")]
++            HelpMessage = ""NatGatewayId"")]",ok,,,,,,,,
+0,Azure/azure-powershell,.cs,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"DOCUMENTATION UPDATE:
+The `ResourceId` parameter has been updated to `NatGatewayId` in the `AzureVirtualNetworkSubnetConfigBase` class, and its help message has been changed accordingly.
+
+REASON:
+This update is needed to reflect the change in the property name and provide more human-readable help messages in the Azure PowerShell module.","@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
+             HelpMessage = ""RouteTable"")]
+         public PSRouteTable RouteTable { get; set; }
+ 
++        [GenericBreakingChange(""Update Property Name"", OldWay = ""-ResourceId"", NewWay = ""-NatGatewayId"")]
++        [Alias(""NatGatewayId"")]
+         [Parameter(
+             Mandatory = false,
+             ValueFromPipelineByPropertyName = true,
+             ParameterSetName = ""SetByResourceId"",
+-            HelpMessage = ""ResourceId"")]
++            HelpMessage = ""NatGatewayId"")]",ok,,,,,,,,
+1,PCGen/pcgen,java,groq,llama-3.1-8b-instant,"DOCUMENTATION UPDATE:
+The `copy` method in the `Variable` class now returns a symbolic copy of the variable, excluding its tags, and optionally assigns a name to the copy. This change ensures that the copy operation is consistent with other Theano operations. Additionally, the `GenerateVrfAndProof` method in the Consensus struct now returns an error instead of an empty slice, and its signature has been updated to reflect this change.
+
+REASON:
+This update is needed to accurately reflect the changes made to the `copy` method and the `GenerateVrfAndProof` method, ensuring that the README file remains a reliable source of information for users.","@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
+ 
+     # COPYING
+     def copy(self, name=None):
+-        """"""Copy a variable and optionally assign a name.""""""
++        """"""Return a symbolic copy and optionally assign a name.
++
++        Do not copy the tags.",ok,,,,,,,,
+1,PCGen/pcgen,java,gemini,gemini-2.5-flash,"DOCUMENTATION UPDATE:
+The docstring for the `copy` method has been updated to clarify that it returns a symbolic copy and explicitly states that it does not copy the tags of the variable.
+
+REASON:
+This update is needed to provide more precise and complete information about the `copy` method's behavior, improving user understanding of its functionality.","@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
+ 
+     # COPYING
+     def copy(self, name=None):
+-        """"""Copy a variable and optionally assign a name.""""""
++        """"""Return a symbolic copy and optionally assign a name.
++
++        Do not copy the tags.",ok,,,,,,,,
+1,PCGen/pcgen,java,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"DOCUMENTATION UPDATE:
+The `GenerateVrfAndProof` function now returns an error instead of a list of uint64 values, and the `copy` function has been updated to return a symbolic copy and optionally assign a name, with a note that the tags are not copied.
+
+REASON:
+This update is needed to reflect the changes made to the code, specifically the modification of the `GenerateVrfAndProof` function to return an error instead of a list of uint64 values, and the update to the `copy` function to better reflect its functionality.","@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
+ 
+     # COPYING
+     def copy(self, name=None):
+-        """"""Copy a variable and optionally assign a name.""""""
++        """"""Return a symbolic copy and optionally assign a name.
++
++        Do not copy the tags.",ok,,,,,,,,
+2,CleverRaven/Cataclysm-DDA,cpp,groq,llama-3.1-8b-instant,"DOCUMENTATION UPDATE:
+The version of the Cataclysm-DDA project has been updated to '0.985.0' to reflect the latest changes and improvements made to the game.
+
+REASON:
+This update is needed to accurately reflect the current version of the project, ensuring that users and developers have the most up-to-date information about the game's status.","@@ -46,5 +46,5 @@
+ // You can specify all the values or you can default the Build and Revision Numbers 
+ // by using the '*' as shown below:
+ 
+-[assembly: AssemblyVersion(""1.13.1"")]
+-[assembly: AssemblyFileVersion(""1.13.1"")]
++[assembly: AssemblyVersion(""1.13.2"")]",ok,,,,,,,,
+2,CleverRaven/Cataclysm-DDA,cpp,gemini,gemini-2.5-flash,"DOCUMENTATION UPDATE:
+The assembly version has been updated from `1.13.1` to `1.13.2` to reflect recent changes and improvements. Additionally, the `AssemblyFileVersion` attribute has been removed from the assembly information.
+
+REASON:
+This update is needed to accurately communicate the current version of the assembly and to reflect the revised versioning strategy.","@@ -46,5 +46,5 @@
+ // You can specify all the values or you can default the Build and Revision Numbers 
+ // by using the '*' as shown below:
+ 
+-[assembly: AssemblyVersion(""1.13.1"")]
+-[assembly: AssemblyFileVersion(""1.13.1"")]
++[assembly: AssemblyVersion(""1.13.2"")]",ok,,,,,,,,
+2,CleverRaven/Cataclysm-DDA,cpp,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"DOCUMENTATION UPDATE:
+The version number of the assembly has been updated to 1.13.2.
+
+REASON:
+This update is needed to reflect the change in the assembly's version number, ensuring that the documentation accurately reflects the current state of the project.","@@ -46,5 +46,5 @@
+ // You can specify all the values or you can default the Build and Revision Numbers 
+ // by using the '*' as shown below:
+ 
+-[assembly: AssemblyVersion(""1.13.1"")]
+-[assembly: AssemblyFileVersion(""1.13.1"")]
++[assembly: AssemblyVersion(""1.13.2"")]",ok,,,,,,,,
+3,FRRouting/frr,c,groq,llama-3.1-8b-instant,"DOCUMENTATION UPDATE:
+A new metric, `PluginEnabled`, has been added to track which plugin(s) are enabled. This metric is exposed as a gauge vector with labels for the plugin name. Additionally, some minor adjustments were made to existing metrics for better clarity and consistency. The `RequestSize` metric now has a more accurate description of its buckets.
+
+REASON:
+This update is needed to accurately reflect the changes made to the codebase and provide a clear understanding of the new metric added, ensuring that users can effectively utilize the metrics for monitoring and analysis.","@@ -65,6 +65,12 @@ var (
+ 		Name:      ""panic_count_total"",
+ 		Help:      ""A metrics that counts the number of panics."",
+ 	})
++
++	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
++		Namespace: plugin.Namespace,
++		Name:      ""plugin_enabled"",
++		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",ok,,,,,,,,
+3,FRRouting/frr,c,gemini,gemini-2.5-flash,"DOCUMENTATION UPDATE:
+A new Prometheus gauge, `plugin_enabled`, has been added to monitor the operational status of enabled plugins. This metric provides insight into which specific plugins are currently active within the system","@@ -65,6 +65,12 @@ var (
+ 		Name:      ""panic_count_total"",
+ 		Help:      ""A metrics that counts the number of panics."",
+ 	})
++
++	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
++		Namespace: plugin.Namespace,
++		Name:      ""plugin_enabled"",
++		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",ok,,,,,,,,
+3,FRRouting/frr,c,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"DOCUMENTATION UPDATE:
+Added support for monitoring plugin enabled status and updated metrics for request and response sizes.
+
+REASON:
+This update is needed to reflect the new metrics and plugin status monitoring capabilities added to the system, providing users with a more comprehensive understanding of the system's performance and functionality.","@@ -65,6 +65,12 @@ var (
+ 		Name:      ""panic_count_total"",
+ 		Help:      ""A metrics that counts the number of panics."",
+ 	})
++
++	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
++		Namespace: plugin.Namespace,
++		Name:      ""plugin_enabled"",
++		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",ok,,,,,,,,

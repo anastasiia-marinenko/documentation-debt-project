@@ -1,5 +1,3 @@
-# Original README — Azure/azure-powershell
-
 ﻿// ----------------------------------------------------------------------------------
 //
 // Copyright Microsoft Corporation
@@ -112,3 +110,15 @@ namespace Microsoft.Azure.Commands.Network
         public PSDelegation[] Delegation { get; set; }
     }
 }
+
+// ─────────────────────────────────────────────────────
+// LLM-generated inline documentation (groq)
+// Suggested placement: above the NatGatewayId property
+// Reason: 
+// ─────────────────────────────────────────────────────
+/// <summary>
+/// The ID of the NAT Gateway resource.
+/// </summary>
+/// <remarks>
+/// This property is used to specify the NAT Gateway resource associated with the subnet.
+/// </remarks>

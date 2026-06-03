@@ -1,5 +1,3 @@
-# Original README — Azure/azure-powershell
-
 ﻿// ----------------------------------------------------------------------------------
 //
 // Copyright Microsoft Corporation
@@ -112,3 +110,15 @@ namespace Microsoft.Azure.Commands.Network
         public PSDelegation[] Delegation { get; set; }
     }
 }
+
+// ─────────────────────────────────────────────────────
+// LLM-generated inline documentation (huggingface)
+// Suggested placement: above the GenericBreakingChange attribute
+// Reason: 
+// ─────────────────────────────────────────────────────
+/// <summary>
+/// Updates the property name for compatibility.
+/// </summary>
+/// <param name="oldWay">The old property name.</param>
+/// <param name="newWay">The new property name.</param>
+/// <remarks>This property name change is necessary for compatibility

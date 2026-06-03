@@ -1,5 +1,3 @@
-# Original README — CleverRaven/Cataclysm-DDA
-
 // ----------------------------------------------------------------------------------
 //
 // Copyright Microsoft Corporation
@@ -50,3 +48,16 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("1.13.2")]
 [assembly: AssemblyFileVersion("1.13.2")]
+
+// ─────────────────────────────────────────────────────
+// LLM-generated inline documentation (huggingface)
+// Suggested placement: (see generated comment)
+// Reason: 
+// ─────────────────────────────────────────────────────
+/**
+ * Avoids a trap at the given position.
+ *
+ * @param tripoint the position to check for a trap
+ * @param tr the trap to check
+ * @return true if the NPC avoids the trap, false otherwise
+ */

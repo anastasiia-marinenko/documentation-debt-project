@@ -1,4 +1,4 @@
-# Original README — CleverRaven/Cataclysm-DDA
+// Original file — CleverRaven/Cataclysm-DDA
 
 // ----------------------------------------------------------------------------------
 //

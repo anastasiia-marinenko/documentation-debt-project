@@ -1,4 +1,4 @@
-# Original README — Azure/azure-powershell
+// Original file — Azure/azure-powershell
 
 ﻿// ----------------------------------------------------------------------------------
 //
