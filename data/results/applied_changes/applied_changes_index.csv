@@ -1,9 +1,70 @@
-pr_id,repo,model,update_text,before_file,after_file,gt_file
-0,Azure/azure-powershell,groq,"The `AzureVirtualNetworkSubnetConfigBase` class has been updated to improve property names for better readability. Specifically, the `-ResourceId` parameter has been renamed to `-NatGatewayId` to refl",C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr00_Azure_azure-powershell_before.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr00_Azure_azure-powershell_groq_after.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr00_Azure_azure-powershell_ground_truth.diff
-0,Azure/azure-powershell,huggingface,"The `ResourceId` parameter has been renamed to `NatGatewayId` in the `AzureVirtualNetworkSubnetConfigBase` class, and its help message has been updated to reflect the new name.",C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr00_Azure_azure-powershell_before.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr00_Azure_azure-powershell_huggingface_after.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr00_Azure_azure-powershell_ground_truth.diff
-1,PCGen/pcgen,groq,"The `copy` method in the `Variable` class now returns a symbolic copy of the variable, excluding tags, and optionally assigns a name. This change allows for more precise control over the copying proce",C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr01_PCGen_pcgen_before.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr01_PCGen_pcgen_groq_after.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr01_PCGen_pcgen_ground_truth.diff
-1,PCGen/pcgen,huggingface,"The `GenerateVrfAndProof` function now returns an error instead of an array of `uint64` values, and the `copy` function has been updated to return a symbolic copy and optionally assign a name, with a ",C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr01_PCGen_pcgen_before.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr01_PCGen_pcgen_huggingface_after.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr01_PCGen_pcgen_ground_truth.diff
-2,CleverRaven/Cataclysm-DDA,groq,The version of the assembly has been updated to 1.13.2 to reflect the latest changes made to the project.,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr02_CleverRaven_Cataclysm-DDA_before.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr02_CleverRaven_Cataclysm-DDA_groq_after.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr02_CleverRaven_Cataclysm-DDA_ground_truth.diff
-2,CleverRaven/Cataclysm-DDA,huggingface,The version number of the assembly has been updated to 1.13.2.,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr02_CleverRaven_Cataclysm-DDA_before.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr02_CleverRaven_Cataclysm-DDA_huggingface_after.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr02_CleverRaven_Cataclysm-DDA_ground_truth.diff
-3,FRRouting/frr,groq,"A new metric, `PluginEnabled`, has been added to monitor which plugin(s) are enabled. This metric is a gauge vector that tracks the plugin status. The existing metrics for request and response sizes h",C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr03_FRRouting_frr_before.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr03_FRRouting_frr_groq_after.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr03_FRRouting_frr_ground_truth.diff
-3,FRRouting/frr,huggingface,"Added a new gauge metric ""PluginEnabled"" to monitor which plugin(s) are enabled, and updated the existing metrics to include additional information about the plugin namespace.",C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr03_FRRouting_frr_before.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr03_FRRouting_frr_huggingface_after.md,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr03_FRRouting_frr_ground_truth.diff
+pr_id,repo,lang,model,doc_comment,placement,reason,has_original,after_file,gt_diff
+0,Azure/azure-powershell,.cs,groq,"/// <summary>
+/// The ID of the NAT Gateway resource.
+/// </summary>
+/// <remarks>
+/// This property is used to specify the NAT Gateway resource associated with the subnet.
+/// </remarks>",above the NatGatewayId property,,True,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr00_Azure_azure-powershell_groq_after.cs,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr00_Azure_azure-powershell_ground_truth.diff
+0,Azure/azure-powershell,.cs,gemini,"/// <summary>
+/// The ID of the NAT Gateway resource to associate with the subnet.
+/// </summary>",Above the `NatGatewayId` property definition.,,True,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr00_Azure_azure-powershell_gemini_after.cs,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr00_Azure_azure-powershell_ground_truth.diff
+0,Azure/azure-powershell,.cs,huggingface,"/// <summary>
+/// Updates the property name for compatibility.
+/// </summary>
+/// <param name=""oldWay"">The old property name.</param>
+/// <param name=""newWay"">The new property name.</param>
+/// <remarks>This property name change is necessary for compatibility",above the GenericBreakingChange attribute,,True,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr00_Azure_azure-powershell_huggingface_after.cs,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr00_Azure_azure-powershell_ground_truth.diff
+1,PCGen/pcgen,java,groq,"/**
+ * The hash code is generated by combining the hash codes of the lookup format and result format.
+ * This is done to ensure that the hash code is unique for each identifier type.
+ */",above the getIdentifierType() method,,True,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr01_PCGen_pcgen_groq_after.java,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr01_PCGen_pcgen_ground_truth.diff
+1,PCGen/pcgen,java,gemini,"/**
+ * Computes a hash code for this object.
+ * <p>
+ * TODO: This is a temporary or incomplete hashCode implementation.
+ * The current implementation only uses {@code lookupFormat} and an arbitrary magic number {@code 5}.
+ * It does not properly incorporate {@code resultFormat} into the hash code ca",(see generated comment),,True,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr01_PCGen_pcgen_gemini_after.java,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr01_PCGen_pcgen_ground_truth.diff
+1,PCGen/pcgen,java,huggingface,"/**
+ * Returns a hash code based on the lookupFormat and resultFormat.
+ *
+ * @return a hash code
+ */",Above the hashCode() method,,True,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr01_PCGen_pcgen_huggingface_after.java,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr01_PCGen_pcgen_ground_truth.diff
+2,CleverRaven/Cataclysm-DDA,cpp,groq,"```cpp
+/**
+ * @param tripoint The location to use for the trap trigger, including the NPC's current z-coordinate.
+ */
+```","replace the copy of the trigger() call in the tr->trigger(this, x, y); line",,True,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr02_CleverRaven_Cataclysm-DDA_groq_after.cpp,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr02_CleverRaven_Cataclysm-DDA_ground_truth.diff
+2,CleverRaven/Cataclysm-DDA,cpp,huggingface,"/**
+ * Avoids a trap at the given position.
+ *
+ * @param tripoint the position to check for a trap
+ * @param tr the trap to check
+ * @return true if the NPC avoids the trap, false otherwise
+ */",(see generated comment),,True,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr02_CleverRaven_Cataclysm-DDA_huggingface_after.cpp,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr02_CleverRaven_Cataclysm-DDA_ground_truth.diff
+3,FRRouting/frr,c,groq,"/**
+ * Validate the prefix length for IPv6 addresses.
+ * 
+ * IPv6 addresses have a maximum prefix length of 128 bits.
+ * 
+ * @param ifa_prefixlen The prefix length to validate.
+ */",above the if (ifa->ifa_family == AF_INET6) check,,True,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr03_FRRouting_frr_groq_after.c,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr03_FRRouting_frr_ground_truth.diff
+3,FRRouting/frr,c,gemini,"```c
+		/*
+		 * Validate the IPv6 prefix length. If it exceeds IPV6_MAX_BITLEN (128),
+		 * it indicates an invalid value received from the kernel, and a warning is logged.
+		 */
+```",Above the line `if (ifa->ifa_prefixlen > IPV6_MAX_BITLEN)`,,True,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr03_FRRouting_frr_gemini_after.c,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr03_FRRouting_frr_ground_truth.diff
+3,FRRouting/frr,c,huggingface,"**
+/**
+ * Initialize and configure the netlink interface address.
+ *
+ * @param h  The netlink message header.
+ * @param ns_id  The namespace ID.
+ * @param startup  The startup flag.
+ */
+int netlink_interface_addr(struct nlmsghdr *h, ns_id_t ns_id, int startup)
+
+**","**
+Above the netlink_interface_addr function definition.
+
+**",,True,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr03_FRRouting_frr_huggingface_after.c,C:\Users\IEY738\OneDrive - University of Saskatchewan\Mitacs Summer 2026\documentation-debt-project\data\results\applied_changes\pr03_FRRouting_frr_ground_truth.diff

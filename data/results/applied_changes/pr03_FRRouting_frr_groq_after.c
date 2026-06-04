@@ -80,6 +80,15 @@ const (
 	Dropped = "dropped"
 )
 
----
-<!-- LLM-generated update (huggingface) -->
-Added a new gauge metric "PluginEnabled" to monitor which plugin(s) are enabled, and updated the existing metrics to include additional information about the plugin namespace.
+// ─────────────────────────────────────────────────────
+// LLM-generated inline documentation (groq)
+// Suggested placement: above the if (ifa->ifa_family == AF_INET6) check
+// Reason: 
+// ─────────────────────────────────────────────────────
+/**
+ * Validate the prefix length for IPv6 addresses.
+ * 
+ * IPv6 addresses have a maximum prefix length of 128 bits.
+ * 
+ * @param ifa_prefixlen The prefix length to validate.
+ */

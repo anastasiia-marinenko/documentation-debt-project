@@ -1,2 +1,11 @@
 # Ground Truth Patch — PCGen/pcgen
+# Language: java
 
+@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
+ 
+     # COPYING
+     def copy(self, name=None):
+-        """Copy a variable and optionally assign a name."""
++        """Return a symbolic copy and optionally assign a name.
++
++        Do not copy the tags.

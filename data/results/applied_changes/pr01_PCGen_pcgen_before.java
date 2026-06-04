@@ -1,3 +1,5 @@
+// Original file — PCGen/pcgen
+
 import copy
 import traceback as tb
 import warnings
@@ -905,7 +907,3 @@ class TensorConstant(_tensor_py_operators, Constant):
                           copy.deepcopy(self.name, memo))
 
 TensorType.Constant = TensorConstant
-
----
-<!-- LLM-generated update (groq) -->
-The `copy` method in the `Variable` class now returns a symbolic copy of the variable, excluding tags, and optionally assigns a name. This change allows for more precise control over the copying process. Additionally, the `GenerateVrfAndProof` method now returns an error instead of an empty slice, providing better error handling.

@@ -1,9 +1,101 @@
-pr_id,repo,lang,model,model_id,generated,ground_truth_patch,status,correct,useful,hallucination,missing_info,relevance,readability,overall_score,notes
-0,Azure/azure-powershell,.cs,groq,llama-3.1-8b-instant,"DOCUMENTATION UPDATE:
-The `AzureVirtualNetworkSubnetConfigBase` class has been updated to improve property names for better readability. Specifically, the `-ResourceId` parameter has been renamed to `-NatGatewayId` to reflect its actual purpose. This change is part of a larger effort to make the Azure PowerShell cmdlets more user-friendly.
+pr_id,repo,lang,doc_style,model,model_id,generated,ground_truth_patch,status,correct,useful,hallucination,format_correct,placement,readability,overall_score,notes
+0,Azure/azure-powershell,.cs,XML doc comments (/// <summary>...</summary>),groq,llama-3.1-8b-instant,"INLINE DOCUMENTATION:
+/// <summary>
+/// The ID of the NAT Gateway resource.
+/// </summary>
+/// <remarks>
+/// This property is used to identify the NAT Gateway resource.
+/// </remarks>
+
+PLACEMENT:
+above the NatGatewayId property
 
 REASON:
-This update is needed to improve the human-readability of the Azure PowerShell cmdlets, making it easier for users to understand the purpose of each property and parameter.","@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
+This documentation is needed to clearly explain the purpose of the NatGatewayId property, which was previously named -ResourceId and has been updated to better reflect its functionality.
+
+INLINE DOCUMENTATION:
+/// <summary>
+/// Gets or sets the ID of the NAT Gateway resource.
+/// </summary>
+/// <value>
+/// The ID of the NAT Gateway resource.
+/// </value>
+
+PLACEMENT:
+replace the existing comment for the NatGatewayId property
+
+REASON:
+This documentation is needed to accurately describe the NatGatewayId property, which is used to identify the NAT Gateway resource.
+
+INLINE DOCUMENTATION:
+/// <summary>
+/// Gets or sets the address prefixes of the subnet.
+/// </summary>
+/// <value>
+/// An array of address prefixes.
+/// </value>
+
+PLACEMENT:
+above the AddressPrefix property
+
+REASON:
+This documentation is needed to clearly explain the purpose and type of the AddressPrefix property.
+
+INLINE DOCUMENTATION:
+/// <summary>
+/// Gets or sets the name of the subnet.
+/// </summary>
+/// <value>
+/// The name of the subnet.
+/// </value>
+
+PLACEMENT:
+above the Name property
+
+REASON:
+This documentation is needed to accurately describe the Name property, which is used to identify the subnet.
+
+INLINE DOCUMENTATION:
+/// <summary>
+/// Gets or sets the Network Security Group ID.
+/// </summary>
+/// <value>
+/// The ID of the Network Security Group.
+/// </value>
+
+PLACEMENT:
+above the NetworkSecurityGroupId property
+
+REASON:
+This documentation is needed to clearly explain the purpose and type of the NetworkSecurityGroupId property.
+
+INLINE DOCUMENTATION:
+/// <summary>
+/// Gets or sets the Network Security Group.
+/// </summary>
+/// <value>
+/// The Network Security Group.
+/// </value>
+
+PLACEMENT:
+above the NetworkSecurityGroup property
+
+REASON:
+This documentation is needed to accurately describe the NetworkSecurityGroup property, which is used to identify the Network Security Group.
+
+INLINE DOCUMENTATION:
+/// <summary>
+/// Gets or sets the Route Table.
+/// </summary>
+/// <value>
+/// The Route Table.
+/// </value>
+
+PLACEMENT:
+above the RouteTable property
+
+REASON:
+This documentation is needed to clearly explain the purpose and type of the RouteTable property.","@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
              HelpMessage = ""RouteTable"")]
          public PSRouteTable RouteTable { get; set; }
  
@@ -14,8 +106,17 @@ This update is needed to improve the human-readability of the Azure PowerShell c
              ValueFromPipelineByPropertyName = true,
              ParameterSetName = ""SetByResourceId"",
 -            HelpMessage = ""ResourceId"")]
-+            HelpMessage = ""NatGatewayId"")]",ok,,,,,,,,
-0,Azure/azure-powershell,.cs,gemini,gemini-2.5-flash,ERROR (Gemini): 429 quota exceeded — зачекай до завтра або заміни модель на gemini-1.5-flash-8b,"@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
++            HelpMessage = ""NatGatewayId"")]",ok,2,1,0,2,2,2,7,Correct rename. Valid XML doc. Scope creep: documents unchanged properties.
+0,Azure/azure-powershell,.cs,XML doc comments (/// <summary>...</summary>),gemini,gemini-2.5-flash,"INLINE DOCUMENTATION:
+/// <summary>
+/// The ID of the NAT Gateway resource.
+/// </summary>
+
+PLACEMENT:
+Above the `[GenericBreakingChange(""Update Property Name"", OldWay = ""-ResourceId"", NewWay = ""-NatGatewayId"")]` attribute, which precedes the `NatGatewayId` property definition.
+
+REASON:
+This documentation is needed to provide a human-readable description for the `NatGatewayId` property, addressing the commit message's request for clarity.","@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
              HelpMessage = ""RouteTable"")]
          public PSRouteTable RouteTable { get; set; }
  
@@ -26,12 +127,19 @@ This update is needed to improve the human-readability of the Azure PowerShell c
              ValueFromPipelineByPropertyName = true,
              ParameterSetName = ""SetByResourceId"",
 -            HelpMessage = ""ResourceId"")]
-+            HelpMessage = ""NatGatewayId"")]",error,,,,,,,,
-0,Azure/azure-powershell,.cs,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"DOCUMENTATION UPDATE:
-The `ResourceId` parameter has been renamed to `NatGatewayId` in the `AzureVirtualNetworkSubnetConfigBase` class, and its help message has been updated to reflect the new name.
++            HelpMessage = ""NatGatewayId"")]",ok,2,2,0,2,2,2,9,"Best output: concise, accurate, focused on changed property only."
+0,Azure/azure-powershell,.cs,XML doc comments (/// <summary>...</summary>),huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"INLINE DOCUMENTATION:
+/// <summary>
+/// Gets or sets the ID of the NAT Gateway resource.
+/// </summary>
+/// <param name=""NatGatewayId"">The ID of the NAT Gateway resource.</param>
+/// <remarks>This property is used to specify the NAT Gateway resource ID.</remarks>
+
+PLACEMENT:
+Above the NatGatewayId property
 
 REASON:
-This update is needed to reflect the changes made to the parameter name and help message, ensuring that users of the Azure PowerShell module have accurate and up-to-date information about the available parameters and their meanings.","@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
+This documentation is needed to provide clear and concise information about the NatGatewayId property, which is a new addition to the code, and to help developers understand its purpose and usage.","@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
              HelpMessage = ""RouteTable"")]
          public PSRouteTable RouteTable { get; set; }
  
@@ -42,73 +150,230 @@ This update is needed to reflect the changes made to the parameter name and help
              ValueFromPipelineByPropertyName = true,
              ParameterSetName = ""SetByResourceId"",
 -            HelpMessage = ""ResourceId"")]
-+            HelpMessage = ""NatGatewayId"")]",ok,,,,,,,,
-1,PCGen/pcgen,java,groq,llama-3.1-8b-instant,"DOCUMENTATION UPDATE:
-The `copy` method in the `Variable` class now returns a symbolic copy of the variable, excluding tags, and optionally assigns a name. This change allows for more precise control over the copying process. Additionally, the `GenerateVrfAndProof` method now returns an error instead of an empty slice, providing better error handling.
++            HelpMessage = ""NatGatewayId"")]",ok,2,1,0,1,2,2,6,Correct content. Wrong XML doc pattern: <param> invalid on property.
+1,PCGen/pcgen,java,appropriate inline documentation comment,groq,llama-3.1-8b-instant,"INLINE DOCUMENTATION:
+/**
+ * The hash code of the lookup format and result format are combined using bitwise XOR.
+ * However, this is likely a magic number and should be replaced with a more meaningful value.
+ * 
+ * @return the combined hash code
+ */
+PLACEMENT:
+replace the getIdentifierType() method
 
-REASON:
-This update is needed to accurately reflect the changes made in the code and provide clear documentation for users of the `Variable` and `Consensus` classes.","@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
+REASON: This documentation is needed to explain the purpose of the combined hash code and the potential issue with the magic number.
+
+INLINE DOCUMENTATION:
+/**
+ * The error message indicates that the VRF generation failed due to the absence of a leader private key.
+ * 
+ * @return an error indicating the issue
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+
+REASON: This documentation is needed to explain the purpose of the error message and the expected return value.
+
+INLINE DOCUMENTATION:
+/**
+ * The GenerateVrfAndProof method generates new VRF/Proof from the hash of the previous block header.
+ * 
+ * @param newHeader the header of the new block
+ * @return an error if the VRF generation fails, nil otherwise
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+
+REASON: This documentation is needed to explain the purpose of the method and its parameters.
+
+INLINE DOCUMENTATION:
+/**
+ * The GenerateVrfAndProof method generates new VRF/Proof from the hash of the previous block header.
+ * 
+ * @param newHeader the header of the new block
+ * @return an error if the VRF generation fails, nil otherwise
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+
+REASON: This documentation is needed to explain the purpose of the method and its parameters.
+
+INLINE DOCUMENTATION:
+/**
+ * The GenerateVrfAndProof method generates new VRF/Proof from the hash of the previous block header.
+ * 
+ * @param newHeader the header of the new block
+ * @return an error if the VRF generation fails, nil otherwise
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+
+REASON: This documentation is needed to explain the purpose of the method and its parameters.
+
+INLINE DOCUMENTATION:
+/**
+ * The GenerateVrfAndProof method generates new VRF/Proof from the hash of the previous block header.
+ * 
+ * @param newHeader the header of the new block
+ * @return an error if the VRF generation fails, nil otherwise
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+
+REASON: This documentation is needed to explain the purpose of the method and its parameters.","@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
  
      # COPYING
      def copy(self, name=None):
 -        """"""Copy a variable and optionally assign a name.""""""
 +        """"""Return a symbolic copy and optionally assign a name.
 +
-+        Do not copy the tags.",ok,,,,,,,,
-1,PCGen/pcgen,java,gemini,gemini-2.5-flash,ERROR (Gemini): 429 quota exceeded — зачекай до завтра або заміни модель на gemini-1.5-flash-8b,"@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
++        Do not copy the tags.",ok,0,0,2,1,0,1,1,Severe hallucination: invents GenerateVrfAndProof not in patch.
+1,PCGen/pcgen,java,appropriate inline documentation comment,gemini,gemini-2.5-flash,"INLINE DOCUMENTATION:
+```java
+		return lookupFormat.hashCode() + 5; // TODO: Revisit this hashCode implementation. The constant '5' is a magic number; consider using a customary prime (e.g., 31 or 33) and potentially incorporating 'resultFormat' for a more robust hash.
+```
+
+PLACEMENT:
+Above the line `return lookup","@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
  
      # COPYING
      def copy(self, name=None):
 -        """"""Copy a variable and optionally assign a name.""""""
 +        """"""Return a symbolic copy and optionally assign a name.
 +
-+        Do not copy the tags.",error,,,,,,,,
-1,PCGen/pcgen,java,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"DOCUMENTATION UPDATE:
-The `GenerateVrfAndProof` function now returns an error instead of an array of `uint64` values, and the `copy` function has been updated to return a symbolic copy and optionally assign a name, with a note that the tags are not copied.
-
++        Do not copy the tags.",ok,0,1,1,2,1,2,3,Minor hallucination: hashCode() not in patch. Format correct.
+1,PCGen/pcgen,java,appropriate inline documentation comment,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"INLINE DOCUMENTATION:
+/**
+ * Returns the hash code of the lookup format and result format.
+ * @return the hash code of the lookup format and result format
+ */
+PLACEMENT:
+above the `hashCode()` method
 REASON:
-This update is needed to reflect the changes made to the code, specifically the modification of the `GenerateVrfAndProof` function to return an error instead of an array of values, and the update to the `copy` function to better reflect its functionality.","@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
+This documentation is needed to clarify the purpose of the `hashCode()` method and its return value.
+
+**2.**
+INLINE DOCUMENTATION:
+/**
+ * Generates new VRF/Proof from the hash of the previous block.
+ * @param newBlock the new block
+ * @param vrfBlockNumbers the VRF block numbers
+ * @return the generated VRF/Proof
+ */
+PLACEMENT:
+above the `GenerateVrfAndProof()` method
+REASON:
+This documentation is needed to clarify the purpose of the `GenerateVrfAndProof()` method and its parameters.
+
+**3.**
+INLINE DOCUMENTATION:
+/**
+ * Returns an error message indicating that no leader private key was provided.
+ * @return the error message
+ */
+PLACEMENT:
+above the `errors.New(""[GenerateVrfAndProof] no leader private key provided"")` statement
+REASON:
+This documentation is needed to clarify the purpose of the error message and its return value.
+
+Let me know if you need any further assistance!","@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
  
      # COPYING
      def copy(self, name=None):
 -        """"""Copy a variable and optionally assign a name.""""""
 +        """"""Return a symbolic copy and optionally assign a name.
 +
-+        Do not copy the tags.",ok,,,,,,,,
-2,CleverRaven/Cataclysm-DDA,cpp,groq,llama-3.1-8b-instant,"DOCUMENTATION UPDATE:
-The version of the assembly has been updated to 1.13.2 to reflect the latest changes made to the project.
++        Do not copy the tags.",ok,0,0,2,1,0,1,1,Severe hallucination: multiple methods outside patch. Lang mismatch.
+2,CleverRaven/Cataclysm-DDA,cpp,appropriate inline documentation comment,groq,llama-3.1-8b-instant,"INLINE DOCUMENTATION:
+/**
+ * @brief Check if the NPC can avoid the trap at the given position.
+ * @param pos The position where the NPC is moving to.
+ * @param tr The trap to avoid.
+ * @return True if the NPC can avoid the trap, false otherwise.
+ */
+PLACEMENT:
+replace the copy of the avoid_trap() docstring in the new call to avoid_trap()
 
 REASON:
-This update is needed to accurately reflect the current version of the project in the assembly information.","@@ -46,5 +46,5 @@
+This documentation is needed to explain the purpose and parameters of the avoid_trap() method, addressing the lack of inline documentation for this method.","@@ -46,5 +46,5 @@
  // You can specify all the values or you can default the Build and Revision Numbers 
  // by using the '*' as shown below:
  
 -[assembly: AssemblyVersion(""1.13.1"")]
 -[assembly: AssemblyFileVersion(""1.13.1"")]
-+[assembly: AssemblyVersion(""1.13.2"")]",ok,,,,,,,,
-2,CleverRaven/Cataclysm-DDA,cpp,gemini,gemini-2.5-flash,ERROR (Gemini): 429 quota exceeded — зачекай до завтра або заміни модель на gemini-1.5-flash-8b,"@@ -46,5 +46,5 @@
++[assembly: AssemblyVersion(""1.13.2"")]",ok,0,0,2,1,0,2,1,Complete hallucination: avoid_trap() not in patch. No doc signal in version bump.
+2,CleverRaven/Cataclysm-DDA,cpp,appropriate inline documentation comment,gemini,gemini-2.5-flash,"INLINE DOCUMENTATION:
+```cpp
+                // Pass the trap's location as a tripoint, combining the target x, y with the NPC's current z.
+```
+
+PLACEMENT:
+Above the line `if (!this->avoid_trap( tripoint( x, y, posz() ), tr )) {`
+
+REASON:
+This comment explains the change","@@ -46,5 +46,5 @@
  // You can specify all the values or you can default the Build and Revision Numbers 
  // by using the '*' as shown below:
  
 -[assembly: AssemblyVersion(""1.13.1"")]
 -[assembly: AssemblyFileVersion(""1.13.1"")]
-+[assembly: AssemblyVersion(""1.13.2"")]",error,,,,,,,,
-2,CleverRaven/Cataclysm-DDA,cpp,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"DOCUMENTATION UPDATE:
-The version number of the assembly has been updated to 1.13.2.
++[assembly: AssemblyVersion(""1.13.2"")]",ok,1,1,0,2,2,2,5,Partial: explains code logic but ground truth is only a version bump.
+2,CleverRaven/Cataclysm-DDA,cpp,appropriate inline documentation comment,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"INLINE DOCUMENTATION:
+/**
+ * Avoids triggering a trap at the given position.
+ *
+ * @param tripoint the position to check for traps
+ * @param tr the trap to check
+ * @return true if the trap was avoided, false otherwise
+ */
+/**
+ * Triggers a trap at the given position.
+ *
+ * @param tripoint the position to trigger the trap
+ * @param this the NPC triggering the trap
+ */
+/**
+ * Move the NPC to the given position.
+ *
+ * @param x the x-coordinate of the new position
+ * @param y the y-coordinate of the new position
+ * @param z the z-coordinate of the new position (optional)
+ */
+
+PLACEMENT:
+Above the `avoid_trap` and `trigger` method calls, and above the `move_to` method.
 
 REASON:
-This update is needed to reflect the change in the assembly's version number, ensuring that the documentation accurately reflects the current state of the project.","@@ -46,5 +46,5 @@
+This documentation is needed to clarify the purpose and behavior of the `avoid_trap` and `trigger` methods, and to provide a clear understanding of the `move_to` method's parameters and behavior, thus addressing the documentation debt and improving code maintainability.","@@ -46,5 +46,5 @@
  // You can specify all the values or you can default the Build and Revision Numbers 
  // by using the '*' as shown below:
  
 -[assembly: AssemblyVersion(""1.13.1"")]
 -[assembly: AssemblyFileVersion(""1.13.1"")]
-+[assembly: AssemblyVersion(""1.13.2"")]",ok,,,,,,,,
-3,FRRouting/frr,c,groq,llama-3.1-8b-instant,"DOCUMENTATION UPDATE:
-A new metric, `PluginEnabled`, has been added to monitor which plugin(s) are enabled. This metric is a gauge vector that tracks the plugin status. The existing metrics for request and response sizes have been left unchanged.
-
++[assembly: AssemblyVersion(""1.13.2"")]",ok,0,0,2,1,0,1,1,Severe hallucination: documents methods not in version-bump patch.
+3,FRRouting/frr,c,appropriate inline documentation comment,groq,llama-3.1-8b-instant,"INLINE DOCUMENTATION:
+/**
+ * Check if the prefix length is valid for IPv6 addresses.
+ *
+ * IPv6 addresses have a maximum prefix length of 128 bits.
+ *
+ * @param prefixlen The prefix length to check.
+ */
+PLACEMENT:
+above the if (ifa->ifa_family == AF_INET6) condition
 REASON:
-This update is needed to document the new metric added to the codebase, ensuring that users are aware of the new metric and its purpose.","@@ -65,6 +65,12 @@ var (
+This documentation is needed to explain the condition and its purpose, addressing the lack of inline documentation for this specific code change.
+
+INLINE DOCUMENTATION:
+/**
+ * If translation is enabled, use the translate function to display the password strength message.
+ *
+ * This allows for internationalization of the password strength message.
+ */
+PLACEMENT:
+above the '<small' tag
+REASON:
+This documentation is needed to explain the conditional statement and its purpose, addressing the lack of inline documentation for this specific code change.","@@ -65,6 +65,12 @@ var (
  		Name:      ""panic_count_total"",
  		Help:      ""A metrics that counts the number of panics."",
  	})
@@ -116,21 +381,20 @@ This update is needed to document the new metric added to the codebase, ensuring
 +	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 +		Namespace: plugin.Namespace,
 +		Name:      ""plugin_enabled"",
-+		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",ok,,,,,,,,
-3,FRRouting/frr,c,gemini,gemini-2.5-flash,ERROR (Gemini): 429 quota exceeded — зачекай до завтра або заміни модель на gemini-1.5-flash-8b,"@@ -65,6 +65,12 @@ var (
- 		Name:      ""panic_count_total"",
- 		Help:      ""A metrics that counts the number of panics."",
- 	})
-+
-+	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-+		Namespace: plugin.Namespace,
-+		Name:      ""plugin_enabled"",
-+		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",error,,,,,,,,
-3,FRRouting/frr,c,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"DOCUMENTATION UPDATE:
-Added a new gauge metric ""PluginEnabled"" to monitor which plugin(s) are enabled, and updated the existing metrics to include additional information about the plugin namespace.
++		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",ok,0,0,2,1,0,2,1,Complete hallucination: IPv6 prefix check not in patch. Wrong file context.
+3,FRRouting/frr,c,appropriate inline documentation comment,gemini,gemini-2.5-flash,"INLINE DOCUMENTATION:
+```c
+		/*
+		 * Validate the IPv6 prefix length received from the kernel.
+		 * A warning is logged if it exceeds IPV6_MAX_BITLEN (128).
+		 */
+```
+
+PLACEMENT:
+Above the line `if (ifa->ifa_prefixlen > IPV6_MAX_BITLEN) {`
 
 REASON:
-This update is needed to provide a clear and accurate understanding of the new metric and its relationship to the existing metrics, ensuring that users can effectively utilize the plugin namespace in their monitoring and analysis.","@@ -65,6 +65,12 @@ var (
+This documentation explains the purpose of the newly added validation check for IPv6 prefix length received from the kernel.","@@ -65,6 +65,12 @@ var (
  		Name:      ""panic_count_total"",
  		Help:      ""A metrics that counts the number of panics."",
  	})
@@ -138,4 +402,23 @@ This update is needed to provide a clear and accurate understanding of the new m
 +	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 +		Namespace: plugin.Namespace,
 +		Name:      ""plugin_enabled"",
-+		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",ok,,,,,,,,
++		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",ok,0,0,2,2,1,2,2,Hallucination: IPv6 not in patch. Format clean but wrong change identified.
+3,FRRouting/frr,c,appropriate inline documentation comment,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"INLINE DOCUMENTATION:**
+/**
+ * Initialize and register Prometheus metrics for FRRouting.
+ *
+ * This function creates and registers various Prometheus metrics for FRRouting,
+ * including counters and histograms for DNS request and response metrics.
+ *
+ * @param subsystem  The subsystem name for the metrics.
+ */
+PLACEMENT: Above the `RequestCount`, `RequestDuration`, `RequestSize`, `RequestDo`, `RequestType`, and `ResponseSize` variable declarations.
+REASON: This documentation is needed to explain the purpose and functionality of the code, which is responsible for initializing and registering Prometheus metrics for FRRouting.","@@ -65,6 +65,12 @@ var (
+ 		Name:      ""panic_count_total"",
+ 		Help:      ""A metrics that counts the number of panics."",
+ 	})
++
++	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
++		Namespace: plugin.Namespace,
++		Name:      ""plugin_enabled"",
++		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",ok,0,1,1,1,1,2,3,Partial: correct Prometheus domain but documents DNS metrics not in patch.

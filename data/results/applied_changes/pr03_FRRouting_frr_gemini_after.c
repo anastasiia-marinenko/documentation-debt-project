@@ -80,6 +80,14 @@ const (
 	Dropped = "dropped"
 )
 
----
-<!-- LLM-generated update (huggingface) -->
-Added a new gauge metric "PluginEnabled" to monitor which plugin(s) are enabled, and updated the existing metrics to include additional information about the plugin namespace.
+// ─────────────────────────────────────────────────────
+// LLM-generated inline documentation (gemini)
+// Suggested placement: Above the line `if (ifa->ifa_prefixlen > IPV6_MAX_BITLEN)`
+// Reason: 
+// ─────────────────────────────────────────────────────
+```c
+		/*
+		 * Validate the IPv6 prefix length. If it exceeds IPV6_MAX_BITLEN (128),
+		 * it indicates an invalid value received from the kernel, and a warning is logged.
+		 */
+```

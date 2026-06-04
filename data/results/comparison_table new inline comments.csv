@@ -1,0 +1,482 @@
+pr_id,repo,lang,doc_style,model,model_id,generated,ground_truth_patch,status,correct,useful,hallucination,format_correct,placement,readability,overall_score,notes
+0,Azure/azure-powershell,.cs,XML doc comments (/// <summary>...</summary>),groq,llama-3.1-8b-instant,"INLINE DOCUMENTATION:
+/// <summary>
+/// The ID of the NAT Gateway resource.
+/// </summary>
+/// <remarks>
+/// This property is used to specify the NAT Gateway resource associated with the subnet.
+/// </remarks>
+
+PLACEMENT:
+above the NatGatewayId property
+
+REASON:
+This documentation is needed to clarify the purpose of the NatGatewayId property, which was previously named -ResourceId but has been updated to a more descriptive name.
+
+INLINE DOCUMENTATION:
+/// <summary>
+/// Gets or sets the ID of the NAT Gateway resource.
+/// </summary>
+/// <value>
+/// The ID of the NAT Gateway resource.
+/// </value>
+
+PLACEMENT:
+above the NatGatewayId property (replace the existing get; set; comment)
+
+REASON:
+This documentation is needed to provide a clear and accurate description of the NatGatewayId property, including its value.
+
+INLINE DOCUMENTATION:
+/// <summary>
+/// Gets or sets the address prefixes of the subnet.
+/// </summary>
+/// <value>
+/// An array of address prefixes for the subnet.
+/// </value>
+/// <remarks>
+/// The address prefixes are used to define the IP address range for the subnet.
+/// </remarks>
+
+PLACEMENT:
+above the AddressPrefix property
+
+REASON:
+This documentation is needed to provide a clear and accurate description of the AddressPrefix property, including its value and purpose.
+
+INLINE DOCUMENTATION:
+/// <summary>
+/// Gets or sets the name of the subnet.
+/// </summary>
+/// <value>
+/// The name of the subnet.
+/// </value>
+/// <remarks>
+/// The name is used to identify the subnet.
+/// </remarks>
+
+PLACEMENT:
+above the Name property
+
+REASON:
+This documentation is needed to provide a clear and accurate description of the Name property, including its value and purpose.","@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
+             HelpMessage = ""RouteTable"")]
+         public PSRouteTable RouteTable { get; set; }
+ 
++        [GenericBreakingChange(""Update Property Name"", OldWay = ""-ResourceId"", NewWay = ""-NatGatewayId"")]
++        [Alias(""NatGatewayId"")]
+         [Parameter(
+             Mandatory = false,
+             ValueFromPipelineByPropertyName = true,
+             ParameterSetName = ""SetByResourceId"",
+-            HelpMessage = ""ResourceId"")]
++            HelpMessage = ""NatGatewayId"")]",ok,,,,,,,,
+0,Azure/azure-powershell,.cs,XML doc comments (/// <summary>...</summary>),gemini,gemini-2.5-flash,"INLINE DOCUMENTATION:
+/// <summary>
+/// The ID of the NAT Gateway resource to associate with the subnet.
+/// </summary>
+
+PLACEMENT:
+Above the `NatGatewayId` property definition.
+
+REASON:
+This documentation is needed to provide a clear, human-readable summary of the property's purpose, aligning with the commit message and the updated `HelpMessage`.","@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
+             HelpMessage = ""RouteTable"")]
+         public PSRouteTable RouteTable { get; set; }
+ 
++        [GenericBreakingChange(""Update Property Name"", OldWay = ""-ResourceId"", NewWay = ""-NatGatewayId"")]
++        [Alias(""NatGatewayId"")]
+         [Parameter(
+             Mandatory = false,
+             ValueFromPipelineByPropertyName = true,
+             ParameterSetName = ""SetByResourceId"",
+-            HelpMessage = ""ResourceId"")]
++            HelpMessage = ""NatGatewayId"")]",ok,,,,,,,,
+0,Azure/azure-powershell,.cs,XML doc comments (/// <summary>...</summary>),huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"INLINE DOCUMENTATION:
+/// <summary>
+/// Updates the property name for compatibility.
+/// </summary>
+/// <param name=""oldWay"">The old property name.</param>
+/// <param name=""newWay"">The new property name.</param>
+/// <remarks>This property name change is necessary for compatibility reasons.</summary>
+
+PLACEMENT:
+above the GenericBreakingChange attribute
+
+REASON:
+This documentation is needed to explain the purpose of the GenericBreakingChange attribute and its parameters, which is necessary to understand the changes made to the code.","@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
+             HelpMessage = ""RouteTable"")]
+         public PSRouteTable RouteTable { get; set; }
+ 
++        [GenericBreakingChange(""Update Property Name"", OldWay = ""-ResourceId"", NewWay = ""-NatGatewayId"")]
++        [Alias(""NatGatewayId"")]
+         [Parameter(
+             Mandatory = false,
+             ValueFromPipelineByPropertyName = true,
+             ParameterSetName = ""SetByResourceId"",
+-            HelpMessage = ""ResourceId"")]
++            HelpMessage = ""NatGatewayId"")]",ok,,,,,,,,
+1,PCGen/pcgen,java,appropriate inline documentation comment,groq,llama-3.1-8b-instant,"INLINE DOCUMENTATION:
+/**
+ * The hash code is generated by combining the hash codes of the lookup format and result format.
+ * This is done to ensure that the hash code is unique for each identifier type.
+ */
+PLACEMENT:
+above the getIdentifierType() method
+REASON: This documentation clarifies the purpose of the hash code generation, addressing the debt of unclear code.
+
+INLINE DOCUMENTATION:
+/**
+ * The magic number 5 is used to combine the hash codes of the lookup format and result format.
+ * It is recommended to use a better magic number, such as 33, which is customary.
+ */
+PLACEMENT:
+above the return statement in the getIdentifierType() method
+REASON: This documentation explains the use of the magic number, addressing the debt of unclear code.
+
+INLINE DOCUMENTATION:
+/**
+ * This method generates new VRF/Proof from the hash of the previous block header.
+ * It takes the new block header as input and returns an error if the consensus leader private key is not provided.
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+REASON: This documentation explains the purpose and behavior of the method, addressing the debt of unclear code.
+
+INLINE DOCUMENTATION:
+/**
+ * This method generates new VRF/Proof from the hash of the previous block header.
+ * It takes the new block header as input and returns an error if the consensus leader private key is not provided.
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+REASON: This documentation explains the purpose and behavior of the method, addressing the debt of unclear code.
+
+INLINE DOCUMENTATION:
+/**
+ * This method generates new VRF/Proof from the hash of the previous block header.
+ * It takes the new block header as input and returns an error if the consensus leader private key is not provided.
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+REASON: This documentation explains the purpose and behavior of the method, addressing the debt of unclear code.
+
+INLINE DOCUMENTATION:
+/**
+ * This method generates new VRF/Proof from the hash of the previous block header.
+ * It takes the new block header as input and returns an error if the consensus leader private key is not provided.
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+REASON: This documentation explains the purpose and behavior of the method, addressing the debt of unclear code.
+
+INLINE DOCUMENTATION:
+/**
+ * This method generates new VRF/Proof from the hash of the previous block header.
+ * It takes the new block header as input and returns an error if the consensus leader private key is not provided.
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+REASON: This documentation explains the purpose and behavior of the method, addressing the debt of unclear code.
+
+INLINE DOCUMENTATION:
+/**
+ * This method generates new VRF/Proof from the hash of the previous block header.
+ * It takes the new block header as input and returns an error if the consensus leader private key is not provided.
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+REASON: This documentation explains the purpose and behavior of the method, addressing the debt of unclear code.
+
+INLINE DOCUMENTATION:
+/**
+ * This method generates new VRF/Proof from the hash of the previous block header.
+ * It takes the new block header as input and returns an error if the consensus leader private key is not provided.
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+REASON: This documentation explains the purpose and behavior of the method, addressing the debt of unclear code.
+
+INLINE DOCUMENTATION:
+/**
+ * This method generates new VRF/Proof from the hash of the previous block header.
+ * It takes the new block header as input and returns an error if the consensus leader private key is not provided.
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+REASON: This documentation explains the purpose and behavior of the method, addressing the debt of unclear code.
+
+INLINE DOCUMENTATION:
+/**
+ * This method generates new VRF/Proof from the hash of the previous block header.
+ * It takes the new block header as input and returns an error if the consensus leader private key is not provided.
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+REASON: This documentation explains the purpose and behavior of the method, addressing the debt of unclear code.
+
+INLINE DOCUMENTATION:
+/**
+ * This method generates new VRF/Proof from the hash of the previous block header.
+ * It takes the new block header as input and returns an error if the consensus leader private key is not provided.
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+REASON: This documentation explains the purpose and behavior of the method, addressing the debt of unclear code.
+
+INLINE DOCUMENTATION:
+/**
+ * This method generates new VRF/Proof from the hash of the previous block header.
+ * It takes the new block header as input and returns an error if the consensus leader private key is not provided.
+ */
+PLACEMENT:
+above the GenerateVrfAndProof method
+REASON: This documentation explains the purpose","@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
+ 
+     # COPYING
+     def copy(self, name=None):
+-        """"""Copy a variable and optionally assign a name.""""""
++        """"""Return a symbolic copy and optionally assign a name.
++
++        Do not copy the tags.",ok,,,,,,,,
+1,PCGen/pcgen,java,appropriate inline documentation comment,gemini,gemini-2.5-flash,"INLINE DOCUMENTATION:
+/**
+ * Computes a hash code for this object.
+ * <p>
+ * TODO: This is a temporary or incomplete hashCode implementation.
+ * The current implementation only uses {@code lookupFormat} and an arbitrary magic number {@code 5}.
+ * It does not properly incorporate {@code resultFormat} into the hash code calculation,
+ * which","@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
+ 
+     # COPYING
+     def copy(self, name=None):
+-        """"""Copy a variable and optionally assign a name.""""""
++        """"""Return a symbolic copy and optionally assign a name.
++
++        Do not copy the tags.",ok,,,,,,,,
+1,PCGen/pcgen,java,appropriate inline documentation comment,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"INLINE DOCUMENTATION:
+/**
+ * Returns a hash code based on the lookupFormat and resultFormat.
+ *
+ * @return a hash code
+ */
+PLACEMENT:
+Above the hashCode() method
+REASON:
+This documentation is needed to clarify the purpose of the hashCode() method and its relationship with the lookupFormat and resultFormat.
+
+**2. GenerateVrfAndProof method**
+INLINE DOCUMENTATION:
+/**
+ * Generates a new VRF/Proof from the hash of the previous block.
+ *
+ * @param newHeader the new block header
+ * @return an error if the VRF generation fails
+ */
+PLACEMENT:
+Above the GenerateVrfAndProof method
+REASON:
+This documentation is needed to explain the purpose of the GenerateVrfAndProof method and its parameters, as well as the return value in case of an error.
+
+**3. +5 magic number in hashCode() method**
+INLINE DOCUMENTATION:
+/**
+ * A magic number used to combine the lookupFormat and resultFormat hash codes.
+ * A value of 33 is commonly used.
+ *
+ * @see <a href=""https://en.wikipedia.org/wiki/Magic_number_(programming)"">Magic Number</a>
+ */
+PLACEMENT:
+Above the +5 magic number in the hashCode() method
+REASON:
+This documentation is needed to explain the purpose of the magic number and provide a reference to the concept of magic numbers in programming.","@@ -535,7 +535,10 @@ def take(self, indices, axis=None, mode='raise'):
+ 
+     # COPYING
+     def copy(self, name=None):
+-        """"""Copy a variable and optionally assign a name.""""""
++        """"""Return a symbolic copy and optionally assign a name.
++
++        Do not copy the tags.",ok,,,,,,,,
+2,CleverRaven/Cataclysm-DDA,cpp,appropriate inline documentation comment,groq,llama-3.1-8b-instant,"INLINE DOCUMENTATION:
+```cpp
+/**
+ * @param tripoint The location to use for the trap trigger, including the NPC's current z-coordinate.
+ */
+```
+PLACEMENT:
+replace the copy of the trigger() call in the tr->trigger(this, x, y); line
+
+REASON:
+This documentation is needed to clarify the expected parameters of the trigger() function, specifically the use of a tripoint including the NPC's z-coordinate.","@@ -46,5 +46,5 @@
+ // You can specify all the values or you can default the Build and Revision Numbers 
+ // by using the '*' as shown below:
+ 
+-[assembly: AssemblyVersion(""1.13.1"")]
+-[assembly: AssemblyFileVersion(""1.13.1"")]
++[assembly: AssemblyVersion(""1.13.2"")]",ok,,,,,,,,
+2,CleverRaven/Cataclysm-DDA,cpp,appropriate inline documentation comment,gemini,gemini-2.5-flash,"ERROR (Gemini): 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}","@@ -46,5 +46,5 @@
+ // You can specify all the values or you can default the Build and Revision Numbers 
+ // by using the '*' as shown below:
+ 
+-[assembly: AssemblyVersion(""1.13.1"")]
+-[assembly: AssemblyFileVersion(""1.13.1"")]
++[assembly: AssemblyVersion(""1.13.2"")]",error,,,,,,,,
+2,CleverRaven/Cataclysm-DDA,cpp,appropriate inline documentation comment,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"INLINE DOCUMENTATION:
+/**
+ * Avoids a trap at the given position.
+ *
+ * @param tripoint the position to check for a trap
+ * @param tr the trap to check
+ * @return true if the NPC avoids the trap, false otherwise
+ */
+REASON:
+This documentation is needed to clarify the behavior of the `avoid_trap` method and its parameters, addressing the debt of unclear code.","@@ -46,5 +46,5 @@
+ // You can specify all the values or you can default the Build and Revision Numbers 
+ // by using the '*' as shown below:
+ 
+-[assembly: AssemblyVersion(""1.13.1"")]
+-[assembly: AssemblyFileVersion(""1.13.1"")]
++[assembly: AssemblyVersion(""1.13.2"")]",ok,,,,,,,,
+3,FRRouting/frr,c,appropriate inline documentation comment,groq,llama-3.1-8b-instant,"INLINE DOCUMENTATION:
+/**
+ * Validate the prefix length for IPv6 addresses.
+ * 
+ * IPv6 addresses have a maximum prefix length of 128 bits.
+ * 
+ * @param ifa_prefixlen The prefix length to validate.
+ */
+PLACEMENT:
+above the if (ifa->ifa_family == AF_INET6) check
+REASON: This documentation is needed to clarify the expected range of prefix lengths for IPv6 addresses and prevent potential errors.
+
+INLINE DOCUMENTATION:
+/**
+ * Log a warning message when an invalid prefix length is received from the kernel.
+ * 
+ * This is used to handle cases where the kernel provides an invalid prefix length.
+ * 
+ * @param ifa_prefixlen The invalid prefix length received from the kernel.
+ * @param h The nlmsghdr structure containing the kernel's message.
+ */
+PLACEMENT:
+above the zlog_warn call
+REASON: This documentation is needed to explain the purpose of the warning message and the parameters involved.
+
+INLINE DOCUMENTATION:
+/**
+ * Histogram of the time (in seconds) each request took.
+ * 
+ * This histogram is used to track the duration of DNS requests.
+ * 
+ * @param server The server handling the request.
+ * @param zone The zone associated with the request.
+ */
+PLACEMENT:
+above the RequestDuration variable declaration
+REASON: This documentation is needed to describe the purpose of the histogram and the labels used.
+
+INLINE DOCUMENTATION:
+/**
+ * Size of the EDNS0 UDP buffer in bytes (64K for TCP).
+ * 
+ * This histogram tracks the size of the EDNS0 UDP buffer.
+ * 
+ * @param server The server handling the request.
+ * @param zone The zone associated with the request.
+ * @param proto The protocol used for the request (UDP or TCP).
+ */
+PLACEMENT:
+above the RequestSize variable declaration
+REASON: This documentation is needed to explain the purpose of the histogram and the labels used.
+
+INLINE DOCUMENTATION:
+/**
+ * Counter of DNS requests with DO bit set per zone.
+ * 
+ * This counter tracks the number of DNS requests with the DO bit set.
+ * 
+ * @param server The server handling the request.
+ * @param zone The zone associated with the request.
+ */
+PLACEMENT:
+above the RequestDo variable declaration
+REASON: This documentation is needed to describe the purpose of the counter and the labels used.
+
+INLINE DOCUMENTATION:
+/**
+ * Counter of DNS requests per type, per zone.
+ * 
+ * This counter tracks the number of DNS requests per type.
+ * 
+ * @param server The server handling the request.
+ * @param zone The zone associated with the request.
+ * @param type The type of DNS request (e.g. A, AAAA, etc.).
+ */
+PLACEMENT:
+above the RequestType variable declaration
+REASON: This documentation is needed to explain the purpose of the counter and the labels used.
+
+INLINE DOCUMENTATION:
+/**
+ * Size of the returned response in bytes.
+ * 
+ * This histogram tracks the size of the returned response.
+ * 
+ * @param server The server handling the request.
+ * @param zone The zone associated with the request.
+ */
+PLACEMENT:
+above the ResponseSize variable declaration
+REASON: This documentation is needed to describe the purpose of the histogram and the labels used.","@@ -65,6 +65,12 @@ var (
+ 		Name:      ""panic_count_total"",
+ 		Help:      ""A metrics that counts the number of panics."",
+ 	})
++
++	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
++		Namespace: plugin.Namespace,
++		Name:      ""plugin_enabled"",
++		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",ok,,,,,,,,
+3,FRRouting/frr,c,appropriate inline documentation comment,gemini,gemini-2.5-flash,"INLINE DOCUMENTATION:
+```c
+		/*
+		 * Validate the IPv6 prefix length. If it exceeds IPV6_MAX_BITLEN (128),
+		 * it indicates an invalid value received from the kernel, and a warning is logged.
+		 */
+```
+
+PLACEMENT:
+Above the line `if (ifa->ifa_prefixlen > IPV6_MAX_BITLEN)`
+
+REASON:
+This documentation explains the purpose of the newly added validation check for IPv6 prefix length.","@@ -65,6 +65,12 @@ var (
+ 		Name:      ""panic_count_total"",
+ 		Help:      ""A metrics that counts the number of panics."",
+ 	})
++
++	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
++		Namespace: plugin.Namespace,
++		Name:      ""plugin_enabled"",
++		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",ok,,,,,,,,
+3,FRRouting/frr,c,appropriate inline documentation comment,huggingface,meta-llama/Meta-Llama-3-8B-Instruct,"INLINE DOCUMENTATION:**
+/**
+ * Initialize and configure the netlink interface address.
+ *
+ * @param h  The netlink message header.
+ * @param ns_id  The namespace ID.
+ * @param startup  The startup flag.
+ */
+int netlink_interface_addr(struct nlmsghdr *h, ns_id_t ns_id, int startup)
+
+**PLACEMENT:**
+Above the netlink_interface_addr function definition.
+
+**REASON:**
+This documentation is needed to clearly explain the purpose and parameters of the netlink_interface_addr function, which was modified in the code changes, and to address the lack of inline documentation in the code.","@@ -65,6 +65,12 @@ var (
+ 		Name:      ""panic_count_total"",
+ 		Help:      ""A metrics that counts the number of panics."",
+ 	})
++
++	PluginEnabled = prometheus.NewGaugeVec(prometheus.GaugeOpts{
++		Namespace: plugin.Namespace,
++		Name:      ""plugin_enabled"",
++		Help:      ""A metric that monitors which plugin(s) is(are) enabled."",",ok,,,,,,,,

@@ -80,6 +80,22 @@ const (
 	Dropped = "dropped"
 )
 
----
-<!-- LLM-generated update (huggingface) -->
-Added a new gauge metric "PluginEnabled" to monitor which plugin(s) are enabled, and updated the existing metrics to include additional information about the plugin namespace.
+// ─────────────────────────────────────────────────────
+// LLM-generated inline documentation (huggingface)
+// Suggested placement: **
+Above the netlink_interface_addr function definition.
+
+**
+// Reason: 
+// ─────────────────────────────────────────────────────
+**
+/**
+ * Initialize and configure the netlink interface address.
+ *
+ * @param h  The netlink message header.
+ * @param ns_id  The namespace ID.
+ * @param startup  The startup flag.
+ */
+int netlink_interface_addr(struct nlmsghdr *h, ns_id_t ns_id, int startup)
+
+**

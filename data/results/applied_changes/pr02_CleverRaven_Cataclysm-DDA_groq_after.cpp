@@ -1,5 +1,3 @@
-# Original README — CleverRaven/Cataclysm-DDA
-
 // ----------------------------------------------------------------------------------
 //
 // Copyright Microsoft Corporation
@@ -50,3 +48,14 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("1.13.2")]
 [assembly: AssemblyFileVersion("1.13.2")]
+
+// ─────────────────────────────────────────────────────
+// LLM-generated inline documentation (groq)
+// Suggested placement: replace the copy of the trigger() call in the tr->trigger(this, x, y); line
+// Reason: 
+// ─────────────────────────────────────────────────────
+```cpp
+/**
+ * @param tripoint The location to use for the trap trigger, including the NPC's current z-coordinate.
+ */
+```

@@ -1,2 +1,15 @@
 # Ground Truth Patch — Azure/azure-powershell
+# Language: .cs
 
+@@ -61,13 +62,17 @@ public class AzureVirtualNetworkSubnetConfigBase : NetworkBaseCmdlet
+             HelpMessage = "RouteTable")]
+         public PSRouteTable RouteTable { get; set; }
+ 
++        [GenericBreakingChange("Update Property Name", OldWay = "-ResourceId", NewWay = "-NatGatewayId")]
++        [Alias("NatGatewayId")]
+         [Parameter(
+             Mandatory = false,
+             ValueFromPipelineByPropertyName = true,
+             ParameterSetName = "SetByResourceId",
+-            HelpMessage = "ResourceId")]
++            HelpMessage = "NatGatewayId")]

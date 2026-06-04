@@ -1,15 +1,22 @@
 """
 scripts/llm_generation/generate_docs_multi_llm.py
 
-EXP-001 Configuration:
+EXP-001 (v2) — Inline Code Documentation Generation
+=======================================================
+Reframed task: instead of generating a README update, the LLM now generates
+INLINE documentation (XML doc comments, Javadoc, docstrings, etc.) for code
+changes that lack or have outdated documentation — which is what the Lin et al.
+dataset actually contains.
+
+Configuration:
   Models       : llama-3.1-8b-instant (Groq), gemini-2.5-flash (Gemini),
                  meta-llama/Meta-Llama-3-8B-Instruct (HuggingFace)
-  max_tokens   : 512
+  max_tokens   : 1024 (Groq/HF), 2048 (Gemini)
   temperature  : 0.3 (Groq/Gemini), 0.2 (HF)
-  Prompt ver   : v2
-  Input        : code diff + commit messages + README context
-  Output format: DOCUMENTATION UPDATE / REASON
-  Date         : 2026-05-29
+  Prompt ver   : v3 (inline doc generation)
+  Input        : code diff + commit messages + old file content
+  Output format: INLINE DOCUMENTATION / PLACEMENT / REASON
+  Date         : 2026-06-02
 """
 
 import json
@@ -18,16 +25,15 @@ import time
 from pathlib import Path
 
 import pandas as pd
-from dotenv import load_dotenv   # ← використовуємо тільки імпортовану, не перевизначаємо
+from dotenv import load_dotenv
 
-load_dotenv()   # завантажує .env один раз тут
+load_dotenv()
 
 # ============================================================
 # CONFIG
 # ============================================================
 
 ROOT_DIR     = Path(__file__).resolve().parents[2]
-
 INPUT_FILE   = ROOT_DIR / "data/processed/golden_set.parquet"
 OUTPUT_JSONL = ROOT_DIR / "data/results/multi_llm_results.jsonl"
 OUTPUT_CSV   = ROOT_DIR / "data/results/comparison_table.csv"
@@ -36,9 +42,10 @@ MODEL_GROQ   = "llama-3.1-8b-instant"
 MODEL_GEMINI = "gemini-2.5-flash"
 MODEL_HF     = "meta-llama/Meta-Llama-3-8B-Instruct"
 
-MAX_TOKENS    = 1024
-TEMPERATURE   = 0.3
-SLEEP_BETWEEN = 4   # секунди між викликами (ліміт Gemini 15 RPM)
+MAX_TOKENS        = 1024   # Groq / HuggingFace
+MAX_TOKENS_GEMINI = 2048   # Gemini needs more room for its verbose formatting
+TEMPERATURE       = 0.3
+SLEEP_BETWEEN     = 4      # seconds between calls (Gemini: 15 RPM free tier)
 
 GROQ_API_KEY   = os.getenv("GROQ_API_KEY", "")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
@@ -56,70 +63,95 @@ print(f"Gemini  : {'✓ set' if GEMINI_API_KEY else '✗ missing'}")
 print(f"HF Token: {'✓ set' if HF_TOKEN       else '✗ missing'}")
 
 # ============================================================
-# PROMPT BUILDER  v2
+# LANGUAGE → DOC STYLE MAPPING
+# ============================================================
+
+LANG_DOC_STYLE = {
+    ".cs":   "XML doc comments (/// <summary>...</summary>)",
+    ".java": "Javadoc (/** ... */)",
+    ".py":   'Python docstring ("""...""")',
+    ".cpp":  "Doxygen (/** ... */ or ///<)",
+    ".c":    "Doxygen or C block comment (/** ... */)",
+    ".go":   "Go doc comment (// FunctionName ...)",
+    ".js":   "JSDoc (/** @param ... @returns ... */)",
+    ".ts":   "TSDoc (/** @param ... @returns ... */)",
+    ".rb":   "YARD (# @param ... @return ...)",
+    ".rs":   "Rust doc comment (/// ...)",
+}
+
+def get_doc_style(lang: str) -> str:
+    return LANG_DOC_STYLE.get(lang.lower(), "appropriate inline documentation comment")
+
+# ============================================================
+# PROMPT BUILDER  v3 — inline code documentation
 # ============================================================
 
 def build_prompt(row: pd.Series) -> str:
-    import json
+    repo  = row.get("repo", "unknown")
+    lang  = row.get("lang", "unknown")
+    msgs  = list(row.get("messages", []))[:5]
 
-    repo      = row.get("repo", "unknown")
-    lang      = row.get("lang", "unknown")
-    msgs      = list(row.get("messages", []))[:5]
-
-    # ✅ Правильно читаємо readme_patches_json
-    readme_patch_text = ""
-    old_readme_text = ""
+    # Old file content (before PR)
+    old_content = ""
     try:
         patches = json.loads(row.get("readme_patches_json", "[]"))
         for p in patches[:1]:
-            readme_patch_text = p.get("patch", "")[:1500]
-            old_readme_text = p.get("old_content", "")[:2000]
+            old_content = str(p.get("old_content", ""))[:2000]
     except Exception:
         pass
 
-    # Code patches
-    code_text = ""
+    # Code diff
+    code_diff = ""
     try:
         code_patches = json.loads(row.get("code_patches_json", "[]"))
-        code_text = "\n\n".join(str(p)[:600] for p in code_patches[:2])
+        code_diff = "\n\n".join(str(p)[:800] for p in code_patches[:2])
     except Exception:
         pass
+    if not code_diff:
+        # Fallback: use the patch from readme_patches_json (which is actually code)
+        try:
+            patches = json.loads(row.get("readme_patches_json", "[]"))
+            code_diff = patches[0].get("patch", "") if patches else ""
+        except Exception:
+            pass
 
-    msg_text = "\n".join(f"- {m}" for m in msgs) if msgs else "(none)"
+    doc_style = get_doc_style(lang)
+    msg_text  = "\n".join(f"- {m}" for m in msgs) if msgs else "(none)"
 
-    return f"""You are a software documentation expert helping maintain README files.
+    return f"""You are an expert software engineer helping eliminate documentation debt.
 
-    Repository  : {repo}
-    Language    : {lang}
+Repository : {repo}
+Language   : {lang}
+Doc style  : {doc_style}
 
-    Commit messages from this pull request:
-    {msg_text}
+Commit messages:
+{msg_text}
 
-    README file BEFORE this pull request:
-    ---
-    {old_readme_text if old_readme_text else "(not available)"}
-    ---
+File content BEFORE this pull request:
+---
+{old_content if old_content else "(not available)"}
+---
 
-    Code changes (diff):
-    ---
-    {code_text if code_text else "(none)"}
-    ---
+Code changes (diff) — lines starting with + are added, - are removed:
+---
+{code_diff if code_diff else "(not available)"}
+---
 
-    Actual README change made in this PR (ground truth):
-    ---
-    {readme_patch_text if readme_patch_text else "(not available)"}
-    ---
+Task:
+The code above was changed but inline documentation is missing or outdated.
+Generate the inline documentation comment(s) that should accompany these changes.
+Use {doc_style} format. Be concrete and accurate — do NOT invent functionality.
 
-    Task:
-    1. Write a concrete README update (2-4 sentences) that documents what changed.
-    2. In one sentence, explain WHY this update is needed.
+Respond ONLY in this format:
 
-    Respond ONLY in this format:
-    DOCUMENTATION UPDATE:
-    <the text to add or change in the README>
+INLINE DOCUMENTATION:
+<the exact comment(s) to add, in the correct doc format for {lang}>
 
-    REASON:
-    <why this update is needed>"""
+PLACEMENT:
+<where exactly to place this comment — e.g. "above the NatGateway property" or "replace the copy() docstring">
+
+REASON:
+<one sentence: why this documentation is needed / what debt it addresses>"""
 
 # ============================================================
 # LLM CALLERS
@@ -155,7 +187,7 @@ def call_gemini(prompt: str) -> str:
             model=MODEL_GEMINI,
             contents=prompt,
             config=types.GenerateContentConfig(
-                max_output_tokens=MAX_TOKENS,
+                max_output_tokens=MAX_TOKENS_GEMINI,
                 temperature=TEMPERATURE,
             ),
         )
@@ -165,9 +197,9 @@ def call_gemini(prompt: str) -> str:
     except Exception as e:
         err = str(e)
         if "429" in err:
-            return "ERROR (Gemini): 429 quota exceeded — зачекай до завтра або заміни модель на gemini-1.5-flash-8b"
+            return "ERROR (Gemini): 429 quota exceeded — wait 24h or upgrade to paid tier"
         if "404" in err:
-            return f"ERROR (Gemini): модель не знайдена — перевір MODEL_GEMINI. {e}"
+            return f"ERROR (Gemini): model not found — check MODEL_GEMINI. {e}"
         return f"ERROR (Gemini): {e}"
 
 
@@ -184,7 +216,7 @@ def call_huggingface(prompt: str) -> str:
             temperature=0.2,
         )
         output = result.choices[0].message.content.strip()
-        # Прибираємо шаблонний префікс Llama
+        # Strip Llama boilerplate prefix
         for prefix in ["Here is the response:", "Here is the response :",
                        "Here's the response:", "Here is my response:"]:
             if output.startswith(prefix):
@@ -198,11 +230,30 @@ def call_huggingface(prompt: str) -> str:
     except Exception as e:
         err = str(e)
         if "403" in err:
-            return ("ERROR (HF): 403 — токен не має дозволу на Inference API. "
-                    "huggingface.co/settings/tokens → Fine-grained → увімкни Inference API")
+            return "ERROR (HF): 403 — token lacks Inference API permission. huggingface.co/settings/tokens"
         if "400" in err:
-            return "ERROR (HF): 400 — модель не підтримує цей тип запиту"
+            return "ERROR (HF): 400 — model does not support this request type"
         return f"ERROR (HuggingFace): {e}"
+
+# ============================================================
+# HELPERS
+# ============================================================
+
+def clean_output(text: str) -> str:
+    """Strip anything before INLINE DOCUMENTATION:"""
+    marker = "INLINE DOCUMENTATION:"
+    idx = text.find(marker)
+    if idx != -1:
+        return text[idx:].strip()
+    return text.strip()
+
+
+def get_ground_truth_patch(row) -> str:
+    try:
+        patches = json.loads(row.get("readme_patches_json", "[]"))
+        return patches[0].get("patch", "") if patches else ""
+    except Exception:
+        return ""
 
 # ============================================================
 # LOAD
@@ -212,14 +263,6 @@ print("\n" + "=" * 60)
 print("Loading golden set...")
 print("=" * 60)
 
-def clean_output(text: str) -> str:
-    """Обрізає все що йде до DOCUMENTATION UPDATE:"""
-    marker = "DOCUMENTATION UPDATE:"
-    idx = text.find(marker)
-    if idx != -1:
-        return text[idx:].strip()
-    return text.strip()
-
 if not INPUT_FILE.exists():
     print(f"ERROR: {INPUT_FILE} not found.")
     print("Run scripts/preprocessing/select_golden_set.py first.")
@@ -227,6 +270,7 @@ if not INPUT_FILE.exists():
 
 df = pd.read_parquet(INPUT_FILE)
 print(f"Loaded {len(df)} PRs for generation")
+print(f"Languages: {df['lang'].unique().tolist() if 'lang' in df.columns else 'unknown'}")
 
 # ============================================================
 # GENERATION LOOP
@@ -241,24 +285,16 @@ CALLERS = {
 results = []
 
 print("\n" + "=" * 60)
-print("Running generation for all PRs × 3 models")
+print("EXP-001 v2 — Inline Code Documentation Generation")
+print(f"Task: generate inline doc comments for {len(df)} PRs × 3 models")
 print("=" * 60)
 
 for pr_idx, (_, row) in enumerate(df.iterrows()):
     repo = row.get("repo", "unknown")
-    print(f"\n[PR {pr_idx + 1}/{len(df)}] {repo}")
+    lang = row.get("lang", "unknown")
+    print(f"\n[PR {pr_idx + 1}/{len(df)}] {repo}  ({lang})")
 
     prompt = build_prompt(row)
-
-    import json
-
-
-    def get_readme_patch(row):
-        try:
-            patches = json.loads(row.get("readme_patches_json", "[]"))
-            return patches[0].get("patch", "") if patches else ""
-        except Exception:
-            return ""
 
     for model_name, caller in CALLERS.items():
         t0 = time.time()
@@ -274,20 +310,22 @@ for pr_idx, (_, row) in enumerate(df.iterrows()):
         results.append({
             "pr_id":              pr_idx,
             "repo":               repo,
-            "lang":               row.get("lang", ""),
+            "lang":               lang,
+            "doc_style":          get_doc_style(lang),
             "model":              model_name,
             "model_id":           {"groq": MODEL_GROQ, "gemini": MODEL_GEMINI,
                                    "huggingface": MODEL_HF}[model_name],
             "prompt":             prompt,
             "generated":          output,
-            "ground_truth_patch":  get_readme_patch(row),
+            "ground_truth_patch": get_ground_truth_patch(row),
             "status":             "error" if is_error else "ok",
-            # Manual evaluation — fill these in CSV
+            # Manual evaluation columns (fill in CSV after running)
+            # Scale: 0=no, 1=partial, 2=yes  |  hallucination: 0=none, 2=major
             "correct":       "",
             "useful":        "",
             "hallucination": "",
-            "missing_info":  "",
-            "relevance":     "",
+            "format_correct": "",   # new: is the doc format right for the language?
+            "placement":     "",    # new: is placement suggestion sensible?
             "readability":   "",
             "overall_score": "",
             "notes":         "",
@@ -309,10 +347,10 @@ print("\n" + "=" * 60)
 print("Saving comparison table...")
 print("=" * 60)
 
-csv_cols = ["pr_id", "repo", "lang", "model", "model_id",
+csv_cols = ["pr_id", "repo", "lang", "doc_style", "model", "model_id",
             "generated", "ground_truth_patch", "status",
-            "correct", "useful", "hallucination", "missing_info",
-            "relevance", "readability", "overall_score", "notes"]
+            "correct", "useful", "hallucination", "format_correct",
+            "placement", "readability", "overall_score", "notes"]
 pd.DataFrame(results)[csv_cols].to_csv(OUTPUT_CSV, index=False)
 
 # ============================================================
@@ -323,7 +361,7 @@ ok  = sum(1 for r in results if r["status"] == "ok")
 err = sum(1 for r in results if r["status"] == "error")
 
 print("\n" + "=" * 60)
-print("GENERATION COMPLETE")
+print("GENERATION COMPLETE — EXP-001 v2")
 print("=" * 60)
 print(f"PRs processed    : {len(df)}")
 print(f"Total outputs    : {len(results)}")
@@ -331,5 +369,8 @@ print(f"Successful       : {ok}")
 print(f"Errors/skipped   : {err}")
 print(f"JSONL saved      : {OUTPUT_JSONL}")
 print(f"CSV saved        : {OUTPUT_CSV}")
-print("\nNext: відкрий comparison_table.csv і заповни колонки оцінки вручну")
-print("(correct / useful / hallucination / missing_info / relevance / readability / overall_score)")
+print()
+print("Next steps:")
+print("  1. Open comparison_table.csv")
+print("  2. For each row: fill correct/useful/hallucination/format_correct/placement/readability/overall_score")
+print("  3. Run evaluate_and_plot.py to generate figures for the presentation")

@@ -94,20 +94,53 @@ for pr_idx in df_results["pr_id"].unique():
     row = df_golden.iloc[pr_idx]
 
     # Original README (before PR)
+    # Strategy 1: direct oldf column
     readme_before = str(row.get("oldf", "")).strip()
-    if not readme_before:
-        # Try first patch's oldf
+    if not readme_before or readme_before == "nan":
+        # Strategy 2: old_content from readme_patches_json
+        try:
+            import json as _json
+            patches = _json.loads(row.get("readme_patches_json", "[]"))
+            for p in patches:
+                old_content = str(p.get("old_content", "")).strip()
+                if old_content:
+                    readme_before = old_content
+                    break
+        except Exception:
+            pass
+    if not readme_before or readme_before == "nan":
+        # Strategy 3: reconstruct from patch by stripping diff markers
+        try:
+            import json as _json
+            patches = _json.loads(row.get("readme_patches_json", "[]"))
+            reconstructed = []
+            for p in patches:
+                for line in str(p.get("patch", "")).splitlines():
+                    if line.startswith("-") and not line.startswith("---"):
+                        reconstructed.append(line[1:])
+                    elif not line.startswith("+") and not line.startswith("@@"):
+                        reconstructed.append(line)
+            if reconstructed:
+                readme_before = "\n".join(reconstructed).strip()
+        except Exception:
+            pass
+    if not readme_before or readme_before == "nan":
         readme_before = "(original README not available in this dataset)"
+        print(f"  ⚠ WARNING: no original README found for PR {pr_idx} — skipping apply step")
 
     repo = row.get("repo", f"pr_{pr_idx}")
     safe_repo = repo.replace("/", "_")
 
-    # Save ground truth — original README
+    # Save original README (before PR)
     before_path = OUTPUT_DIR / f"pr{pr_idx:02d}_{safe_repo}_before.md"
     before_path.write_text(
         f"# Original README — {repo}\n\n{readme_before}",
         encoding="utf-8",
     )
+
+    if readme_before == "(original README not available in this dataset)":
+        print(f"  ⚠ Skipping LLM apply for PR {pr_idx} — no source README to patch")
+        continue
 
     # Ground truth patch (what actually changed)
     gt_patch = str(row.get("ground_truth_patch", ""))
