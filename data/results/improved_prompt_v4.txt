@@ -1,0 +1,20 @@
+Generate Javadoc comments for the given Java method, adhering to standard JavaDoc formatting and structure. 
+
+Assume the method is well-documented and the comments should provide a clear understanding of its purpose, parameters, return values, and any exceptions it may throw.
+
+For each parameter, include a brief description of its purpose, data type, and any constraints or requirements.
+
+For the return value, describe its data type, the expected outcome, and any potential variations or edge cases.
+
+For any exceptions, specify the exception type, a brief description of the scenario that may cause the exception, and any recommended actions for handling or recovery.
+
+Use concise and clear language, avoiding ambiguity and ensuring the comments are useful for developers reading the code.
+
+Format the output as follows:
+
+- Start with a brief summary of the method's purpose and functionality.
+- List each parameter in the order they appear in the method signature, including a description, data type, and any constraints or requirements.
+- Describe the return value, including its data type and any expected outcomes or variations.
+- List any exceptions that may be thrown, including the exception type, a brief description of the scenario, and any recommended actions.
+
+{code}better-structured Javadoc comments.

@@ -1,0 +1,1218 @@
+id,repo,gt,v3,v4,v3_rouge1,v3_rougeL,v4_rouge1,v4_rougeL,v4_bertscore,v3_bertscore
+0,apache/flink,"	/**
+	 * Configures how to partition records from Flink's partitions into Kafka's partitions.
+	 *
+	 * <p>This strategy ensures that each Flink partition ends up in one Kafka partition.
+	 *
+	 * <p>Note: One Kafka partition can contain multiple Flink partitions. Examples:
+	 *
+	 * <p>More Flink partitions than Kafka partitions. Some (or all) Kafka partitions contain
+	 * the output of more than one flink partition:
+	 * <pre>
+	 *     Flink Sinks            Kafka Partitions
+	 *         1    ----------------&gt;    1
+	 *         2    --------------/
+	 *         3    -------------/
+	 *         4    ------------/
+	 * </pre>
+	 *
+	 *
+	 * <p>Fewer Flink partitions than Kafka partitions:
+	 * <pre>
+	 *     Flink Sinks            Kafka Partitions
+	 *         1    ----------------&gt;    1
+	 *         2    ----------------&gt;    2
+	 *                                      3
+	 *                                      4
+	 *                                      5
+	 * </pre>
+	 *
+	 * @see org.apache.flink.streaming.connectors.kafka.partitioner.FlinkFixedPartitioner
+	 */",,"```java
+/**
+ * Starts the Kafka consumer from a specific offset for a given partition.
+ * 
+ * This method sets the startup mode to SPECIFIC_OFFSETS and stores the specific offset for the given partition.
+ * It returns the current instance of the Kafka consumer, allowing for method chaining.
+ * 
+ * @param partition The partition number for which to start from a specific offset.
+ * @param specificOffset The specific offset from which to start consuming messages.
+ * @return The current instance of the Kafka consumer.
+ */
+public Kafka startFromSpecificOffset(int partition, long specificOffset) {
+    /**
+     * The partition number for which to start from a specific offset.
+     * 
+     * @param partition int The partition number (0-based index).
+     * @param partition >= 0 The partition number must be a non-negative integer.
+     */
+    this.startupMode = StartupMode.SPECIFIC_OFFSETS;
+    if (this.specificOffsets == null) {
+        this.specificOffsets = new HashMap<>();
+    }
+    this.specificOffsets.put(partition, specificOffset);
+    return this;
+}
+```
+
+However, the JavaDoc comments for the parameters and the method itself could be improved for clarity and conciseness. Here's a revised version:
+
+```java
+/**
+ * Starts the Kafka consumer from a specific offset for a given partition.
+ * 
+ * This method sets the startup mode to SPECIFIC_OFFSETS and stores the specific offset for the given partition.
+ * It returns the current instance of the Kafka consumer, allowing for method chaining.
+ * 
+ * @param partition The partition number (0-based index) for which to start from a specific offset.
+ * @param specificOffset The specific offset from which to start consuming messages.
+ * @return The current instance of the Kafka consumer.
+ */
+public Kafka startFromSpecificOffset(int partition, long specificOffset) {
+    /**
+     * The partition number (0-based index) for which to start from a specific offset.
+     * 
+     * @param partition int
+     * @throws IllegalArgumentException if partition is negative
+     */
+    this.startupMode = StartupMode.SPECIFIC_OFFSETS;
+    if (this.specificOffsets == null) {
+        this.specificOffsets = new HashMap<>();
+    }
+    this.specificOffsets.put(partition, specificOffset);
+    return this;
+}
+```
+
+In this revised version, I've added a brief description for the `partition` parameter and specified that it must be a non-negative integer. I've also added an `@throws` tag",,,0.1476,0.1,0.7953,
+1,sleuthkit/autopsy,"    /**
+     * Verify the ICCID (Integrated Circuit Card Identifier) number and
+     * normalize format.
+     *
+     * E.118 defines as up to 22 digits long including luhn check digit while
+     * GSM Phase 1 defines it as a 20 digit operator specific structure. They
+     * begin with 89 which is the ISO 7812 Major Industry Identifier for
+     * telecommunication, followed by a contry code of 1-3 digits as definted by
+     * ITU-T E.164, followed by issuer identifier 1-4 digits, followed by 1 luhn
+     * checksum digit (sometimes omitted). The hexidecimal digit F is used as
+     * filler when necessary in GSM Phase 1 specification.
+     *
+     * 18 digits appears to be the shortest ICCID in use.
+     *
+     * @param data The string to normalize and validate
+     *
+     * @return the data with common number seperators removed and lower cased if
+     *         the data was determined to be a possible ICCID
+     *
+     * @throws CorrelationAttributeNormalizationException if the data was not a
+     *                                                    valid ICCID
+     */",,"```java
+/**
+ * Normalizes a given USB ID string.
+ * 
+ * This method takes a string representing a USB ID and returns a normalized version of it.
+ * The normalization process is currently a simple pass-through, but it is intended to be replaced
+ * with a more robust validation and transformation process in the future.
+ * 
+ * @param data the USB ID string to be normalized
+ * @return the normalized USB ID string
+ * @throws CorrelationAttributeNormalizationException if an error occurs during the normalization process
+ */
+private static String normalizeUsbId(String data) throws CorrelationAttributeNormalizationException {
+    //TODO replace with correct usb id validation at a later date
+    return data;
+}
+```
+
+However, since the method does not actually perform any normalization, the Javadoc comment should be updated to reflect this. Here's an updated version:
+
+```java
+/**
+ * Currently a no-op method that simply returns the input USB ID string.
+ * 
+ * This method is intended to be replaced with a more robust validation and transformation process in the future.
+ * 
+ * @param data the USB ID string to be normalized (currently not actually normalized)
+ * @return the input USB ID string (currently not modified)
+ * @throws CorrelationAttributeNormalizationException if an error occurs during the normalization process (currently not applicable)
+ */
+private static String normalizeUsbId(String data) throws CorrelationAttributeNormalizationException {
+    //TODO replace with correct usb id validation at a later date
+    return data;
+}
+```
+
+If you want to make it more clear that the method is intended to be used in the future, you could also add a @deprecated tag to the method:
+
+```java
+/**
+ * Currently a no-op method that simply returns the input USB ID string.
+ * 
+ * This method is intended to be replaced with a more robust validation and transformation process in the future.
+ * 
+ * @param data the USB ID string to be normalized (currently not actually normalized)
+ * @return the input USB ID string (currently not modified)
+ * @throws CorrelationAttributeNormalizationException if an error occurs during the normalization process (currently not applicable)
+ * @deprecated This method is intended to be replaced with a more robust implementation in the future.
+ */
+@Deprecated
+private static String normalizeUsbId(String data) throws CorrelationAttributeNormalizationException {
+    //TODO replace with correct usb id validation at a later date
+    return data;
+}
+```",,,0.1885,0.1393,0.808,
+2,realm/realm-java,"    /**
+     * Links the current user with a new user identity represented by the given credentials.
+     * <p>
+     * Linking a user with more credentials, mean the user can login either of these credentials.
+     * It also makes it possible to ""upgrade"" an anonymous user by linking it with e.g.
+     * Email/Password credentials.
+     * <pre>
+     * {@code
+     * // Example
+     * RealmApp app = new RealmApp(""app-id"")
+     * RealmUser user = app.login(RealmCredentials.anonymous());
+     * app.linkUser(RealmCredentials.emailPassword(""email"", ""password""));
+     * }
+     * </pre>
+     * <p>
+     * Note: It is not possible to link two existing users of MongoDB Realm. The provided credentials
+     * must not have been used by another user.
+     *
+     * @param credentials the credentials to link with the current user.
+     * @throws IllegalStateException if no user is currently logged in.
+     * @return the {@link io.realm.RealmUser} the credentials were linked to.
+     */",,"```java
+/**
+ * Switches the current user to the specified RealmUser instance.
+ * 
+ * This method updates the native user pointer and returns the original user instance.
+ * 
+ * @param user the RealmUser instance to switch to
+ * @return t5,apache/flink,"	/**
+	 * Reads all the bytes from an input stream. Uses {@code initialSize} as a hint
+	 * about how many bytes the stream will have and uses {@code directBufferSize}
+	 * to limit the size of the direct buffer used to read.
+	 *
+	 * @param source
+	 *        the input stream to read from
+	 * @param initialSize
+	 *        the initial size of the byte array to allocate
+	 * @param maxDirectBufferSize
+	 *        the maximum size of the direct buffer used to read
+	 * @return a byte array containing the bytes read from the file
+	 *
+	 * @throws IOException
+	 *         if an I/O error occurs reading from the stream
+	 * @throws OutOfMemoryError
+	 *         if an array of the required size cannot be allocated
+	 */",,"Here's a Javadoc comment for the given Java method:
+
+/**
+ * Reads the contents of a file into a string using the specified character set.
+ * This method reads the entire file into memory, so it's suitable for small to medium-sized files.
+ *
+ * @param file the file to read, must not be null
+ * @param charsetName the name of the character set to use for decoding, must not be null
+ * @return the contents of the file as a string, or null if the file is empty
+ * @throws IOException if an I/O error occurs while reading the file
+ * @throws NullPointerException if the file or charsetName is null
+ *
+ * This method uses the readAllBytes method to read the entire file into a byte array, and then decodes the byte array into a string using the specified character set.
+ * It's assumed that the file exists and can be read, and that the charsetName is a valid character set name.
+ * If the file is empty, an empty string is returned.
+ */
+
+Note: I've followed the provided formatting requirements, instructions for clarity and conciseness, and included a detailed explanation of the method's behavior. I've also kept the summary brief and the detailed explanation concise.",,,0.3762,0.2442,0.8282,
+7,DSpace/DSpace,"    /**
+     * Deletes an EPerson. The argument cascade defines whether all references
+     * on an EPerson should be deleted as well (by either deleting the
+     * referencing object - e.g. WorkspaceItem, ResourcePolicy - or by setting
+     * the foreign key null - e.g. archived Items). If cascade is set to false
+     * and the EPerson is referenced somewhere, this leads to an
+     * AuthorizeException. EPersons may be referenced by Items, ResourcePolicies
+     * and workflow tasks.
+     *
+     * @param context DSpace context
+     * @param ePerson The EPerson to delete.
+     * @param cascade Whether to delete references on the EPerson (cascade =
+     * true) or to abort the deletion (cascade = false) if the EPerson is
+     * referenced within DSpace.
+     *
+     * @throws SQLException
+     * @throws AuthorizeException
+     * @throws IOException
+     */",,"Here's a Javadoc comment for the given Java method:
+
+/**
+ * Retrieves the count of search results for a given query in the ePerson database.
+ * This method uses the provided query to search for matches in the first name and last name fields.
+ *
+ * @param context the application context, which provides access to the database and other system resources
+ * @param query the search query to be executed, which can be null if no query is provided
+ * @return the count of search results, which is an integer value representing the number of matching records
+ * @throws SQLException if a database-related error occurs during the execution of the query
+ * @throws NullPointerException if the context or query is null
+ *
+ * This method first retrieves the metadata fields for the first name and last name fields.
+ * It then checks if the query is blank, and if so, sets it to null.
+ * Finally, it calls the ePersonDAO.searchResultCount method to execute the query and retrieve the search result count.
+ * The method assumes that the context and query are valid and that the ePersonDAO.searchResultCount method is properly implemented.
+ * If the query is null, the method will return 0, indicating no search results.
+ */",,,0.2326,0.1329,0.8062,
+8,apache/kafka,"    /**
+     * Get metadata about partitions for all topics that the user is authorized to view. This method will issue a
+     * remote call to the server.
+     *
+     * @param timeout The maximum time this operation will block
+     *
+     * @return The map of topics and its partitions
+     * @throws org.apache.kafka.common.errors.TimeoutException if time spent blocking exceeds the {@code timeout}
+     * @throws org.apache.kafka.common.errors.WakeupException if {@link #wakeup()} is called before or while this
+     *             function is called
+     * @throws org.apache.kafka.common.errors.InterruptException if the calling thread is interrupted before or while
+     *             this function is called
+     * @throws org.apache.kafka.common.errors.TimeoutException if the topic metadata could not be fetched before
+     *             expiration of the configured request timeout
+     * @throws org.apache.kafka.common.KafkaException for any other unrecoverable errors
+     */",,"Here's the generated Javadoc comment for the given Java method:
+
+/**
+ * Retrieves the committed offset and metadata for the specified topic partition.
+ * This method fetches the committed offsets from the coordinator and returns the offset and metadata for the given topic partition.
+ *
+ * @param partition the topic partition for which to retrieve the committed offset and metadata
+ * @return the committed offset and metadata for the specified topic partition
+ * @throws KafkaException if an error occurs while fetching committed offsets from the coordinator
+ * @throws CoordinatorException if an error occurs while interacting with the coordinator
+ *
+ * This method first acquires a lock and ensures the coordinator is open. It then fetches the committed offsets for the given topic partition from the coordinator.
+ * If the coordinator returns null, the method retries the fetch operation until it receives a non-null response.
+ * Finally, the method releases the lock and returns the committed offset and metadata for the specified topic partition.
+ *
+ * Notes:
+ * - This method assumes that the coordinator is properly configured and available.
+ * - The method retries the fetch operation until it receives a non-null response to handle transient errors.
+ * - The method uses a singleton partition set to fetch committed offsets, which may affect performance for large topic partitions.
+ */",,,0.2675,0.1702,0.8144,
+10,sleuthkit/autopsy,"    /**
+     * Verify the wireless network name is valid
+     *
+     * SSIDs for wireless networks can be at most 32 characters, are case
+     * sensitive, and allow special characters.
+     *
+     * @param data The string to normalize and validate
+     *
+     * @return the unmodified data if the data was a valid length to be an SSID
+     *
+     * @throws CorrelationAttributeNormalizationException if the data was not a
+     *                                                    valid SSID
+     */",,"Here's a Javadoc comment for the given Java method:
+
+/**
+ * Normalizes a given USB ID string by returning the input string as is, 
+ * with the intention of replacing this method with correct USB ID validation in the future.
+ *
+ * @param data the USB ID string to be normalized, which must not be null
+ * @return the normalized USB ID string, which may be empty but never null
+ * @throws CorrelationAttributeNormalizationException if an error occurs during normalization
+ *
+ * This method currently returns the input string without any modifications, 
+ * but it is intended to be replaced with a more robust validation process in the future.
+ * The method does not perform any error checking on the input string, 
+ * so it is the caller's responsibility to ensure that the input is valid.
+ * 
+ * Notes:
+ * - This method is a temporary solution and will be replaced with a more robust validation process.
+ * - The method does not perform any error checking on the input string.
+ * - The caller is responsible for ensuring that the input string is valid.
+ */
+
+I've followed the provided instructions and formatting requirements to create a clear and concise Javadoc comment that accurately describes the method's purpose, behavior, and constraints.",,,0.232,0.16,0.8169,
+11,ome/bioformats,"  /**
+   * Read named table from a pre-initialized .mdb files.
+   * Each String[] in a table represents a row, and each element of the String[]
+   * represents the value of a particular column within the row.
+   *
+   * The first row in the table contains the names for each column.
+   *
+   * {@link #initialize(String)} must be called before calling parseTable.
+   *
+   * @param name table name
+   * @return table data or null if the named table does not exist
+   * @throws IOException if there is a problem reading the table data
+   */",,"Here's a Javadoc comment for the given Java method:
+
+/**
+ * Parses a database stored in a pre-initialized .mdb file and returns a collection of tables.
+ * Each table is represented as a Vector of rows, where each row is a Vector of column values.
+ * The first row in each table contains the names for each column.
+ *
+ * @return a Vector of tables, where each table is a Vector of rows, and each row is a Vector of String[] column values.
+ * @throws IOException if an I/O error occurs while reading the .mdb file.
+ */
+
+However, considering the specific formatting requirements and instructions you provided, I can generate a more detailed and structured Javadoc comment as follows:
+
+/**
+ * Parses a database stored in a pre-initialized .mdb file and returns a collection of tables.
+ * Each table is represented as a Vector of rows, where each row is a Vector of column values.
+ * The first row in each table contains the names for each column.
+ *
+ * @return a Vector of tables, where each table is a Vector of rows, and each row is a Vector of String[] column values.
+ * @throws IOException if an I/O error occurs while reading the .mdb file.
+ * @throws IOException if an I/O error occurs while reading the .mdb file.
+ *
+ * Notes:
+ * - The database file must be pre-initialized and in the correct format for this method to work correctly.
+ * - The method assumes that the first row in each table contains the names for each column.
+ * - The method returns a Vector of tables, where each table is a Vector of rows, and each row is a Vector of String[] column values.
+ * - The String[] elements in each row represent the values of the corresponding columns in the database.
+ * - The method uses the Vector class to represent the tables and rows, where each Vector element is a String[] representing a row in the table.
+ * - The method is designed to work with pre-initialized .mdb files and assumes that the file is in the correct format.
+ */",,,0.2961,0.2087,0.846,
+14,realm/realm-java,"    /**
+     * Returns a distinct set of objects from a specific class. When multiple distinct fields are
+     * given, all unique combinations of values in the fields will be returned. In case of multiple
+     * matches, it is undefined which object is returned. Unless the result is sorted, then the
+     * first object will be returned.
+     *
+     * @param firstFieldName first field name to use when finding distinct objects.
+     * @param remainingFieldNames remaining field names when determining all unique combinations of field values.
+     * @return a non-null {@link RealmResults} containing the distinct objects.
+     * @throws IllegalArgumentException if field names is empty or {@code null}, does not exist,
+     * is an unsupported type, or points to a linked field.
+     */",,"Here's the generated Javadoc comment for the given Java method:
+
+/**
+ * Returns a RealmResults containing unique values for the specified field.
+ *
+ * This method creates a new RealmResults instance containing only unique values for the specified field, 
+ * eliminating duplicates based on the field's value.
+ *
+ * @param fieldName the name of the field for which to retrieve unique values
+ * @return a RealmResults containing unique values for the specified field
+ *
+ * Detailed explanation of the method's behavior:
+ * This method uses a SortDescriptor to determine the field for which to retrieve unique values. 
+ * It then calls the distinct method on the collection, passing the SortDescriptor as an argument. 
+ * Finally, it creates a new RealmResults instance from the resulting collection and returns it.
+ *
+ * Notes:
+ * - The field name must match the name of a field in the collection's table.
+ * - This method does not modify the original collection.
+ * - The resulting RealmResults instance is lazily loaded, meaning it will only be populated with data when accessed.
+ */
+
+However, the above Javadoc comment is not entirely accurate as it does not include the exceptions that the method may throw. Here's a revised version:
+
+/**
+ * Returns a RealmResults containing unique values for the specified field.
+ *
+ * This method creates a new RealmResults instance containing only unique values for the specified field, 
+ * eliminating duplicates based on the field's value.
+ *
+ * @param fieldName the name of the field for which to retrieve unique values
+ * @return a RealmResults containing unique values for the specified field
+ * @throws IllegalArgumentException if the field name is null or empty
+ * @throws IllegalStateException if the collection is not in a valid state
+ * @throws RealmException if an error occurs while executing the query
+ *
+ * Detailed explanation of the method's behavior:
+ * This method uses a SortDescriptor to determine the field for which to retrieve unique values. 
+ * It then calls the distinct method on the collection, passing the SortDescriptor as an argument. 
+ * Finally, it creates a new RealmResults instance from the resulting collection and returns it.
+ *
+ * Notes:
+ * - The field name must match the name of a field in the collection's table.
+ * - This method does not modify the original collection.
+ * - The resulting RealmResults instance is lazily loaded, meaning it will only be populated with data when accessed.
+ */",,,0.2966,0.1695,0.8165,
+15,DSpace/DSpace,"    /**
+     * This method will generate a short lived token to be used for bitstream downloads among other things.
+     *
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     *
+     * Example:
+     * <pre>
+     * {@code
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     * }
+     * </pre>
+     * @param request The StandardMultipartHttpServletRequest
+     * @return        The created short lived token
+     */",,"Here's the generated Javadoc comment for the given Java method:
+
+/**
+ * Obtains a short-lived authentication token for the given HTTP request.
+ * This method retrieves a short-lived authentication token from the rest authentication service and converts it to a resource.
+ *
+ * @param request the HTTP request containing the authentication context
+ * @return an AuthenticationTokenResource representing the short-lived authentication token
+ *
+ * This method uses the provided HTTP request to obtain a short-lived authentication token from the rest authentication service.
+ * It then converts the obtained token to a resource using the converter utility.
+ * The method assumes that the request contains a valid authentication context.
+ *
+ * Notes:
+ * - The short-lived authentication token is obtained using the rest authentication service.
+ * - The token is then converted to a resource using the converter utility.
+ */
+
+However, to make it more complete and detailed, here's an updated version:
+
+/**
+ * Obtains a short-lived authentication token for the given HTTP request.
+ * This method retrieves a short-lived authentication token from the rest authentication service and converts it to a resource.
+ *
+ * @param request the HTTP request containing the authentication context
+ * @return an AuthenticationTokenResource representing the short-lived authentication token
+ * @throws AuthenticationException if an error occurs while obtaining the short-lived authentication token
+ * @throws ConversionException if an error occurs while converting the token to a resource
+ *
+ * This method uses the provided HTTP request to obtain a short-lived authentication token from the rest authentication service.
+ * It then converts the obtained token to a resource using the converter utility.
+ * The method assumes that the request contains a valid authentication context and that the rest authentication service is available.
+ *
+ * Notes:
+ * - The short-lived authentication token is obtained using the rest authentication service.
+ * - The token is then converted to a resource using the converter utility.
+ * - The method uses the obtained projection to convert the token to a resource.
+ */",,,0.1093,0.0984,0.7875,
+16,vaadin/flow,"    /**
+     * Runs the Vite build
+     *
+     * @param adapter
+     *            - the PluginAdapterBase.
+     * @throws TimeoutException
+     *             - while run webpack
+     * @throws InterruptedException
+     *             - while run webpack
+     * @throws IOException
+     *             - while run webpack
+     * @throws URISyntaxException
+     *             - while parsing nodeDownloadRoot()) to URI
+     */",,"Here's a Javadoc comment for the given Java method:
+
+/**
+ * Runs the Webpack build tool for the frontend build process.
+ * This method is responsible for executing the Webpack command using the provided PluginAdapterBase instance.
+ *
+ * @param adapter the PluginAdapterBase instance to use for the build process, which must not be null
+ * @return no return value, as this method is void
+ * @throws IOException if an I/O error occurs during the build process
+ * @throws InterruptedException if the build process is interrupted
+ * @throws TimeoutException if the build process times out
+ * @throws URISyntaxException if a URI syntax error occurs during the build process
+ *
+ * This method calls the runFrontendBuildTool method with the specified arguments, which executes the Webpack command.
+ * The build process is executed using the provided PluginAdapterBase instance, and any exceptions that occur during the process are propagated to the caller.
+ * It is assumed that the PluginAdapterBase instance is properly configured and initialized before calling this method.
+ */",,,0.2186,0.153,0.7955,
+20,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */",,"Since the given Java method is a static initialization block, it doesn't have a return type or throw any exceptions. However, I can provide a Javadoc comment for the initialization block itself. Here's an example:
+
+/**
+ * Initializes a map with string keys and integer values.
+ * This static initialization block creates a map with two entries: ""one"" mapped to 1 and ""two"" mapped to 2.
+ *
+ * @throws NullPointerException if the map is null
+ * @throws IllegalArgumentException if the map contains duplicate keys
+ *
+ * This initialization block is used to create a static map that can be accessed throughout the class.
+ * The map is initialized with two entries to provide a basic example of how to use the map.
+ * Note that this initialization block is executed only once, when the class is loaded.
+ */
+
+private final Map<String, Integer> testStringIntegerMap = new HashMap<String, Integer>() {
+    {
+        put(""one"", 1);
+        put(""two"", 2);
+    }
+};",,,0.2264,0.1283,0.7892,
+21,openjdk/jdk,"    /**
+     * Creates a new List from a trusted array, checking for and rejecting null
+     * elements.
+     *
+     * <p>A trusted array has no references retained by the caller. It can therefore be
+     * safely reused as the List's internal storage, avoiding a defensive copy. Declared
+     * with Object... instead of E... as the parameter type so that varargs calls don't
+     * accidentally create an array of type other than Object[].
+     *
+     * @param <E> the List's element type
+     * @param input the input array
+     * @return the new list
+     */",,"Here's a Javadoc comment for the given Java method:
+
+/**
+ * Creates a copy of the specified collection, returning a new list if the original is not an immutable list.
+ * If the original is an immutable list, the method returns the original list.
+ *
+ * @param coll the collection to be copied, which must be a collection of elements of type E or a subclass thereof
+ * @return a new list containing the same elements as the original collection, or the original list if it is immutable
+ * @throws NullPointerException if the input collection is null
+ * @throws ClassCastException if the input collection is not a collection of elements of type E or a subclass thereof
+ *
+ * This method checks if the input collection is an instance of AbstractImmutableList and not a SubList. If so, it returns the original list. Otherwise, it creates a new list by converting the input collection to an array and using List.of() to create a new list.
+ * 
+ * Note that this method does not modify the original collection and does not throw any exceptions if the input collection is empty or contains null elements.
+ */",,,0.3333,0.1818,0.8256,
+22,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */",,"Here's the generated Javadoc comment for the given Java method:
+
+/**
+ * Creates a new instance of a batch message acker with the specified batch size.
+ * The batch size determines the number of messages that can be acknowledged in a single operation.
+ *
+ * @param batchSize the number of messages that can be acknowledged in a single operation
+ * @return a new instance of BatchMessageAcker with the specified batch size
+ *
+ * This method initializes a BitSet with the specified batch size and sets all bits to true, indicating that all messages are acknowledged.
+ * The returned BatchMessageAcker instance can be used to acknowledge messages in batches.
+ *
+ * Notes:
+ * - The batch size must be a positive integer.
+ * - This method does not throw any exceptions, but the BitSet constructor may throw an IllegalArgumentException if the batch size is negative.
+ */
+
+However, since the method doesn't throw any exceptions, the @throws section is not necessary. Here's the updated version:
+
+/**
+ * Creates a new instance of a batch message acker with the specified batch size.
+ * The batch size determines the number of messages that can be acknowledged in a single operation.
+ *
+ * @param batchSize the number of messages that can be acknowledged in a single operation
+ * @return a new instance of BatchMessageAcker with the specified batch size
+ *
+ * This method initializes a BitSet with the specified batch size and sets all bits to true, indicating that all messages are acknowledged.
+ * The returned BatchMessageAcker instance can be used to acknowledge messages in batches.
+ *
+ * Notes:
+ * - The batch size must be a positive integer.
+ * - This method does not throw any exceptions, but the BitSet constructor may throw an IllegalArgumentException if the batch size is negative.
+ */",,,0.1851,0.1131,0.7685,
+23,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */",,"Here's the generated Javadoc comment for the given Java method:
+
+/**
+ * Initializes a new key-value pair with the specified key and value.
+ *
+ * @param key the key of the key-value pair, which must not be null
+ * @param value the value of the key-value pair, which must not be null
+ *
+ * @return this instance of KeyValue, allowing for method chaining
+ *
+ * @throws NullPointerException if either the key or value is null
+ *
+ * This method sets the key and value of the key-value pair using the provided parameters.
+ * It ensures that both the key and value are not null to prevent potential NullPointerExceptions.
+ * If either the key or value is null, a NullPointerException is thrown.
+ *
+ * Notes:
+ * - This method is designed to be used as part of a fluent API, allowing for method chaining.
+ * - The key and value parameters are validated to ensure they are not null.
+ * - If you need to create a key-value pair with a null key or value, consider using a separate method or constructor.
+ */",,,0.2517,0.1399,0.7891,
+24,VoltDB/voltdb,"    /**
+    * This method parses a batch of SQL statements passed in as a string
+    * and verifies that they're all DDL statements.  If there are any statements
+    * that are not allowed in a DDL batch, this method will indicate the position
+    * and text of the first such statement.
+    *
+    * @param batch  A string containing one or more SQL statements
+    * @return Optional.absent() if all valid statements, or an
+    *   optional pair:
+    *     first  - the offset of the first invalid statement in the batch
+    *              (0 if it's the first stmt, 1 if it's the second, etc)
+    *     second - the text of the invalid statement
+    */",,"Here's a Javadoc comment for the given Java method:
+
+/**
+ * Finds the first invalid statement in a given DDL batch.
+ *
+ * This method iterates over the statements in the batch, checking each one to see if it's a DDL statement or a load/remove classes directive.
+ * If it finds a statement that doesn't match either of these criteria, it returns the index and statement of the invalid statement.
+ *
+ * @param batch the DDL batch to check, represented as a string
+ * @return an Optional containing a Pair of the index and statement of the invalid statement, or an absent Optional if the batch is valid
+ * @throws NullPointerException if the batch is null
+ *
+ * This method assumes that the input batch is a string containing one or more SQL statements.
+ * It uses the SQLParser class to parse the batch into individual statements and to check each statement's type.
+ * If the batch is empty or contains only whitespace, this method will return an absent Optional.
+ *
+ * Notes:
+ * - The SQLParser class is assumed to be a utility class that provides methods for parsing and analyzing SQL statements.
+ * - The Pair class is assumed to be a utility class that provides a simple way to represent a pair of values.
+ * - This method does not modify the input batch in any way.
+ */",,,0.4777,0.2484,0.845,
+ the original collection
+ * @throws NullPointerException if fieldName is null
+ * @throws IllegalArgumentException if fieldName is empty or null
+ */
+public RealmResults<E> distinct(String fieldName) {
+    SortDescriptor distinctDescriptor = SortDescriptor.getInstanceForDistinct(collection.getTable(), fieldName);
+    Collection distinctCollection = collection.distinct(distinctDescriptor);
+    return createLoadedResults(distinctCollection);
+}
+```
+
+In this corrected version, I have added the `@throws` tag to specify the exceptions that may be thrown by the method, and I have also added a brief description of the parameter `fieldName`.",,,0.3465,0.2257,0.8372,
+15,DSpace/DSpace,"    /**
+     * This method will generate a short lived token to be used for bitstream downloads among other things.
+     *
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     *
+     * Example:
+     * <pre>
+     * {@code
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     * }
+     * </pre>
+     * @param request The StandardMultipartHttpServletRequest
+     * @return        The created short lived token
+     */",,"```java
+/**
+ * Performs a short-lived login and returns an authentication token resource.
+ * 
+ * This method obtains a short-lived authentication token using the provided HTTP request and returns it as an authentication token resource.
+ * 
+ * @param request the HTTP request containing the authentication credentials
+ * @return an authentication token resource representing the short-lived login
+ */
+public AuthenticationTokenResource shortLivedLogin(HttpServletRequest request) {
+    /**
+     * Projection used to convert the authentication token to a REST representation.
+     */
+    Projection projection = utils.obtainProjection();
+
+    /**
+     * Obtains a short-lived authentication token using the provided HTTP request and context.
+     * 
+     * @param request the HTTP request containing the authentication credentials
+     * @return a short-lived authentication token
+     */
+    AuthenticationToken shortLivedToken = 
+        restAuthenticationService.getShortLivedAuthenticationToken(ContextUtil.obtainContext(request), request);
+
+    /**
+     * Converts the short-lived authentication token to a REST representation.
+     * 
+     * @param shortLivedToken the short-lived authentication token to convert
+     * @param projection the projection used to convert the token
+     * @return the REST representation of the short-lived authentication token
+     */
+    AuthenticationTokenRest authenticationTokenRest = converter.toRest(shortLivedToken, projection);
+
+    /**
+     * Converts the REST representation of the short-lived authentication token to an authentication token resource.
+     * 
+     * @param authenticationTokenRest the REST representation of the short-lived authentication token
+     * @return the authentication token resource representing the short-lived login
+     */
+    return converter.toResource(authenticationTokenRest);
+}
+```
+
+### Parameters
+
+*   **request**: the HTTP request containing the authentication credentials
+    *   Data type: `HttpServletRequest`
+    *   Purpose: provides the authentication credentials for the short-lived login
+    *   Constraints: must not be null
+
+### Return Value
+
+*   **AuthenticationTokenResource**: the authentication token resource representing the short-lived login
+    *   Data type: `AuthenticationTokenResource`
+    *   Expected outcome: a resource containing the authentication token for the short-lived login
+    *   Variations: may return null if the short-lived login fails or if the authentication token cannot be converted to a resource
+
+### Exceptions
+
+*   **NullPointerException**: thrown if the request is null
+    *   Scenario: the request is null when calling the method
+    *   Recommended action: ensure that the request is not null before calling the method
+*   **AuthenticationException**:",,,0.1215,0.105,0.8289,
+16,vaadin/flow,"    /**
+     * Runs the Vite build
+     *
+     * @param adapter
+     *            - the PluginAdapterBase.
+     * @throws TimeoutException
+     *             - while run webpack
+     * @throws InterruptedException
+     *             - while run webpack
+     * @throws IOException
+     *             - while run webpack
+     * @throws URISyntaxException
+     *             - while parsing nodeDownloadRoot()) to URI
+     */",,"```java
+/**
+ * Runs the Webpack build tool using the provided plugin adapter.
+ * 
+ * This method is a wrapper around the runFrontendBuildTool method, specifically designed to run Webpack.
+ * It takes a PluginAdapterBase instance as input, which is used to configure the build process.
+ * 
+ * @param adapter the plugin adapter to use for the build process
+ * @throws IOException if an I/O error occurs during the build process
+ * @throws InterruptedException if the build process is interrupted
+ * @throws TimeoutException if the build process times out
+ * @throws URISyntaxException if a URI syntax error occurs
+ */
+public static void runWebpack(PluginAdapterBase adapter) throws IOException,
+        InterruptedException, TimeoutException, URISyntaxException {
+    runFrontendBuildTool(adapter, ""Webpack"", ""webpack/bin/webpack.js"");
+}
+```
+
+However, since the method signature is not provided in the question, I'll assume the following signature for the `runFrontendBuildTool` method:
+
+```java
+/**
+ * Runs a frontend build tool using the provided plugin adapter.
+ * 
+ * @param adapter the plugin adapter to use for the build process
+ * @param toolName the name of the build tool to run
+ * @param toolPath the path to the build tool executable
+ * @throws IOException if an I/O error occurs during the build process
+ * @throws InterruptedException if the build process is interrupted
+ * @throws TimeoutException if the build process times out
+ * @throws URISyntaxException if a URI syntax error occurs
+ */
+public static void runFrontendBuildTool(PluginAdapterBase adapter, String toolName, String toolPath) throws IOException,
+        InterruptedException, TimeoutException, URISyntaxException {
+    // method implementation
+}
+```
+
+In this case, the Javadoc comments for the `runWebpack` method would be:
+
+```java
+/**
+ * Runs the Webpack build tool using the provided plugin adapter.
+ * 
+ * This method is a wrapper around the runFrontendBuildTool method, specifically designed to run Webpack.
+ * It takes a PluginAdapterBase instance as input, which is used to configure the build process.
+ * 
+ * @param adapter the plugin adapter to use for the build process
+ *      - Purpose: Provides configuration and settings for the build process
+ *      - Data type: PluginAdapterBase
+ *      - Constraints: Must not be null
+ * @throws IOException if an I/O error occurs during the build process
+ *      - Description: An I/O error may occur when reading or",,,0.1307,0.0966,0.8241,
+18,sleuthkit/autopsy,"    /**
+     * Convert a geo result taken from the Geolocation and convert to a stream
+     * of tuples where each tuple represents a point with the closest city and
+     * the time stamp in seconds from epoch.
+     *
+     * @param geoResult The result from the Geolocation API.
+     * @param cityMapper The means of mapping a point to the closest city.
+     * @return A list of tuples where each tuple represents a point to be
+     * counted with a combination of the closest city and the timestamp.
+     * @throws IOException
+     */",,"```java
+/**
+ * Constructs a GeolocationSummary object by initializing the city mapper and Sleuthkit case provider.
+ * 
+ * This constructor takes a supplier of ClosestCityMapper instances and a SleuthkitCaseProvider instance.
+ * The supplier is used to obtain a ClosestCityMapper instance, which is then used to perform geolocation
+ * calculations. The SleuthkitCaseProvider instance is used to access case data.
+ * 
+ * @param cityMapper A supplier of ClosestCityMapper instances, which must not be null.
+ * @param provider A SleuthkitCaseProvider instance, which must not be null.
+ */
+public GeolocationSummary(
+        /**
+         * A supplier of ClosestCityMapper instances.
+         * 
+         * This supplier must not return null, as it is used to initialize the cityMapper field.
+         * 
+         * @param type The type of the supplier, which must be SupplierWithException<ClosestCityMapper, IOException>.
+         */
+        SupplierWithException<ClosestCityMapper, IOException> cityMapper,
+        
+        /**
+         * A SleuthkitCaseProvider instance.
+         * 
+         * This provider must not be null, as it is used to initialize the provider field.
+         * 
+         * @param type The type of the provider, which must be SleuthkitCaseProvider.
+         */
+        SleuthkitCaseProvider provider) {
+    this.cityMapper = cityMapper;
+    this.provider = provider;
+}
+```
+
+Note: I've assumed that `SupplierWithException` and `ClosestCityMapper` are custom classes or interfaces, and `SleuthkitCaseProvider` is a class or interface. If they are not, you may need to adjust the comments accordingly.",,,0.2605,0.1609,0.8392,
+19,sleuthkit/autopsy,"    /**
+     * Gets the rows from the Personas table where persona accounts' names are
+     * similar to the given one. Persona marked as DELETED are not returned.
+     *
+     * @param partialName Name substring to match.
+     * @return Collection of personas matching the given name substring, may be
+     * empty if no match is found.
+     *
+     * @throws CentralRepoException If there is an error in querying the
+     * Personas table.
+     */",,"```java
+/**
+ * Retrieves a collection of personas associated with accounts whose unique identifiers match the given partial name.
+ * 
+ * This method executes a SQL query to fetch personas from the database based on the provided partial name.
+ * The query joins the accounts, persona_accounts, personas, and examiners tables to retrieve the required information.
+ * The results are then processed and returned as a collection of Persona objects.
+ * 
+ * @param partialName the partial name to search for in the account unique identifiers
+ * @return a collection of Persona objects associated with the matching accounts
+ * @throws CentralRepoException if an error occurs during the database query execution
+ */
+public static Collection<Persona> getPersonaByAccountIdentifierLike(String partialName) throws CentralRepoException {
+    /**
+     * The partial name to search for in the account unique identifiers.
+     * 
+     * @param partialName the partial name to search for
+     * @throws NullPointerException if the partialName is null
+     * @throws IllegalArgumentException if the partialName is empty
+     */
+    String partialName;
+
+    /**
+     * The query clause to be executed on the database.
+     * 
+     * @param queryClause the SQL query clause
+     */
+    String queryClause;
+
+    /**
+     * The callback object to process the query results.
+     * 
+     * @param queryCallback the PersonaQueryCallback object
+     */
+    PersonaQueryCallback queryCallback;
+
+    /**
+     * The collection of Persona objects returned by the query.
+     * 
+     * @return a collection of Persona objects
+     */
+    Collection<Persona> personas;
+
+    /**
+     * The CentralRepository instance used to execute the SQL query.
+     * 
+     * @param centralRepository the CentralRepository instance
+     */
+    CentralRepository centralRepository;
+
+    /**
+     * The SQL query clause to be executed on the database.
+     * 
+     * This query joins the accounts, persona_accounts, personas, and examiners tables to retrieve the required information.
+     * The results are then grouped by the persona ID.
+     */
+    queryClause = ""SELECT DISTINCT accounts.id as a_id,""
+            + ""p.id, p.uuid, p.name, p.comment, p.created_date, p.modified_date, p.status_id, p.examiner_id, e.login_name, e.display_name""
+            + "" FROM accounts""
+            + "" JOIN persona_accounts as pa ON pa.account_id = accounts.id""
+            + "" JOIN personas as p ON p.id = pa.persona_id""
+            + "" JOIN examiners",,,0.2376,0.1602,0.8566,
+20,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */",,"Here's an example of Javadoc comments for the given Java method:
+
+```java
+/**
+ * A utility method to retrieve a value from a predefined map.
+ * 
+ * This method provides a simple way to access values from a predefined map.
+ * It takes a key as input and returns the corresponding value.
+ * 
+ * @param key the key to look up in the map
+ * @return the value associated with the key, or null if not found
+ * @throws NullPointerException if the key is null
+ * @throws IllegalArgumentException if the key is not a string
+ */
+private final Map<String, Integer> testStringIntegerMap = new HashMap<String, Integer>() {
+    {
+        put(""one"", 1);
+        put(""two"", 2);
+    }
+};
+```
+
+However, since the given code is not a method, I'll provide an example of a method that uses the predefined map and include Javadoc comments for it:
+
+```java
+/**
+ * Retrieves a value from the predefined map.
+ * 
+ * @param key the key to look up in the map
+ * @return the value associated with the key, or null if not found
+ * @throws NullPointerException if the key is null
+ * @throws IllegalArgumentException if the key is not a string
+ */
+private Integer getValue(String key) {
+    return testStringIntegerMap.get(key);
+}
+```
+
+In this example, the `getValue` method takes a `String` key as input and returns the corresponding value from the predefined map. The Javadoc comments provide a brief summary of the method's purpose, describe the input parameter, and specify the return value and any potential exceptions.",,,0.2165,0.1311,0.7744,
+21,openjdk/jdk,"    /**
+     * Creates a new List from a trusted array, checking for and rejecting null
+     * elements.
+     *
+     * <p>A trusted array has no references retained by the caller. It can therefore be
+     * safely reused as the List's internal storage, avoiding a defensive copy. Declared
+     * with Object... instead of E... as the parameter type so that varargs calls don't
+     * accidentally create an array of type other than Object[].
+     *
+     * @param <E> the List's element type
+     * @param input the input array
+     * @return the new list
+     */",,"```java
+/**
+ * Creates a copy of the provided collection, converting it to a list if necessary.
+ * This method handles cases where the collection is already a list, and also
+ * supports collections that are not lists but can be converted to lists.
+ * 
+ * @param coll the collection to copy, which may be a list or another type of collection
+ * @return a list copy of the provided collection
+ */
+static <E> List<E> listCopy(Collection<? extends E> coll) {
+    // Parameters:
+    /**
+     * The collection to copy, which may be a list or another type of collection.
+     * 
+     * @param coll the collection to copy
+     * @type Collection<? extends E> the collection to copy, where E is the type of elements in the collection
+     * @constraints the collection must not be null
+     * @requirements the collection must be a Collection, but it does not have to be a List
+     */
+    
+    // Return value:
+    /**
+     * A list copy of the provided collection.
+     * 
+     * @return a list copy of the provided collection
+     * @type List<E> the list copy, where E is the type of elements in the list
+     * @expected outcome the returned list will be a copy of the original collection
+     * @variations the returned list may be empty if the original collection is empty
+     * @edge cases if the original collection is a list, the returned list will be the same as the original list
+     */
+    
+    // Exceptions:
+    /**
+     * If the provided collection is null, a NullPointerException will be thrown.
+     * 
+     * @throws NullPointerException if the provided collection is null
+     * @recommended action check the provided collection for null before calling this method
+     */
+    
+    if (coll instanceof AbstractImmutableList && coll.getClass() != SubList.class) {
+        return (List<E>)coll;
+    } else {
+        return (List<E>)List.of(coll.toArray());
+    }
+}
+```",,,0.2241,0.1437,0.8489,
+22,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */",,"```java
+/**
+ * Creates a new instance of BatchMessageAcker with the specified batch size.
+ * 
+ * This method initializes a BitSet with the given batch size and sets all bits to true.
+ * The resulting BitSet is then used to create a new BatchMessageAcker instance.
+ * 
+ * @param batchSize the size of the batch, which determines the size of the BitSet and the BatchMessageAcker instance.
+ * @return a new instance of BatchMessageAcker with the specified batch size.
+ */
+public static BatchMessageAcker newAcker(int batchSize) {
+    // Parameters
+    /**
+     * The size of the batch, which determines the size of the BitSet and the BatchMessageAcker instance.
+     * 
+     * @param batchSize int the batch size
+     * @param batchSize > 0 the batch size must be a positive integer
+     */
+    BitSet bitSet = new BitSet(batchSize);
+    bitSet.set(0, batchSize);
+    return new BatchMessageAcker(bitSet);
+}
+```
+
+However, the above code is not in the JavaDoc format. Here is the correct JavaDoc format for the given method:
+
+```java
+/**
+ * Creates a new instance of BatchMessageAcker with the specified batch size.
+ * 
+ * This method initializes a BitSet with the given batch size and sets all bits to true.
+ * The resulting BitSet is then used to create a new BatchMessageAcker instance.
+ * 
+ * @param batchSize the size of the batch, which determines the size of the BitSet and the BatchMessageAcker instance
+ * @return a new instance of BatchMessageAcker with the specified batch size
+ * @throws IllegalArgumentException if the batch size is not a positive integer
+ */
+public static BatchMessageAcker newAcker(int batchSize) {
+    // Parameters
+    /**
+     * the size of the batch, which determines the size of the BitSet and the BatchMessageAcker instance
+     * @param batchSize int the batch size
+     * @param batchSize > 0 the batch size must be a positive integer
+     */
+    BitSet bitSet = new BitSet(batchSize);
+    bitSet.set(0, batchSize);
+    return new BatchMessageAcker(bitSet);
+}
+```
+
+However, the JavaDoc comment for the method is not in the correct format. Here is the correct JavaDoc comment for the method:
+
+```java
+/**
+ * Creates a new instance of BatchMessageAcker with the specified batch size.
+ * 
+ * @param batchSize the size of the batch
+ *",,,0.1468,0.1055,0.7667,
+23,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */",,"```java
+/**
+ * Constructs a new instance of the KeyValue class with the specified key and value.
+ * 
+ * This constructor initializes the key and value properties of the object, 
+ * delegating the actual setting of these properties to the setKey and setValue methods.
+ * 
+ * @param key the unique identifier for the key-value pair (cannot be null)
+ * @param value the associated value for the key (can be null)
+ */
+public KeyValue(K key, V value) {
+    /**
+     * @param key the unique identifier for the key-value pair
+     * @param keyType the data type of the key (e.g., String, Integer, etc.)
+     * @param constraints key cannot be null
+     */
+    setKey(key);
+    
+    /**
+     * @param value the associated value for the key
+     * @param valueType the data type of the value (e.g., String, Integer, etc.)
+     * @param constraints value can be null
+     */
+    setValue(value);
+}
+```
+
+However, since the method is a constructor and does not explicitly throw any exceptions, the Javadoc comments can be simplified as follows:
+
+```java
+/**
+ * Constructs a new instance of the KeyValue class with the specified key and value.
+ * 
+ * This constructor initializes the key and value properties of the object, 
+ * delegating the actual setting of these properties to the setKey and setValue methods.
+ * 
+ * @param key the unique identifier for the key-value pair (cannot be null)
+ * @param value the associated value for the key (can be null)
+ */
+public KeyValue(K key, V value) {
+    setKey(key);
+    setValue(value);
+}
+```",,,0.1628,0.1105,0.7728,
