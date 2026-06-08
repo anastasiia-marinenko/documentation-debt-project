@@ -1,0 +1,3221 @@
+variant,pair_id,repo,ground_truth,generated,status,rouge1,rougeL,bertscore
+v1_minimal,0,apache/flink,"	/**
+	 * Configures how to partition records from Flink's partitions into Kafka's partitions.
+	 *
+	 * <p>This strategy ensures that each Flink partition ends up in one Kafka partition.
+	 *
+	 * <p>Note: One Kafka partition can contain multiple Flink partitions. Examples:
+	 *
+	 * <p>More Flink partitions than Kafka partitions. Some (or all) Kafka partitions contain
+	 * the output of more than one flink partition:
+	 * <pre>
+	 *     Flink Sinks            Kafka Partitions
+	 *         1    ----------------&gt;    1
+	 *         2    --------------/
+	 *         3    -------------/
+	 *         4    ------------/
+	 * </pre>
+	 *
+	 *
+	 * <p>Fewer Flink partitions than Kafka partitions:
+	 * <pre>
+	 *     Flink Sinks            Kafka Partitions
+	 *         1    ----------------&gt;    1
+	 *         2    ----------------&gt;    2
+	 *                                      3
+	 *                                      4
+	 *                                      5
+	 * </pre>
+	 *
+	 * @see org.apache.flink.streaming.connectors.kafka.partitioner.FlinkFixedPartitioner
+	 */","```java
+/**
+ * Configures the Kafka consumer to start consuming messages from a specific offset for a given partition.
+ * 
+ * @param partition the partition number for which to start consuming from a specific offset
+ * @param specificOffset the specific offset from which to start consuming messages
+ * @return this instance for method chaining
+ */
+public Kafka startFromSpecificOffset(int partition, long specificOffset) {
+    this.startupMode = StartupMode.SPECIFIC_OFFSETS;
+    if (this.specificOffsets == null) {
+        this.specificOffsets = new HashMap<>();
+    }
+    this.specificOffsets.put(partition, specificOffset);
+    return this;
+}
+```",ok,0.1356,0.113,0.7862
+v1_minimal,1,sleuthkit/autopsy,"    /**
+     * Verify the ICCID (Integrated Circuit Card Identifier) number and
+     * normalize format.
+     *
+     * E.118 defines as up to 22 digits long including luhn check digit while
+     * GSM Phase 1 defines it as a 20 digit operator specific structure. They
+     * begin with 89 which is the ISO 7812 Major Industry Identifier for
+     * telecommunication, followed by a contry code of 1-3 digits as definted by
+     * ITU-T E.164, followed by issuer identifier 1-4 digits, followed by 1 luhn
+     * checksum digit (sometimes omitted). The hexidecimal digit F is used as
+     * filler when necessary in GSM Phase 1 specification.
+     *
+     * 18 digits appears to be the shortest ICCID in use.
+     *
+     * @param data The string to normalize and validate
+     *
+     * @return the data with common number seperators removed and lower cased if
+     *         the data was determined to be a possible ICCID
+     *
+     * @throws CorrelationAttributeNormalizationException if the data was not a
+     *                                                    valid ICCID
+     */","```java
+/**
+ * Normalizes the provided USB ID data.
+ * 
+ * This method currently simply returns the input data, but it is intended to be replaced with a proper validation and normalization routine in the future.
+ * 
+ * @param data the USB ID data to be normalized
+ * @return the normalized USB ID data
+ * @throws CorrelationAttributeNormalizationException if an error occurs during normalization
+ */
+private static String normalizeUsbId(String data) throws CorrelationAttributeNormalizationException {
+    //TODO replace with correct usb id validation at a later date
+    return data;
+}
+```",ok,0.2793,0.1802,0.8192
+v1_minimal,2,realm/realm-java,"    /**
+     * Links the current user with a new user identity represented by the given credentials.
+     * <p>
+     * Linking a user with more credentials, mean the user can login either of these credentials.
+     * It also makes it possible to ""upgrade"" an anonymous user by linking it with e.g.
+     * Email/Password credentials.
+     * <pre>
+     * {@code
+     * // Example
+     * RealmApp app = new RealmApp(""app-id"")
+     * RealmUser user = app.login(RealmCredentials.anonymous());
+     * app.linkUser(RealmCredentials.emailPassword(""email"", ""password""));
+     * }
+     * </pre>
+     * <p>
+     * Note: It is not possible to link two existing users of MongoDB Realm. The provided credentials
+     * must not have been used by another user.
+     *
+     * @param credentials the credentials to link with the current user.
+     * @throws IllegalStateException if no user is currently logged in.
+     * @return the {@link io.realm.RealmUser} the credentials were linked to.
+     */","```java
+/**
+ * Switches the current user to the specified user.
+ *
+ * @param user The user to switch to. Must not be null.
+ * @return The user that was switched to.
+ * @throws NullPointerException if the user is null.
+ */
+public RealmUser switchUser(RealmUser user) {
+    Util.checkNull(user, ""user"");
+    nativeSwitchUser(nativePtr, user.osUser.getNativePtr());
+    return user;
+}
+```",ok,0.3295,0.2045,0.854
+v1_minimal,3,apache/flink,"	/**
+	 * Reads all the bytes from a file. The method ensures that the file is
+	 * closed when all bytes have been read or an I/O error, or other runtime
+	 * exception, is thrown.
+	 *
+	 * <p>This is an implementation that follow {@link java.nio.file.Files#readAllBytes(java.nio.file.Path)},
+	 * and the difference is that it limits the size of the direct buffer to avoid
+	 * direct-buffer OutOfMemoryError. When {@link java.nio.file.Files#readAllBytes(java.nio.file.Path)}
+	 * or other interfaces in java API can do this in the future, we should remove it.
+	 *
+	 * @param path
+	 *        the path to the file
+	 * @return a byte array containing the bytes read from the file
+	 *
+	 * @throws IOException
+	 *         if an I/O error occurs reading from the stream
+	 * @throws OutOfMemoryError
+	 *         if an array of the required size cannot be allocated, for
+	 *         example the file is larger that {@code 2GB}
+	 */","```java
+/**
+ * Reads the contents of a file into a string.
+ * 
+ * This method reads the entire file into memory and returns its contents as a string.
+ * The character encoding used to decode the bytes is specified by the provided charset name.
+ * 
+ * @param file the file to read from
+ * @param charsetName the name of the character encoding to use for decoding the bytes
+ * @return the contents of the file as a string
+ * @throws IOException if an I/O error occurs while reading the file
+ */
+public static String readFile(File file, String charsetName) throws IOException {
+    byte[] bytes = readAllBytes(file.toPath());
+    return new String(bytes, charsetName);
+}
+```",ok,0.4372,0.2672,0.8476
+v1_minimal,4,apache/ambari,"  /**
+   * validate cluster name character and length requirements and throw IllegalArgumentException if not valid.
+   * <p>
+   * Character Requirements
+   * <p>
+   * A through Z
+   * a through z
+   * 0 through 9
+   * _ (underscore)
+   * - (dash)
+   * Length Requirements
+   * <p>
+   * Minimum: 1 character
+   * Maximum: 100 characters
+   * @see AmbariManagementControllerImpl#CLUSTER_NAME_VALIDATION_REGEXP
+   *
+   * @param clusterName name to validate
+   * @throws IllegalArgumentException if validation result
+   */","```java
+/**
+ * Validates the provided cluster name.
+ * 
+ * The cluster name is checked for the following conditions:
+ * <ul>
+ *   <li>It should not be null.</li>
+ *   <li>It should not be empty.</li>
+ *   <li>It should match the regular expression defined by {@link #CLUSTER_NAME_VALIDATION_REGEXP},
+ *       which allows only alphabetical, numeric, '_' and '-' characters, and has a length of 1-100 characters.</li>
+ * </ul>
+ * 
+ * @param clusterName the cluster name to be validated
+ * @throws IllegalArgumentException if the cluster name is invalid
+ */
+public static void validateClusterName(String clusterName) {
+    if (clusterName == null) {
+      throw new IllegalArgumentException(""Invalid arguments, cluster name should not be null"");
+    }
+    if (clusterName.isEmpty()) {
+      throw new IllegalArgumentException(""Invalid arguments, cluster name should not be empty"");
+    }
+    Pattern clusterNamePtrn = Pattern.compile(CLUSTER_NAME_VALIDATION_REGEXP);
+    Matcher mtch = clusterNamePtrn.matcher(clusterName);
+    if(!mtch.matches()){
+      throw new IllegalArgumentException(""Invalid arguments, cluster name should contains only alphabetical, numeric, '_' and '-' characters and length 1-100 characters"");
+    }
+}
+```
+
+Note that I've used the Javadoc tag `@throws` to document the exception that is thrown when the cluster name is invalid. I've also used a bulleted list to make the conditions easier to read. Additionally, I've assumed that `CLUSTER_NAME_VALIDATION_REGEXP` is a static field that contains the regular expression pattern. If it's not, you should replace it with the actual regular expression pattern.",ok,0.2463,0.1567,0.8416
+v1_minimal,5,apache/flink,"	/**
+	 * Reads all the bytes from an input stream. Uses {@code initialSize} as a hint
+	 * about how many bytes the stream will have and uses {@code directBufferSize}
+	 * to limit the size of the direct buffer used to read.
+	 *
+	 * @param source
+	 *        the input stream to read from
+	 * @param initialSize
+	 *        the initial size of the byte array to allocate
+	 * @param maxDirectBufferSize
+	 *        the maximum size of the direct buffer used to read
+	 * @return a byte array containing the bytes read from the file
+	 *
+	 * @throws IOException
+	 *         if an I/O error occurs reading from the stream
+	 * @throws OutOfMemoryError
+	 *         if an array of the required size cannot be allocated
+	 */","```java
+/**
+ * Reads the contents of a file into a string, using the specified character set.
+ * 
+ * @param file the file to read from
+ * @param charsetName the name of the character set to use for decoding the file contents
+ * @return the contents of the file as a string
+ * @throws IOException if an I/O error occurs while reading the file
+ */
+public static String readFile(File file, String charsetName) throws IOException {
+    byte[] bytes = readAllBytes(file.toPath());
+    return new String(bytes, charsetName);
+}
+```
+
+Note: The `readAllBytes()` method is not a standard Java method. It seems like it's a custom method that reads the entire file into a byte array. If that's the case, you might want to include a Javadoc comment for that method as well. 
+
+Here's an example:
+
+```java
+/**
+ * Reads the entire contents of a file into a byte array.
+ * 
+ * @param file the file to read from
+ * @return the contents of the file as a byte array
+ * @throws IOException if an I/O error occurs while reading the file
+ */
+public static byte[] readAllBytes(Path file) throws IOException {
+    // implementation
+}
+```",ok,0.4214,0.2857,0.8333
+v1_minimal,6,ballerina-platform/ballerina-lang,"    /**
+     * <p>
+     * Parse module variable declaration.
+     * </p>
+     *
+     * <code>
+     * module-var-decl := module-init-var-decl | module-no-init-var-decl
+     * <br/><br/>
+     * module-init-var-decl := metadata isolated-final-quals typed-binding-pattern = expression ;
+     * <br/><br/>
+     * module-no-init-var-decl := metadata [final] type-descriptor variable-name ;
+     * <br/><br/>
+     * isolated-final-quals := (final | isolated-qual)*
+     * </code>
+     *
+     * @param metadata           Preceding metadata
+     * @param topLevelQualifiers Preceding top level qualifiers
+     * @return Parsed node
+     */","```java
+/**
+ * Parses a module variable declaration.
+ * 
+ * This method is a specialized version of {@link #parseVariableDecl(STNode, List, List, boolean)} 
+ * that assumes the module variable declaration has no parameters.
+ * 
+ * @param metadata the metadata for the module variable declaration
+ * @return the parsed module variable declaration
+ */
+private STNode parseModuleVarDecl(STNode metadata) {
+    List<STNode> emptyList = new ArrayList<>();
+    return parseVariableDecl(metadata, emptyList, emptyList, true);
+}
+```",ok,0.252,0.1732,0.8183
+v1_minimal,7,DSpace/DSpace,"    /**
+     * Deletes an EPerson. The argument cascade defines whether all references
+     * on an EPerson should be deleted as well (by either deleting the
+     * referencing object - e.g. WorkspaceItem, ResourcePolicy - or by setting
+     * the foreign key null - e.g. archived Items). If cascade is set to false
+     * and the EPerson is referenced somewhere, this leads to an
+     * AuthorizeException. EPersons may be referenced by Items, ResourcePolicies
+     * and workflow tasks.
+     *
+     * @param context DSpace context
+     * @param ePerson The EPerson to delete.
+     * @param cascade Whether to delete references on the EPerson (cascade =
+     * true) or to abort the deletion (cascade = false) if the EPerson is
+     * referenced within DSpace.
+     *
+     * @throws SQLException
+     * @throws AuthorizeException
+     * @throws IOException
+     */","```java
+/**
+ * Retrieves the count of search results for a given query.
+ * 
+ * This method searches for ePerson records based on the provided query and returns the count of matching records.
+ * The search is performed on the 'firstname' and 'lastname' fields of the ePerson metadata.
+ * 
+ * @param context the application context
+ * @param query the search query (may be null or empty to retrieve all records)
+ * @return the count of search results
+ * @throws SQLException if an error occurs while executing the query
+ */
+public int searchResultCount(Context context, String query) throws SQLException {
+    MetadataField firstNameField = metadataFieldService.findByElement(context, ""eperson"", ""firstname"", null);
+    MetadataField lastNameField = metadataFieldService.findByElement(context, ""eperson"", ""lastname"", null);
+    if (StringUtils.isBlank(query)) {
+        query = null;
+    }
+    return ePersonDAO.searchResultCount(context, query, Arrays.asList(firstNameField, lastNameField));
+}
+```",ok,0.3022,0.1778,0.8264
+v1_minimal,8,apache/kafka,"    /**
+     * Get metadata about partitions for all topics that the user is authorized to view. This method will issue a
+     * remote call to the server.
+     *
+     * @param timeout The maximum time this operation will block
+     *
+     * @return The map of topics and its partitions
+     * @throws org.apache.kafka.common.errors.TimeoutException if time spent blocking exceeds the {@code timeout}
+     * @throws org.apache.kafka.common.errors.WakeupException if {@link #wakeup()} is called before or while this
+     *             function is called
+     * @throws org.apache.kafka.common.errors.InterruptException if the calling thread is interrupted before or while
+     *             this function is called
+     * @throws org.apache.kafka.common.errors.TimeoutException if the topic metadata could not be fetched before
+     *             expiration of the configured request timeout
+     * @throws org.apache.kafka.common.KafkaException for any other unrecoverable errors
+     */","```java
+/**
+ * Retrieves the committed offset and metadata for the specified topic partition.
+ * 
+ * This method will block until the committed offset is successfully retrieved.
+ * 
+ * @param partition the topic partition for which to retrieve the committed offset
+ * @return the committed offset and metadata for the specified topic partition
+ */
+public OffsetAndMetadata committed(TopicPartition partition) {
+    acquireAndEnsureOpen();
+    try {
+        Map<TopicPartition, OffsetAndMetadata> offsets = null;
+        while (offsets == null) {
+            offsets = coordinator.fetchCommittedOffsets(
+                Collections.singleton(partition),
+                Long.MAX_VALUE
+            );
+        }
+        return offsets.get(partition);
+    } finally {
+        release();
+    }
+}
+```",ok,0.2745,0.1471,0.8426
+v1_minimal,9,ReactiveX/RxJava,"    /**
+     * Assert that the TestSubscriber contains the given first and optional rest values exactly
+     * and if so, clears the internal list of values.
+     * <p>
+     * <code><pre>
+     * TestSubscriber ts = new TestSubscriber();
+     * 
+     * ts.onNext(1);
+     * 
+     * ts.assertAndConsume(1);
+     * 
+     * ts.onNext(2);
+     * ts.onNext(3);
+     * 
+     * ts.assertAndConsume(2, 3); // no mention of 1
+     * </pre></code>
+     * @param expectedFirstValue the expected first value
+     * @param expectedRestValues the optional rest values
+     */","```java
+/**
+ * Asserts that the current state of the collection matches the expected values and consumes the collection.
+ * 
+ * @param expectedFirstValue the expected first value in the collection
+ * @param expectedRestValues the expected rest of the values in the collection
+ * 
+ * @throws AssertionError if the actual collection state does not match the expected values
+ */
+public final void assertAndConsume(T expectedFirstValue, T... expectedRestValues) {
+    int n = 1 + expectedRestValues.length;
+    assertValueCount(n);
+    assertItem(expectedFirstValue, 0);
+    for (int i = 0; i < expectedRestValues.length; i++) {
+        assertItem(expectedRestValues[i], i + 1);
+    }
+    values.clear();
+}
+```
+
+This Javadoc comment provides a clear description of the method's purpose and behavior, including the expected input parameters and any potential exceptions that may be thrown. It also follows standard JavaDoc conventions for formatting and style.",ok,0.2951,0.1967,0.8549
+v1_minimal,10,sleuthkit/autopsy,"    /**
+     * Verify the wireless network name is valid
+     *
+     * SSIDs for wireless networks can be at most 32 characters, are case
+     * sensitive, and allow special characters.
+     *
+     * @param data The string to normalize and validate
+     *
+     * @return the unmodified data if the data was a valid length to be an SSID
+     *
+     * @throws CorrelationAttributeNormalizationException if the data was not a
+     *                                                    valid SSID
+     */","```java
+/**
+ * Normalizes a given USB ID string.
+ * 
+ * This method takes a string representing a USB ID and returns the normalized version.
+ * The normalization process is currently a simple pass-through, but it is intended to be replaced with a more robust validation process in the future.
+ * 
+ * @param data the USB ID string to be normalized
+ * @return the normalized USB ID string
+ * @throws CorrelationAttributeNormalizationException if an error occurs during the normalization process
+ */
+private static String normalizeUsbId(String data) throws CorrelationAttributeNormalizationException {
+    //TODO replace with correct usb id validation at a later date
+    return data;
+}
+```
+
+Alternatively, you could also add a note to the TODO comment to indicate when the method is intended to be refactored:
+
+```java
+/**
+ * Normalizes a given USB ID string.
+ * 
+ * This method takes a string representing a USB ID and returns the normalized version.
+ * The normalization process is currently a simple pass-through, but it is intended to be replaced with a more robust validation process in the future (see TODO comment below).
+ * 
+ * @param data the USB ID string to be normalized
+ * @return the normalized USB ID string
+ * @throws CorrelationAttributeNormalizationException if an error occurs during the normalization process
+ */
+private static String normalizeUsbId(String data) throws CorrelationAttributeNormalizationException {
+    //TODO replace with correct usb id validation at a later date (targeted for refactoring in [insert version or milestone])
+    return data;
+}
+```",ok,0.2409,0.1752,0.8269
+v1_minimal,11,ome/bioformats,"  /**
+   * Read named table from a pre-initialized .mdb files.
+   * Each String[] in a table represents a row, and each element of the String[]
+   * represents the value of a particular column within the row.
+   *
+   * The first row in the table contains the names for each column.
+   *
+   * {@link #initialize(String)} must be called before calling parseTable.
+   *
+   * @param name table name
+   * @return table data or null if the named table does not exist
+   * @throws IOException if there is a problem reading the table data
+   */","Here's a Javadoc comment for the given Java method:
+
+```java
+/**
+ * Reads named table from a pre-initialized .mdb file and returns a list of tables,
+ * where each table is a list of rows, and each row is a list of column values.
+ * The first row in each table contains the names for each column.
+ *
+ * @return A list of tables, where each table is a list of rows, and each row is a list of column values.
+ * @throws IOException if an I/O error occurs while reading the .mdb file.
+ */
+public Vector<Vector<String[]>> parseDatabase() throws IOException;
+```
+
+However, if you want to be more specific about the requirements for calling this method, you could add a note about the initialization requirement:
+
+```java
+/**
+ * Reads named table from a pre-initialized .mdb file and returns a list of tables,
+ * where each table is a list of rows, and each row is a list of column values.
+ * The first row in each table contains the names for each column.
+ *
+ * This method must be called after {@link #initialize(String)} has been called to initialize the database.
+ *
+ * @return A list of tables, where each table is a list of rows, and each row is a list of column values.
+ * @throws IOException if an I/O error occurs while reading the .mdb file.
+ */
+public Vector<Vector<String[]>> parseDatabase() throws IOException;
+```",ok,0.4131,0.3082,0.8549
+v1_minimal,12,apache/kafka,"    /**
+     * Get the consumer's current lag on the partition. Returns an ""empty"" {@link OptionalLong} if the lag is not known,
+     * for example if there is no position yet, or if the end offset is not known yet.
+     *
+     * <p>
+     * This method uses locally cached metadata and never makes a remote call.
+     *
+     * @param topicPartition The partition to get the lag for.
+     *
+     * @return This {@code Consumer} instance's current lag for the given partition.
+     *
+     * @throws IllegalStateException if the {@code topicPartition} is not assigned
+     **/","```java
+/**
+ * Retrieves the end offsets of the specified partitions.
+ *
+ * @param partitions The partitions for which to retrieve the end offsets.
+ * @param timeout The maximum time to wait for the end offsets to be retrieved.
+ * @return A map of topic partitions to their end offsets.
+ */
+public Map<TopicPartition, Long> endOffsets(Collection<TopicPartition> partitions, Duration timeout) {
+    acquireAndEnsureOpen();
+    try {
+        return fetcher.endOffsets(partitions, time.timer(timeout));
+    } finally {
+        release();
+    }
+}
+```
+
+This Javadoc comment provides a clear description of the method's purpose, its parameters, and its return value. It is written in a standard format and includes relevant information for users of the class.",ok,0.3128,0.1899,0.8484
+v1_minimal,13,realm/realm-java,"    /**
+     * Asynchronously returns a distinct set of objects of a specific class. If the result is
+     * sorted, the first object will be returned in case of multiple occurrences, otherwise it is
+     * undefined which object is returned.
+     *
+     * @param fieldName the field name.
+     * @return immediately a {@link RealmResults}. Users need to register a listener
+     * {@link io.realm.RealmResults#addChangeListener(RealmChangeListener)} to be notified when the
+     * query completes.
+     * @throws IllegalArgumentException if a field is null, does not exist, is an unsupported type,
+     * is not indexed, or points to linked fields.
+     */","```java
+/**
+ * Returns a RealmResults containing the distinct values for the specified field.
+ * 
+ * This method is equivalent to calling {@link RealmResults#distinct(String)} on the RealmResults
+ * returned by {@link Realm#where(Class)} or {@link Realm#where(String)}.
+ * 
+ * @param fieldName the name of the field to find distinct values for
+ * @return a RealmResults containing the distinct values for the specified field
+ */
+public RealmResults<E> distinct(String fieldName) {
+    SortDescriptor distinctDescriptor = SortDescriptor.getInstanceForDistinct(collection.getTable(), fieldName);
+    Collection distinctCollection = collection.distinct(distinctDescriptor);
+    return createLoadedResults(distinctCollection);
+}
+```",ok,0.3494,0.1928,0.8431
+v1_minimal,14,realm/realm-java,"    /**
+     * Returns a distinct set of objects from a specific class. When multiple distinct fields are
+     * given, all unique combinations of values in the fields will be returned. In case of multiple
+     * matches, it is undefined which object is returned. Unless the result is sorted, then the
+     * first object will be returned.
+     *
+     * @param firstFieldName first field name to use when finding distinct objects.
+     * @param remainingFieldNames remaining field names when determining all unique combinations of field values.
+     * @return a non-null {@link RealmResults} containing the distinct objects.
+     * @throws IllegalArgumentException if field names is empty or {@code null}, does not exist,
+     * is an unsupported type, or points to a linked field.
+     */","```java
+/**
+ * Returns a RealmResults of distinct objects based on the specified field.
+ * 
+ * This method creates a new RealmResults containing only unique objects from the original collection,
+ * based on the specified field. The results are sorted in ascending order by the specified field.
+ * 
+ * @param fieldName the name of the field to use for distinct filtering
+ * @return a RealmResults of distinct objects
+ */
+public RealmResults<E> distinct(String fieldName) {
+    SortDescriptor distinctDescriptor = SortDescriptor.getInstanceForDistinct(collection.getTable(), fieldName);
+    Collection distinctCollection = collection.distinct(distinctDescriptor);
+    return createLoadedResults(distinctCollection);
+}
+```",ok,0.381,0.2328,0.84
+v1_minimal,15,DSpace/DSpace,"    /**
+     * This method will generate a short lived token to be used for bitstream downloads among other things.
+     *
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     *
+     * Example:
+     * <pre>
+     * {@code
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     * }
+     * </pre>
+     * @param request The StandardMultipartHttpServletRequest
+     * @return        The created short lived token
+     */","```java
+/**
+ * Generates a short-lived login token and returns it as an AuthenticationTokenResource.
+ * 
+ * This method uses the provided HttpServletRequest to obtain the necessary context and authentication token.
+ * The short-lived token is then converted to an AuthenticationTokenRest object, which is subsequently converted to an AuthenticationTokenResource.
+ * 
+ * @param request the HttpServletRequest containing the necessary context for authentication
+ * @return an AuthenticationTokenResource representing the short-lived login token
+ */
+public AuthenticationTokenResource shortLivedLogin(HttpServletRequest request) {
+    Projection projection = utils.obtainProjection();
+    AuthenticationToken shortLivedToken =
+        restAuthenticationService.getShortLivedAuthenticationToken(ContextUtil.obtainContext(request), request);
+    AuthenticationTokenRest authenticationTokenRest = converter.toRest(shortLivedToken, projection);
+    return converter.toResource(authenticationTokenRest);
+}
+```",ok,0.2597,0.1818,0.8234
+v1_minimal,16,vaadin/flow,"    /**
+     * Runs the Vite build
+     *
+     * @param adapter
+     *            - the PluginAdapterBase.
+     * @throws TimeoutException
+     *             - while run webpack
+     * @throws InterruptedException
+     *             - while run webpack
+     * @throws IOException
+     *             - while run webpack
+     * @throws URISyntaxException
+     *             - while parsing nodeDownloadRoot()) to URI
+     */","```java
+/**
+ * Runs the Webpack build tool for the given plugin adapter.
+ * 
+ * This method is a convenience wrapper around {@link #runFrontendBuildTool(PluginAdapterBase, String, String)}.
+ * 
+ * @param adapter The plugin adapter to use for the build process.
+ * @throws IOException If an I/O error occurs during the build process.
+ * @throws InterruptedException If the build process is interrupted.
+ * @throws TimeoutException If the build process times out.
+ * @throws URISyntaxException If a URI syntax error occurs.
+ */
+public static void runWebpack(PluginAdapterBase adapter) throws IOException, InterruptedException, TimeoutException, URISyntaxException {
+    runFrontendBuildTool(adapter, ""Webpack"", ""webpack/bin/webpack.js"");
+}
+```",ok,0.339,0.2203,0.826
+v1_minimal,17,sleuthkit/autopsy,"    /**
+     * Gets the rows from the Personas table where persona accounts' names are
+     * similar to the given one. Persona marked as DELETED are not returned.
+     *
+     * @param partialName Name substring to match.
+     * @return Collection of personas matching the given name substring, may be
+     * empty if no match is found.
+     *
+     * @throws CentralRepoException If there is an error in querying the
+     * Personas table.
+     */","Here's a Javadoc comment for the given Java method:
+
+```java
+/**
+ * Retrieves a collection of Persona objects from the database based on a partial account identifier.
+ * 
+ * This method executes a SQL query that joins the accounts, persona_accounts, personas, and examiners tables
+ * to retrieve distinct personas that match the given partial account identifier.
+ * 
+ * @param partialName the partial account identifier to search for
+ * @return a collection of Persona objects that match the search criteria
+ * @throws CentralRepoException if an error occurs while executing the SQL query
+ */
+public static Collection<Persona> getPersonaByAccountIdentifierLike(String partialName) throws CentralRepoException {
+    // method implementation remains the same
+}
+```
+
+This Javadoc comment provides a clear description of the method's purpose, parameters, return value, and any exceptions it may throw. It also provides context for the SQL query being executed, which can be helpful for understanding the underlying database operations.",ok,0.3333,0.2424,0.8409
+v1_minimal,18,sleuthkit/autopsy,"    /**
+     * Convert a geo result taken from the Geolocation and convert to a stream
+     * of tuples where each tuple represents a point with the closest city and
+     * the time stamp in seconds from epoch.
+     *
+     * @param geoResult The result from the Geolocation API.
+     * @param cityMapper The means of mapping a point to the closest city.
+     * @return A list of tuples where each tuple represents a point to be
+     * counted with a combination of the closest city and the timestamp.
+     * @throws IOException
+     */","```java
+/**
+ * Constructs a new instance of GeolocationSummary.
+ * 
+ * @param cityMapper A supplier that provides a ClosestCityMapper instance, which is used to map geolocation data.
+ *                   The supplier may throw an IOException if an error occurs while retrieving the mapper.
+ * @param provider The SleuthkitCaseProvider instance that provides access to the case data.
+ */
+public GeolocationSummary(
+        SupplierWithException<ClosestCityMapper, IOException> cityMapper, 
+        SleuthkitCaseProvider provider) {
+    this.cityMapper = cityMapper;
+    this.provider = provider;
+}
+```",ok,0.2394,0.1408,0.8572
+v1_minimal,19,sleuthkit/autopsy,"    /**
+     * Gets the rows from the Personas table where persona accounts' names are
+     * similar to the given one. Persona marked as DELETED are not returned.
+     *
+     * @param partialName Name substring to match.
+     * @return Collection of personas matching the given name substring, may be
+     * empty if no match is found.
+     *
+     * @throws CentralRepoException If there is an error in querying the
+     * Personas table.
+     */","Here's a Javadoc comment for the given Java method:
+
+```java
+/**
+ * Retrieves a collection of personas from the database that match the given partial account identifier.
+ * 
+ * @param partialName the partial account identifier to search for
+ * @return a collection of personas that match the search criteria
+ * @throws CentralRepoException if an error occurs while executing the database query
+ */
+public static Collection<Persona> getPersonaByAccountIdentifierLike(String partialName) throws CentralRepoException {
+    // method implementation remains the same
+}
+```
+
+However, it's worth noting that the method is using a SQL query that is concatenated with user input (`partialName`). This can be a potential security risk if not properly sanitized. It would be better to use a parameterized query to prevent SQL injection attacks. 
+
+Here's an updated version of the method that uses a parameterized query:
+
+```java
+/**
+ * Retrieves a collection of personas from the database that match the given partial account identifier.
+ * 
+ * @param partialName the partial account identifier to search for
+ * @return a collection of personas that match the search criteria
+ * @throws CentralRepoException if an error occurs while executing the database query
+ */
+public static Collection<Persona> getPersonaByAccountIdentifierLike(String partialName) throws CentralRepoException {
+    String queryClause = ""SELECT DISTINCT accounts.id as a_id,""
+            + ""p.id, p.uuid, p.name, p.comment, p.created_date, p.modified_date, p.status_id, p.examiner_id, e.login_name, e.display_name""
+            + "" FROM accounts""
+            + "" JOIN persona_accounts as pa ON pa.account_id = accounts.id""
+            + "" JOIN personas as p ON p.id = pa.persona_id""
+            + "" JOIN examiners as e ON e.id = p.examiner_id""
+            + "" WHERE LOWER(accounts.account_unique_identifier) LIKE LOWER(?)""
+            + "" AND p.status_id != "" + Persona.PersonaStatus.DELETED.getStatusId()
+            + "" GROUP BY p.id"";
+
+    PersonaQueryCallback queryCallback = new PersonaQueryCallback();
+    CentralRepository.getInstance().executeSelectSQL(queryClause, partialName, queryCallback);
+
+    return queryCallback.getPersonas();
+}
+```
+
+And the `executeSelectSQL` method should be updated to accept a parameter for the query:
+
+```java
+public void executeSelectSQL(String query, Object param, PersonaQueryCallback callback) {
+    // implementation remains the same
+}
+```",ok,0.2264,0.1294,0.827
+v1_minimal,20,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","Here's a Javadoc comment for the given Java method:
+
+```java
+/**
+ * A private, immutable map that maps string representations of numbers to their integer values.
+ * This map is initialized with the numbers one and two.
+ */
+private final Map<String, Integer> testStringIntegerMap = new HashMap<String, Integer>() {
+    {
+        put(""one"", 1);
+        put(""two"", 2);
+    }
+};
+```
+
+However, since this is not a method but a field, the comment should be placed above the field declaration. 
+
+```java
+/**
+ * A private, immutable map that maps string representations of numbers to their integer values.
+ * This map is initialized with the numbers one and two.
+ */
+private final Map<String, Integer> testStringIntegerMap = new HashMap<String, Integer>() {
+    {
+        put(""one"", 1);
+        put(""two"", 2);
+    }
+};
+```",ok,0.1991,0.1126,0.7737
+v1_minimal,21,openjdk/jdk,"    /**
+     * Creates a new List from a trusted array, checking for and rejecting null
+     * elements.
+     *
+     * <p>A trusted array has no references retained by the caller. It can therefore be
+     * safely reused as the List's internal storage, avoiding a defensive copy. Declared
+     * with Object... instead of E... as the parameter type so that varargs calls don't
+     * accidentally create an array of type other than Object[].
+     *
+     * @param <E> the List's element type
+     * @param input the input array
+     * @return the new list
+     */","```java
+/**
+ * Creates a copy of the specified collection as a list. If the collection is an instance of an immutable list
+ * (excluding instances of {@link java.util.SubList}), it is returned directly. Otherwise, a new immutable list
+ * is created from the collection's elements.
+ *
+ * @param <E> the type of elements in the list
+ * @param coll the collection to copy
+ * @return a copy of the specified collection as a list
+ */
+static <E> List<E> listCopy(Collection<? extends E> coll) {
+    if (coll instanceof AbstractImmutableList && coll.getClass() != SubList.class) {
+        return (List<E>)coll;
+    } else {
+        return (List<E>)List.of(coll.toArray());
+    }
+}
+```",ok,0.3778,0.2,0.8515
+v1_minimal,22,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","```java
+/**
+ * Creates a new instance of a batch message acker with the specified batch size.
+ * 
+ * The acker's bit set is initialized with all bits set to true, indicating that all messages in the batch are acknowledged.
+ * 
+ * @param batchSize the size of the batch
+ * @return a new instance of a batch message acker
+ */
+static BatchMessageAcker newAcker(int batchSize) {
+    BitSet bitSet = new BitSet(batchSize);
+    bitSet.set(0, batchSize);
+    return new BatchMessageAcker(bitSet);
+}
+```
+
+Alternatively, you can also add a @since tag to indicate the version of the API where this method was introduced:
+
+```java
+/**
+ * Creates a new instance of a batch message acker with the specified batch size.
+ * 
+ * The acker's bit set is initialized with all bits set to true, indicating that all messages in the batch are acknowledged.
+ * 
+ * @param batchSize the size of the batch
+ * @return a new instance of a batch message acker
+ * @since [version]
+ */
+static BatchMessageAcker newAcker(int batchSize) {
+    BitSet bitSet = new BitSet(batchSize);
+    bitSet.set(0, batchSize);
+    return new BatchMessageAcker(bitSet);
+}
+```",ok,0.1972,0.1197,0.7719
+v1_minimal,23,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","```java
+/**
+ * Constructs a new instance of the KeyValue class with the specified key and value.
+ * 
+ * @param key the key associated with the value
+ * @param value the value associated with the key
+ */
+public KeyValue(K key, V value) {
+    setKey(key);
+    setValue(value);
+}
+```
+
+Note: The types `K` and `V` are assumed to be type parameters, which is a common convention in Java for generic classes. If you want to specify the actual types, you can replace `K` and `V` with the actual type names.",ok,0.2079,0.1386,0.7876
+v1_minimal,24,VoltDB/voltdb,"    /**
+    * This method parses a batch of SQL statements passed in as a string
+    * and verifies that they're all DDL statements.  If there are any statements
+    * that are not allowed in a DDL batch, this method will indicate the position
+    * and text of the first such statement.
+    *
+    * @param batch  A string containing one or more SQL statements
+    * @return Optional.absent() if all valid statements, or an
+    *   optional pair:
+    *     first  - the offset of the first invalid statement in the batch
+    *              (0 if it's the first stmt, 1 if it's the second, etc)
+    *     second - the text of the invalid statement
+    */","```java
+/**
+ * Finds the first non-DDL statement in a given DDL batch.
+ * 
+ * A DDL batch is a collection of SQL statements that are executed as a single unit.
+ * This method will return the index and statement of the first non-DDL statement it encounters.
+ * If the entire batch consists of DDL statements, an empty Optional will be returned.
+ * 
+ * @param batch the DDL batch to search
+ * @return an Optional containing the index and statement of the first non-DDL statement, or an empty Optional if the batch is valid
+ */
+static Optional<Pair<Integer, String>> findInvalidStatementInDdlBatch(String batch) {
+    // method implementation remains the same
+}
+```
+
+Note: The `Pair` class is not a standard Java class. If you're using a specific library or implementation, you may need to adjust the Javadoc comment accordingly.",ok,0.5415,0.2795,0.8514
+v2_structured,0,apache/flink,"	/**
+	 * Configures how to partition records from Flink's partitions into Kafka's partitions.
+	 *
+	 * <p>This strategy ensures that each Flink partition ends up in one Kafka partition.
+	 *
+	 * <p>Note: One Kafka partition can contain multiple Flink partitions. Examples:
+	 *
+	 * <p>More Flink partitions than Kafka partitions. Some (or all) Kafka partitions contain
+	 * the output of more than one flink partition:
+	 * <pre>
+	 *     Flink Sinks            Kafka Partitions
+	 *         1    ----------------&gt;    1
+	 *         2    --------------/
+	 *         3    -------------/
+	 *         4    ------------/
+	 * </pre>
+	 *
+	 *
+	 * <p>Fewer Flink partitions than Kafka partitions:
+	 * <pre>
+	 *     Flink Sinks            Kafka Partitions
+	 *         1    ----------------&gt;    1
+	 *         2    ----------------&gt;    2
+	 *                                      3
+	 *                                      4
+	 *                                      5
+	 * </pre>
+	 *
+	 * @see org.apache.flink.streaming.connectors.kafka.partitioner.FlinkFixedPartitioner
+	 */","/**
+ * Starts the Kafka instance from a specific offset on the specified partition.
+ * 
+ * @param partition the partition number to start from
+ * @param specificOffset the specific offset to start from
+ * @return this instance for method chaining
+ * @throws NullPointerException if the partition or specificOffset is null
+ * @throws IllegalArgumentException if the partition is less than 0 or the specificOffset is less than 0
+ */",ok,0.1615,0.1242,0.7539
+v2_structured,1,sleuthkit/autopsy,"    /**
+     * Verify the ICCID (Integrated Circuit Card Identifier) number and
+     * normalize format.
+     *
+     * E.118 defines as up to 22 digits long including luhn check digit while
+     * GSM Phase 1 defines it as a 20 digit operator specific structure. They
+     * begin with 89 which is the ISO 7812 Major Industry Identifier for
+     * telecommunication, followed by a contry code of 1-3 digits as definted by
+     * ITU-T E.164, followed by issuer identifier 1-4 digits, followed by 1 luhn
+     * checksum digit (sometimes omitted). The hexidecimal digit F is used as
+     * filler when necessary in GSM Phase 1 specification.
+     *
+     * 18 digits appears to be the shortest ICCID in use.
+     *
+     * @param data The string to normalize and validate
+     *
+     * @return the data with common number seperators removed and lower cased if
+     *         the data was determined to be a possible ICCID
+     *
+     * @throws CorrelationAttributeNormalizationException if the data was not a
+     *                                                    valid ICCID
+     */","/**
+ * Normalizes the given USB ID data, replacing it with the original value for now.
+ * 
+ * @param data the USB ID data to be normalized
+ * @return the normalized USB ID data
+ * @throws CorrelationAttributeNormalizationException if an error occurs during normalization
+ */",ok,0.2186,0.1749,0.8043
+v2_structured,2,realm/realm-java,"    /**
+     * Links the current user with a new user identity represented by the given credentials.
+     * <p>
+     * Linking a user with more credentials, mean the user can login either of these credentials.
+     * It also makes it possible to ""upgrade"" an anonymous user by linking it with e.g.
+     * Email/Password credentials.
+     * <pre>
+     * {@code
+     * // Example
+     * RealmApp app = new RealmApp(""app-id"")
+     * RealmUser user = app.login(RealmCredentials.anonymous());
+     * app.linkUser(RealmCredentials.emailPassword(""email"", ""password""));
+     * }
+     * </pre>
+     * <p>
+     * Note: It is not possible to link two existing users of MongoDB Realm. The provided credentials
+     * must not have been used by another user.
+     *
+     * @param credentials the credentials to link with the current user.
+     * @throws IllegalStateException if no user is currently logged in.
+     * @return the {@link io.realm.RealmUser} the credentials were linked to.
+     */","/**
+ * Switches the current user to the specified RealmUser instance.
+ *
+ * @param user the RealmUser instance to switch to
+ * @return the switched RealmUser instance
+ * @throws NullPointerException if the provided user is null
+ * @throws NativeException if a native error occurs during the user switch
+ */",ok,0.2754,0.1796,0.8197
+v2_structured,3,apache/flink,"	/**
+	 * Reads all the bytes from a file. The method ensures that the file is
+	 * closed when all bytes have been read or an I/O error, or other runtime
+	 * exception, is thrown.
+	 *
+	 * <p>This is an implementation that follow {@link java.nio.file.Files#readAllBytes(java.nio.file.Path)},
+	 * and the difference is that it limits the size of the direct buffer to avoid
+	 * direct-buffer OutOfMemoryError. When {@link java.nio.file.Files#readAllBytes(java.nio.file.Path)}
+	 * or other interfaces in java API can do this in the future, we should remove it.
+	 *
+	 * @param path
+	 *        the path to the file
+	 * @return a byte array containing the bytes read from the file
+	 *
+	 * @throws IOException
+	 *         if an I/O error occurs reading from the stream
+	 * @throws OutOfMemoryError
+	 *         if an array of the required size cannot be allocated, for
+	 *         example the file is larger that {@code 2GB}
+	 */","/**
+ * Reads the contents of a file into a string using the specified character set.
+ * 
+ * @param file the file to read
+ * @param charsetName the name of the character set to use for decoding
+ * @return the contents of the file as a string
+ * @throws IOException if an I/O error occurs while reading the file
+ */",ok,0.3333,0.2727,0.8452
+v2_structured,4,apache/ambari,"  /**
+   * validate cluster name character and length requirements and throw IllegalArgumentException if not valid.
+   * <p>
+   * Character Requirements
+   * <p>
+   * A through Z
+   * a through z
+   * 0 through 9
+   * _ (underscore)
+   * - (dash)
+   * Length Requirements
+   * <p>
+   * Minimum: 1 character
+   * Maximum: 100 characters
+   * @see AmbariManagementControllerImpl#CLUSTER_NAME_VALIDATION_REGEXP
+   *
+   * @param clusterName name to validate
+   * @throws IllegalArgumentException if validation result
+   */","/**
+ * Validates the provided cluster name by checking for null, empty, and invalid characters.
+ * 
+ * @param clusterName the name of the cluster to be validated
+ * @throws IllegalArgumentException if the cluster name is null, empty, or contains invalid characters
+ */",ok,0.3596,0.2921,0.8498
+v2_structured,5,apache/flink,"	/**
+	 * Reads all the bytes from an input stream. Uses {@code initialSize} as a hint
+	 * about how many bytes the stream will have and uses {@code directBufferSize}
+	 * to limit the size of the direct buffer used to read.
+	 *
+	 * @param source
+	 *        the input stream to read from
+	 * @param initialSize
+	 *        the initial size of the byte array to allocate
+	 * @param maxDirectBufferSize
+	 *        the maximum size of the direct buffer used to read
+	 * @return a byte array containing the bytes read from the file
+	 *
+	 * @throws IOException
+	 *         if an I/O error occurs reading from the stream
+	 * @throws OutOfMemoryError
+	 *         if an array of the required size cannot be allocated
+	 */","/**
+ * Reads the contents of a file into a string using the specified character set.
+ * 
+ * @param file the file to read from
+ * @param charsetName the name of the character set to use for decoding
+ * @return the contents of the file as a string
+ * @throws IOException if an I/O error occurs while reading the file
+ */",ok,0.4331,0.3822,0.8531
+v2_structured,6,ballerina-platform/ballerina-lang,"    /**
+     * <p>
+     * Parse module variable declaration.
+     * </p>
+     *
+     * <code>
+     * module-var-decl := module-init-var-decl | module-no-init-var-decl
+     * <br/><br/>
+     * module-init-var-decl := metadata isolated-final-quals typed-binding-pattern = expression ;
+     * <br/><br/>
+     * module-no-init-var-decl := metadata [final] type-descriptor variable-name ;
+     * <br/><br/>
+     * isolated-final-quals := (final | isolated-qual)*
+     * </code>
+     *
+     * @param metadata           Preceding metadata
+     * @param topLevelQualifiers Preceding top level qualifiers
+     * @return Parsed node
+     */","/**
+ * Parses a module variable declaration from the given metadata.
+ * 
+ * @param metadata the metadata to parse
+ * @return the parsed module variable declaration
+ * @throws Exception if an error occurs during parsing
+ */",ok,0.2474,0.2062,0.8013
+v2_structured,7,DSpace/DSpace,"    /**
+     * Deletes an EPerson. The argument cascade defines whether all references
+     * on an EPerson should be deleted as well (by either deleting the
+     * referencing object - e.g. WorkspaceItem, ResourcePolicy - or by setting
+     * the foreign key null - e.g. archived Items). If cascade is set to false
+     * and the EPerson is referenced somewhere, this leads to an
+     * AuthorizeException. EPersons may be referenced by Items, ResourcePolicies
+     * and workflow tasks.
+     *
+     * @param context DSpace context
+     * @param ePerson The EPerson to delete.
+     * @param cascade Whether to delete references on the EPerson (cascade =
+     * true) or to abort the deletion (cascade = false) if the EPerson is
+     * referenced within DSpace.
+     *
+     * @throws SQLException
+     * @throws AuthorizeException
+     * @throws IOException
+     */","/**
+ * Retrieves the count of search results for the given query using the specified metadata fields.
+ * 
+ * @param context the application context
+ * @param query the search query
+ * @return the count of search results
+ * @throws SQLException if an error occurs while executing the query
+ */",ok,0.2027,0.1486,0.8149
+v2_structured,8,apache/kafka,"    /**
+     * Get metadata about partitions for all topics that the user is authorized to view. This method will issue a
+     * remote call to the server.
+     *
+     * @param timeout The maximum time this operation will block
+     *
+     * @return The map of topics and its partitions
+     * @throws org.apache.kafka.common.errors.TimeoutException if time spent blocking exceeds the {@code timeout}
+     * @throws org.apache.kafka.common.errors.WakeupException if {@link #wakeup()} is called before or while this
+     *             function is called
+     * @throws org.apache.kafka.common.errors.InterruptException if the calling thread is interrupted before or while
+     *             this function is called
+     * @throws org.apache.kafka.common.errors.TimeoutException if the topic metadata could not be fetched before
+     *             expiration of the configured request timeout
+     * @throws org.apache.kafka.common.KafkaException for any other unrecoverable errors
+     */","/**
+ * Retrieves the committed offset and metadata for the specified topic partition.
+ * 
+ * @param partition the topic partition for which to retrieve the committed offset and metadata
+ * @return the committed offset and metadata for the specified topic partition
+ * @throws KafkaException if an error occurs while fetching committed offsets or releasing resources
+ */",ok,0.2938,0.1695,0.8237
+v2_structured,9,ReactiveX/RxJava,"    /**
+     * Assert that the TestSubscriber contains the given first and optional rest values exactly
+     * and if so, clears the internal list of values.
+     * <p>
+     * <code><pre>
+     * TestSubscriber ts = new TestSubscriber();
+     * 
+     * ts.onNext(1);
+     * 
+     * ts.assertAndConsume(1);
+     * 
+     * ts.onNext(2);
+     * ts.onNext(3);
+     * 
+     * ts.assertAndConsume(2, 3); // no mention of 1
+     * </pre></code>
+     * @param expectedFirstValue the expected first value
+     * @param expectedRestValues the optional rest values
+     */","/**
+ * Asserts that the iterator has the specified values and consumes them.
+ * 
+ * @param expectedFirstValue the expected first value in the iterator
+ * @param expectedRestValues the expected rest values in the iterator
+ * @throws AssertionError if the iterator does not match the expected values
+ */",ok,0.3883,0.3301,0.8378
+v2_structured,10,sleuthkit/autopsy,"    /**
+     * Verify the wireless network name is valid
+     *
+     * SSIDs for wireless networks can be at most 32 characters, are case
+     * sensitive, and allow special characters.
+     *
+     * @param data The string to normalize and validate
+     *
+     * @return the unmodified data if the data was a valid length to be an SSID
+     *
+     * @throws CorrelationAttributeNormalizationException if the data was not a
+     *                                                    valid SSID
+     */","/**
+ * Normalizes the given USB ID data, throwing an exception if the data cannot be normalized.
+ * 
+ * @param data the USB ID data to be normalized
+ * @return the normalized USB ID data
+ * @throws CorrelationAttributeNormalizationException if the data cannot be normalized
+ */",ok,0.4211,0.3158,0.8433
+v2_structured,11,ome/bioformats,"  /**
+   * Read named table from a pre-initialized .mdb files.
+   * Each String[] in a table represents a row, and each element of the String[]
+   * represents the value of a particular column within the row.
+   *
+   * The first row in the table contains the names for each column.
+   *
+   * {@link #initialize(String)} must be called before calling parseTable.
+   *
+   * @param name table name
+   * @return table data or null if the named table does not exist
+   * @throws IOException if there is a problem reading the table data
+   */","/**
+ * Parses the database into a hierarchical structure of tables, where each table is a Vector of rows, and each row is a Vector of column values.
+ *
+ * @param  none  This method does not take any parameters.
+ *
+ * @return A Vector of Vector of String arrays, where each inner Vector represents a table and each String array represents a row in the table.
+ *
+ * @throws IOException If an I/O error occurs while parsing the database.",ok,0.4706,0.2614,0.8672
+v2_structured,12,apache/kafka,"    /**
+     * Get the consumer's current lag on the partition. Returns an ""empty"" {@link OptionalLong} if the lag is not known,
+     * for example if there is no position yet, or if the end offset is not known yet.
+     *
+     * <p>
+     * This method uses locally cached metadata and never makes a remote call.
+     *
+     * @param topicPartition The partition to get the lag for.
+     *
+     * @return This {@code Consumer} instance's current lag for the given partition.
+     *
+     * @throws IllegalStateException if the {@code topicPartition} is not assigned
+     **/","/**
+ * Retrieves the end offsets for the specified topic partitions within the given timeout duration.
+ * 
+ * @param partitions a collection of topic partitions for which to retrieve the end offsets
+ * @param timeout the duration within which to retrieve the end offsets
+ * @return a map of topic partitions to their corresponding end offsets
+ * @throws TimeoutException if the operation times out
+ * @throws KafkaException if an error occurs while retrieving the end offsets
+ */",ok,0.3243,0.2297,0.8315
+v2_structured,13,realm/realm-java,"    /**
+     * Asynchronously returns a distinct set of objects of a specific class. If the result is
+     * sorted, the first object will be returned in case of multiple occurrences, otherwise it is
+     * undefined which object is returned.
+     *
+     * @param fieldName the field name.
+     * @return immediately a {@link RealmResults}. Users need to register a listener
+     * {@link io.realm.RealmResults#addChangeListener(RealmChangeListener)} to be notified when the
+     * query completes.
+     * @throws IllegalArgumentException if a field is null, does not exist, is an unsupported type,
+     * is not indexed, or points to linked fields.
+     */","/**
+ * Returns a collection of unique objects from the underlying collection, 
+ * filtered by the specified field name.
+ * 
+ * @param fieldName the name of the field to use for filtering uniqueness
+ * @return a RealmResults object containing the unique objects
+ * @throws IllegalArgumentException if the field name is null or empty
+ * @throws IllegalStateException if the collection is not yet loaded
+ */",ok,0.4255,0.3121,0.8557
+v2_structured,14,realm/realm-java,"    /**
+     * Returns a distinct set of objects from a specific class. When multiple distinct fields are
+     * given, all unique combinations of values in the fields will be returned. In case of multiple
+     * matches, it is undefined which object is returned. Unless the result is sorted, then the
+     * first object will be returned.
+     *
+     * @param firstFieldName first field name to use when finding distinct objects.
+     * @param remainingFieldNames remaining field names when determining all unique combinations of field values.
+     * @return a non-null {@link RealmResults} containing the distinct objects.
+     * @throws IllegalArgumentException if field names is empty or {@code null}, does not exist,
+     * is an unsupported type, or points to a linked field.
+     */","/**
+ * Returns a new RealmResults containing unique objects based on the specified field.
+ * 
+ * @param fieldName the name of the field to use for uniqueness
+ * @return a new RealmResults containing unique objects
+ * @throws IllegalArgumentException if the specified field is not a valid field in the collection
+ * @throws IllegalStateException if the collection is not in a valid state for this operation
+ */",ok,0.3976,0.2892,0.8451
+v2_structured,15,DSpace/DSpace,"    /**
+     * This method will generate a short lived token to be used for bitstream downloads among other things.
+     *
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     *
+     * Example:
+     * <pre>
+     * {@code
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     * }
+     * </pre>
+     * @param request The StandardMultipartHttpServletRequest
+     * @return        The created short lived token
+     */","/**
+ * Obtains a short-lived authentication token for the given HTTP request.
+ * 
+ * @param request the HTTP request to obtain the authentication token for
+ * @return the short-lived authentication token as a resource
+ * @throws Exception if an error occurs while obtaining the authentication token or converting it to a resource
+ */",ok,0.2883,0.2523,0.8103
+v2_structured,16,vaadin/flow,"    /**
+     * Runs the Vite build
+     *
+     * @param adapter
+     *            - the PluginAdapterBase.
+     * @throws TimeoutException
+     *             - while run webpack
+     * @throws InterruptedException
+     *             - while run webpack
+     * @throws IOException
+     *             - while run webpack
+     * @throws URISyntaxException
+     *             - while parsing nodeDownloadRoot()) to URI
+     */","/**
+ * Runs the Webpack frontend build tool using the provided plugin adapter.
+ * 
+ * @param adapter the plugin adapter to use for running the build tool
+ * @throws IOException if an I/O error occurs during the build process
+ * @throws InterruptedException if the build process is interrupted
+ * @throws TimeoutException if the build process times out
+ * @throws URISyntaxException if a URI syntax error occurs during the build process
+ */",ok,0.3871,0.2796,0.8215
+v2_structured,17,sleuthkit/autopsy,"    /**
+     * Gets the rows from the Personas table where persona accounts' names are
+     * similar to the given one. Persona marked as DELETED are not returned.
+     *
+     * @param partialName Name substring to match.
+     * @return Collection of personas matching the given name substring, may be
+     * empty if no match is found.
+     *
+     * @throws CentralRepoException If there is an error in querying the
+     * Personas table.
+     */","/**
+ * Retrieves a collection of Persona objects from the database based on a partial account identifier.
+ * 
+ * @param partialName the partial account identifier to search for
+ * @return a collection of Persona objects matching the search criteria
+ * @throws CentralRepoException if an error occurs while executing the database query
+ */",ok,0.4038,0.3462,0.8487
+v2_structured,18,sleuthkit/autopsy,"    /**
+     * Convert a geo result taken from the Geolocation and convert to a stream
+     * of tuples where each tuple represents a point with the closest city and
+     * the time stamp in seconds from epoch.
+     *
+     * @param geoResult The result from the Geolocation API.
+     * @param cityMapper The means of mapping a point to the closest city.
+     * @return A list of tuples where each tuple represents a point to be
+     * counted with a combination of the closest city and the timestamp.
+     * @throws IOException
+     */","/**
+ * Initializes a GeolocationSummary instance with a ClosestCityMapper and a SleuthkitCaseProvider.
+ * 
+ * @param cityMapper a supplier of ClosestCityMapper instances that may throw IOExceptions
+ * @param provider the SleuthkitCaseProvider instance to use
+ */",ok,0.2617,0.1682,0.8338
+v2_structured,19,sleuthkit/autopsy,"    /**
+     * Gets the rows from the Personas table where persona accounts' names are
+     * similar to the given one. Persona marked as DELETED are not returned.
+     *
+     * @param partialName Name substring to match.
+     * @return Collection of personas matching the given name substring, may be
+     * empty if no match is found.
+     *
+     * @throws CentralRepoException If there is an error in querying the
+     * Personas table.
+     */","/**
+ * Retrieves a collection of personas whose account unique identifiers match the given partial name.
+ * 
+ * @param partialName the partial name to search for in account unique identifiers
+ * @return a collection of personas matching the search criteria
+ * @throws CentralRepoException if an error occurs while executing the database query
+ */",ok,0.4762,0.381,0.8528
+v2_structured,20,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","/**
+ * Retrieves the integer value associated with a given string key from a predefined map.
+ * 
+ * @param key the string key to look up in the map
+ * @return the integer value associated with the given key, or null if the key is not found
+ * @throws NullPointerException if the input key is null
+ * @throws ClassCastException if the key is not a string
+ */",ok,0.1899,0.1453,0.7822
+v2_structured,21,openjdk/jdk,"    /**
+     * Creates a new List from a trusted array, checking for and rejecting null
+     * elements.
+     *
+     * <p>A trusted array has no references retained by the caller. It can therefore be
+     * safely reused as the List's internal storage, avoiding a defensive copy. Declared
+     * with Object... instead of E... as the parameter type so that varargs calls don't
+     * accidentally create an array of type other than Object[].
+     *
+     * @param <E> the List's element type
+     * @param input the input array
+     * @return the new list
+     */","/**
+ * Creates a copy of the specified collection, handling edge cases where the collection is an instance of AbstractImmutableList.
+ * 
+ * @param coll the collection to copy
+ * @return a copy of the specified collection
+ * @throws ClassCastException if the collection is not a Collection or if the collection is a SubList instance of AbstractImmutableList
+ * @throws NullPointerException if the collection is null
+ */",ok,0.259,0.1583,0.8253
+v2_structured,22,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","/**
+ * Creates a new instance of a batch message acker with the specified batch size.
+ * 
+ * @param batchSize the size of the batch
+ * @return a new instance of a batch message acker
+ * @throws IllegalArgumentException if the batch size is less than 1
+ */",ok,0.1125,0.1,0.7889
+v2_structured,23,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","/**
+ * Initializes a new instance of the KeyValue class with the specified key and value.
+ * 
+ * @param key the key associated with the value
+ * @param value the value associated with the key
+ * @throws NullPointerException if the key or value is null
+ */",ok,0.1761,0.1258,0.7908
+v2_structured,24,VoltDB/voltdb,"    /**
+    * This method parses a batch of SQL statements passed in as a string
+    * and verifies that they're all DDL statements.  If there are any statements
+    * that are not allowed in a DDL batch, this method will indicate the position
+    * and text of the first such statement.
+    *
+    * @param batch  A string containing one or more SQL statements
+    * @return Optional.absent() if all valid statements, or an
+    *   optional pair:
+    *     first  - the offset of the first invalid statement in the batch
+    *              (0 if it's the first stmt, 1 if it's the second, etc)
+    *     second - the text of the invalid statement
+    */","/**
+ * Finds the first non-DDL or non-load/remove classes statement in a given DDL batch.
+ * 
+ * @param batch the DDL batch to search
+ * @return the index and statement of the first invalid statement, or an empty Optional if the batch is valid
+ * @throws NullPointerException if the batch is null
+ */",ok,0.4161,0.255,0.8447
+v3_template,0,apache/flink,"	/**
+	 * Configures how to partition records from Flink's partitions into Kafka's partitions.
+	 *
+	 * <p>This strategy ensures that each Flink partition ends up in one Kafka partition.
+	 *
+	 * <p>Note: One Kafka partition can contain multiple Flink partitions. Examples:
+	 *
+	 * <p>More Flink partitions than Kafka partitions. Some (or all) Kafka partitions contain
+	 * the output of more than one flink partition:
+	 * <pre>
+	 *     Flink Sinks            Kafka Partitions
+	 *         1    ----------------&gt;    1
+	 *         2    --------------/
+	 *         3    -------------/
+	 *         4    ------------/
+	 * </pre>
+	 *
+	 *
+	 * <p>Fewer Flink partitions than Kafka partitions:
+	 * <pre>
+	 *     Flink Sinks            Kafka Partitions
+	 *         1    ----------------&gt;    1
+	 *         2    ----------------&gt;    2
+	 *                                      3
+	 *                                      4
+	 *                                      5
+	 * </pre>
+	 *
+	 * @see org.apache.flink.streaming.connectors.kafka.partitioner.FlinkFixedPartitioner
+	 */","/**
+ * Starts the Kafka instance from a specific offset for the given partition.
+ * 
+ * @param partition the partition number
+ * @param specificOffset the specific offset to start from
+ * @return this instance for method chaining
+ */",ok,0.1203,0.0752,0.7661
+v3_template,1,sleuthkit/autopsy,"    /**
+     * Verify the ICCID (Integrated Circuit Card Identifier) number and
+     * normalize format.
+     *
+     * E.118 defines as up to 22 digits long including luhn check digit while
+     * GSM Phase 1 defines it as a 20 digit operator specific structure. They
+     * begin with 89 which is the ISO 7812 Major Industry Identifier for
+     * telecommunication, followed by a contry code of 1-3 digits as definted by
+     * ITU-T E.164, followed by issuer identifier 1-4 digits, followed by 1 luhn
+     * checksum digit (sometimes omitted). The hexidecimal digit F is used as
+     * filler when necessary in GSM Phase 1 specification.
+     *
+     * 18 digits appears to be the shortest ICCID in use.
+     *
+     * @param data The string to normalize and validate
+     *
+     * @return the data with common number seperators removed and lower cased if
+     *         the data was determined to be a possible ICCID
+     *
+     * @throws CorrelationAttributeNormalizationException if the data was not a
+     *                                                    valid ICCID
+     */","/**
+ * Normalizes the given USB ID data.
+ * 
+ * @param data the USB ID data to be normalized
+ * @return the normalized USB ID data
+ * @throws CorrelationAttributeNormalizationException if the normalization process fails
+ */",ok,0.1954,0.1609,0.807
+v3_template,2,realm/realm-java,"    /**
+     * Links the current user with a new user identity represented by the given credentials.
+     * <p>
+     * Linking a user with more credentials, mean the user can login either of these credentials.
+     * It also makes it possible to ""upgrade"" an anonymous user by linking it with e.g.
+     * Email/Password credentials.
+     * <pre>
+     * {@code
+     * // Example
+     * RealmApp app = new RealmApp(""app-id"")
+     * RealmUser user = app.login(RealmCredentials.anonymous());
+     * app.linkUser(RealmCredentials.emailPassword(""email"", ""password""));
+     * }
+     * </pre>
+     * <p>
+     * Note: It is not possible to link two existing users of MongoDB Realm. The provided credentials
+     * must not have been used by another user.
+     *
+     * @param credentials the credentials to link with the current user.
+     * @throws IllegalStateException if no user is currently logged in.
+     * @return the {@link io.realm.RealmUser} the credentials were linked to.
+     */","/**
+ * Switches the current user to the specified RealmUser instance.
+ * 
+ * @param user the RealmUser instance to switch to
+ * @return the switched RealmUser instance
+ * @throws NullPointerException if the user parameter is null
+ */",ok,0.2436,0.1795,0.8267
+v3_template,3,apache/flink,"	/**
+	 * Reads all the bytes from a file. The method ensures that the file is
+	 * closed when all bytes have been read or an I/O error, or other runtime
+	 * exception, is thrown.
+	 *
+	 * <p>This is an implementation that follow {@link java.nio.file.Files#readAllBytes(java.nio.file.Path)},
+	 * and the difference is that it limits the size of the direct buffer to avoid
+	 * direct-buffer OutOfMemoryError. When {@link java.nio.file.Files#readAllBytes(java.nio.file.Path)}
+	 * or other interfaces in java API can do this in the future, we should remove it.
+	 *
+	 * @param path
+	 *        the path to the file
+	 * @return a byte array containing the bytes read from the file
+	 *
+	 * @throws IOException
+	 *         if an I/O error occurs reading from the stream
+	 * @throws OutOfMemoryError
+	 *         if an array of the required size cannot be allocated, for
+	 *         example the file is larger that {@code 2GB}
+	 */","/**
+ * Reads the contents of a file into a string using the specified character set.
+ * 
+ * @param file the file to read
+ * @param charsetName the name of the character set to use for decoding
+ * @return the contents of the file as a string
+ * @throws IOException if an I/O error occurs while reading the file
+ */",ok,0.3333,0.2727,0.8452
+v3_template,4,apache/ambari,"  /**
+   * validate cluster name character and length requirements and throw IllegalArgumentException if not valid.
+   * <p>
+   * Character Requirements
+   * <p>
+   * A through Z
+   * a through z
+   * 0 through 9
+   * _ (underscore)
+   * - (dash)
+   * Length Requirements
+   * <p>
+   * Minimum: 1 character
+   * Maximum: 100 characters
+   * @see AmbariManagementControllerImpl#CLUSTER_NAME_VALIDATION_REGEXP
+   *
+   * @param clusterName name to validate
+   * @throws IllegalArgumentException if validation result
+   */","```java
+/**
+ * Validates the given cluster name against a predefined pattern.
+ * 
+ * @param clusterName the cluster name to be validated
+ * @throws IllegalArgumentException if the cluster name is null, empty, or does not match the predefined pattern
+ */",ok,0.3448,0.2759,0.8418
+v3_template,5,apache/flink,"	/**
+	 * Reads all the bytes from an input stream. Uses {@code initialSize} as a hint
+	 * about how many bytes the stream will have and uses {@code directBufferSize}
+	 * to limit the size of the direct buffer used to read.
+	 *
+	 * @param source
+	 *        the input stream to read from
+	 * @param initialSize
+	 *        the initial size of the byte array to allocate
+	 * @param maxDirectBufferSize
+	 *        the maximum size of the direct buffer used to read
+	 * @return a byte array containing the bytes read from the file
+	 *
+	 * @throws IOException
+	 *         if an I/O error occurs reading from the stream
+	 * @throws OutOfMemoryError
+	 *         if an array of the required size cannot be allocated
+	 */","/**
+ * Reads the contents of a file into a string using the specified character set.
+ * 
+ * @param file the file to read
+ * @param charsetName the name of the character set to use for decoding
+ * @return the contents of the file as a string
+ * @throws IOException if an I/O error occurs while reading the file
+ */",ok,0.4231,0.3718,0.8532
+v3_template,6,ballerina-platform/ballerina-lang,"    /**
+     * <p>
+     * Parse module variable declaration.
+     * </p>
+     *
+     * <code>
+     * module-var-decl := module-init-var-decl | module-no-init-var-decl
+     * <br/><br/>
+     * module-init-var-decl := metadata isolated-final-quals typed-binding-pattern = expression ;
+     * <br/><br/>
+     * module-no-init-var-decl := metadata [final] type-descriptor variable-name ;
+     * <br/><br/>
+     * isolated-final-quals := (final | isolated-qual)*
+     * </code>
+     *
+     * @param metadata           Preceding metadata
+     * @param topLevelQualifiers Preceding top level qualifiers
+     * @return Parsed node
+     */","/**
+ * Parses a module variable declaration from the given metadata.
+ * 
+ * @param metadata the metadata to parse
+ * @return the parsed module variable declaration
+ */",ok,0.2697,0.2247,0.8075
+v3_template,7,DSpace/DSpace,"    /**
+     * Deletes an EPerson. The argument cascade defines whether all references
+     * on an EPerson should be deleted as well (by either deleting the
+     * referencing object - e.g. WorkspaceItem, ResourcePolicy - or by setting
+     * the foreign key null - e.g. archived Items). If cascade is set to false
+     * and the EPerson is referenced somewhere, this leads to an
+     * AuthorizeException. EPersons may be referenced by Items, ResourcePolicies
+     * and workflow tasks.
+     *
+     * @param context DSpace context
+     * @param ePerson The EPerson to delete.
+     * @param cascade Whether to delete references on the EPerson (cascade =
+     * true) or to abort the deletion (cascade = false) if the EPerson is
+     * referenced within DSpace.
+     *
+     * @throws SQLException
+     * @throws AuthorizeException
+     * @throws IOException
+     */","/**
+ * Retrieves the count of search results for the given query.
+ * 
+ * @param context the application context
+ * @param query the search query
+ * @return the count of search results
+ * @throws SQLException if an error occurs while executing the query
+ */",ok,0.1958,0.1399,0.8194
+v3_template,8,apache/kafka,"    /**
+     * Get metadata about partitions for all topics that the user is authorized to view. This method will issue a
+     * remote call to the server.
+     *
+     * @param timeout The maximum time this operation will block
+     *
+     * @return The map of topics and its partitions
+     * @throws org.apache.kafka.common.errors.TimeoutException if time spent blocking exceeds the {@code timeout}
+     * @throws org.apache.kafka.common.errors.WakeupException if {@link #wakeup()} is called before or while this
+     *             function is called
+     * @throws org.apache.kafka.common.errors.InterruptException if the calling thread is interrupted before or while
+     *             this function is called
+     * @throws org.apache.kafka.common.errors.TimeoutException if the topic metadata could not be fetched before
+     *             expiration of the configured request timeout
+     * @throws org.apache.kafka.common.KafkaException for any other unrecoverable errors
+     */","/**
+ * Retrieves the committed offset and metadata for the specified topic partition.
+ * 
+ * @param partition the topic partition for which to retrieve the committed offset and metadata
+ * @return the committed offset and metadata for the specified topic partition
+ * @throws Exception if an error occurs while fetching committed offsets
+ */",ok,0.2759,0.1724,0.8234
+v3_template,9,ReactiveX/RxJava,"    /**
+     * Assert that the TestSubscriber contains the given first and optional rest values exactly
+     * and if so, clears the internal list of values.
+     * <p>
+     * <code><pre>
+     * TestSubscriber ts = new TestSubscriber();
+     * 
+     * ts.onNext(1);
+     * 
+     * ts.assertAndConsume(1);
+     * 
+     * ts.onNext(2);
+     * ts.onNext(3);
+     * 
+     * ts.assertAndConsume(2, 3); // no mention of 1
+     * </pre></code>
+     * @param expectedFirstValue the expected first value
+     * @param expectedRestValues the optional rest values
+     */","/**
+ * Asserts that the next values in the sequence match the given expected values and consumes them.
+ * 
+ * @param expectedFirstValue the first expected value
+ * @param expectedRestValues the remaining expected values
+ * @throws AssertionError if the expected values do not match the actual sequence
+ */",ok,0.3883,0.3107,0.8363
+v3_template,10,sleuthkit/autopsy,"    /**
+     * Verify the wireless network name is valid
+     *
+     * SSIDs for wireless networks can be at most 32 characters, are case
+     * sensitive, and allow special characters.
+     *
+     * @param data The string to normalize and validate
+     *
+     * @return the unmodified data if the data was a valid length to be an SSID
+     *
+     * @throws CorrelationAttributeNormalizationException if the data was not a
+     *                                                    valid SSID
+     */","/**
+ * Normalizes the given USB ID data.
+ * 
+ * @param data the USB ID data to be normalized
+ * @return the normalized USB ID data
+ * @throws CorrelationAttributeNormalizationException if the normalization process fails
+ */",ok,0.3765,0.3059,0.8393
+v3_template,11,ome/bioformats,"  /**
+   * Read named table from a pre-initialized .mdb files.
+   * Each String[] in a table represents a row, and each element of the String[]
+   * represents the value of a particular column within the row.
+   *
+   * The first row in the table contains the names for each column.
+   *
+   * {@link #initialize(String)} must be called before calling parseTable.
+   *
+   * @param name table name
+   * @return table data or null if the named table does not exist
+   * @throws IOException if there is a problem reading the table data
+   */","/**
+ * Parses the database into a hierarchical structure of tables, where each table is represented as a Vector of rows, and each row is represented as a Vector of column values.
+ *
+ * @param  none
+ * @return a Vector of Vector of String arrays, where each inner Vector represents a table and each String array represents a row in the table
+ * @throws IOException if an I/O error occurs during database parsing
+ */",ok,0.443,0.2685,0.8655
+v3_template,12,apache/kafka,"    /**
+     * Get the consumer's current lag on the partition. Returns an ""empty"" {@link OptionalLong} if the lag is not known,
+     * for example if there is no position yet, or if the end offset is not known yet.
+     *
+     * <p>
+     * This method uses locally cached metadata and never makes a remote call.
+     *
+     * @param topicPartition The partition to get the lag for.
+     *
+     * @return This {@code Consumer} instance's current lag for the given partition.
+     *
+     * @throws IllegalStateException if the {@code topicPartition} is not assigned
+     **/","/**
+ * Retrieves the end offsets for the specified topic partitions within the given timeout.
+ * 
+ * @param partitions a collection of topic partitions to retrieve end offsets for
+ * @param timeout the maximum time to wait for the operation to complete
+ * @return a map of topic partitions to their corresponding end offsets
+ * @throws Exception if an error occurs while retrieving end offsets",ok,0.3043,0.2029,0.8352
+v3_template,13,realm/realm-java,"    /**
+     * Asynchronously returns a distinct set of objects of a specific class. If the result is
+     * sorted, the first object will be returned in case of multiple occurrences, otherwise it is
+     * undefined which object is returned.
+     *
+     * @param fieldName the field name.
+     * @return immediately a {@link RealmResults}. Users need to register a listener
+     * {@link io.realm.RealmResults#addChangeListener(RealmChangeListener)} to be notified when the
+     * query completes.
+     * @throws IllegalArgumentException if a field is null, does not exist, is an unsupported type,
+     * is not indexed, or points to linked fields.
+     */","/**
+ * Returns a list of unique objects from the collection based on the specified field.
+ * 
+ * @param fieldName the name of the field to use for uniqueness
+ * @return a list of unique objects from the collection
+ */",ok,0.3167,0.2167,0.8431
+v3_template,14,realm/realm-java,"    /**
+     * Returns a distinct set of objects from a specific class. When multiple distinct fields are
+     * given, all unique combinations of values in the fields will be returned. In case of multiple
+     * matches, it is undefined which object is returned. Unless the result is sorted, then the
+     * first object will be returned.
+     *
+     * @param firstFieldName first field name to use when finding distinct objects.
+     * @param remainingFieldNames remaining field names when determining all unique combinations of field values.
+     * @return a non-null {@link RealmResults} containing the distinct objects.
+     * @throws IllegalArgumentException if field names is empty or {@code null}, does not exist,
+     * is an unsupported type, or points to a linked field.
+     */","/**
+ * Returns a RealmResults containing unique values for the specified field.
+ * 
+ * @param fieldName the name of the field to retrieve unique values for
+ * @return a RealmResults containing unique values for the specified field
+ * @throws IllegalArgumentException if the field name is null or empty
+ */",ok,0.4,0.3333,0.854
+v3_template,15,DSpace/DSpace,"    /**
+     * This method will generate a short lived token to be used for bitstream downloads among other things.
+     *
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     *
+     * Example:
+     * <pre>
+     * {@code
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     * }
+     * </pre>
+     * @param request The StandardMultipartHttpServletRequest
+     * @return        The created short lived token
+     */","/**
+ * Retrieves a short-lived authentication token for the given HTTP request.
+ * 
+ * @param request the HTTP request containing authentication information
+ * @return the short-lived authentication token as a resource
+ * @throws Exception if an error occurs during authentication token retrieval
+ */",ok,0.297,0.2772,0.8123
+v3_template,16,vaadin/flow,"    /**
+     * Runs the Vite build
+     *
+     * @param adapter
+     *            - the PluginAdapterBase.
+     * @throws TimeoutException
+     *             - while run webpack
+     * @throws InterruptedException
+     *             - while run webpack
+     * @throws IOException
+     *             - while run webpack
+     * @throws URISyntaxException
+     *             - while parsing nodeDownloadRoot()) to URI
+     */","/**
+ * Runs the Webpack build tool for the given plugin adapter.
+ * 
+ * @param adapter the plugin adapter to use for the build
+ * @throws IOException if an I/O error occurs
+ * @throws InterruptedException if the build is interrupted
+ * @throws TimeoutException if the build times out
+ * @throws URISyntaxException if a URI syntax error occurs
+ */",ok,0.425,0.325,0.8238
+v3_template,17,sleuthkit/autopsy,"    /**
+     * Gets the rows from the Personas table where persona accounts' names are
+     * similar to the given one. Persona marked as DELETED are not returned.
+     *
+     * @param partialName Name substring to match.
+     * @return Collection of personas matching the given name substring, may be
+     * empty if no match is found.
+     *
+     * @throws CentralRepoException If there is an error in querying the
+     * Personas table.
+     */","/**
+ * Retrieves a collection of personas associated with accounts matching the given partial account identifier.
+ * 
+ * @param partialName the partial account identifier to search for
+ * @return a collection of personas
+ * @throws CentralRepoException if an error occurs while executing the SQL query
+ */",ok,0.4082,0.3469,0.8519
+v3_template,18,sleuthkit/autopsy,"    /**
+     * Convert a geo result taken from the Geolocation and convert to a stream
+     * of tuples where each tuple represents a point with the closest city and
+     * the time stamp in seconds from epoch.
+     *
+     * @param geoResult The result from the Geolocation API.
+     * @param cityMapper The means of mapping a point to the closest city.
+     * @return A list of tuples where each tuple represents a point to be
+     * counted with a combination of the closest city and the timestamp.
+     * @throws IOException
+     */","/**
+ * Initializes a GeolocationSummary object with a ClosestCityMapper supplier and a SleuthkitCaseProvider.
+ * 
+ * @param cityMapper a supplier of ClosestCityMapper instances that may throw IOException
+ * @param provider the SleuthkitCaseProvider instance
+ */",ok,0.2453,0.1698,0.8357
+v3_template,19,sleuthkit/autopsy,"    /**
+     * Gets the rows from the Personas table where persona accounts' names are
+     * similar to the given one. Persona marked as DELETED are not returned.
+     *
+     * @param partialName Name substring to match.
+     * @return Collection of personas matching the given name substring, may be
+     * empty if no match is found.
+     *
+     * @throws CentralRepoException If there is an error in querying the
+     * Personas table.
+     */","/**
+ * Retrieves a collection of Persona objects based on a partial account identifier.
+ * 
+ * @param partialName the partial account identifier to search for
+ * @return a collection of Persona objects matching the search criteria
+ * @throws CentralRepoException if an error occurs during the database query
+ */",ok,0.38,0.34,0.8464
+v3_template,20,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","```java
+/**
+ * Returns a map containing string keys and integer values.
+ * 
+ * @return a map containing string keys and integer values
+ */
+```",ok,0.0288,0.0288,0.7905
+v3_template,21,openjdk/jdk,"    /**
+     * Creates a new List from a trusted array, checking for and rejecting null
+     * elements.
+     *
+     * <p>A trusted array has no references retained by the caller. It can therefore be
+     * safely reused as the List's internal storage, avoiding a defensive copy. Declared
+     * with Object... instead of E... as the parameter type so that varargs calls don't
+     * accidentally create an array of type other than Object[].
+     *
+     * @param <E> the List's element type
+     * @param input the input array
+     * @return the new list
+     */","/**
+ * Returns a copy of the specified collection as a list.
+ * 
+ * @param coll the collection to be copied
+ * @return a list containing all elements from the specified collection
+ * @throws NullPointerException if the specified collection is null
+ * @throws ClassCastException if the specified collection is not a Collection or not a subclass of AbstractImmutableList
+ */",ok,0.3158,0.1504,0.8257
+v3_template,22,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","/**
+ * Creates a new BatchMessageAcker instance with the given batch size.
+ * 
+ * @param batchSize the size of the batch
+ * @return a new BatchMessageAcker instance
+ */",ok,0.0845,0.0704,0.7955
+v3_template,23,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","/**
+ * Initializes a new instance of the KeyValue class with the specified key and value.
+ * 
+ * @param key the key of the key-value pair
+ * @param value the value of the key-value pair
+ */",ok,0.1447,0.1184,0.7945
+v3_template,24,VoltDB/voltdb,"    /**
+    * This method parses a batch of SQL statements passed in as a string
+    * and verifies that they're all DDL statements.  If there are any statements
+    * that are not allowed in a DDL batch, this method will indicate the position
+    * and text of the first such statement.
+    *
+    * @param batch  A string containing one or more SQL statements
+    * @return Optional.absent() if all valid statements, or an
+    *   optional pair:
+    *     first  - the offset of the first invalid statement in the batch
+    *              (0 if it's the first stmt, 1 if it's the second, etc)
+    *     second - the text of the invalid statement
+    */","/**
+ * Finds the first non-DDL statement in a given DDL batch, returning its index and statement if found.
+ * 
+ * @param batch the DDL batch to search
+ * @return the index and statement of the first non-DDL statement, or an empty Optional if the batch is valid
+ */",ok,0.4138,0.2621,0.8516
+v4_persona,0,apache/flink,"	/**
+	 * Configures how to partition records from Flink's partitions into Kafka's partitions.
+	 *
+	 * <p>This strategy ensures that each Flink partition ends up in one Kafka partition.
+	 *
+	 * <p>Note: One Kafka partition can contain multiple Flink partitions. Examples:
+	 *
+	 * <p>More Flink partitions than Kafka partitions. Some (or all) Kafka partitions contain
+	 * the output of more than one flink partition:
+	 * <pre>
+	 *     Flink Sinks            Kafka Partitions
+	 *         1    ----------------&gt;    1
+	 *         2    --------------/
+	 *         3    -------------/
+	 *         4    ------------/
+	 * </pre>
+	 *
+	 *
+	 * <p>Fewer Flink partitions than Kafka partitions:
+	 * <pre>
+	 *     Flink Sinks            Kafka Partitions
+	 *         1    ----------------&gt;    1
+	 *         2    ----------------&gt;    2
+	 *                                      3
+	 *                                      4
+	 *                                      5
+	 * </pre>
+	 *
+	 * @see org.apache.flink.streaming.connectors.kafka.partitioner.FlinkFixedPartitioner
+	 */","/**
+ * Starts the Kafka instance from a specific offset in a specified partition.
+ * 
+ * @param partition the partition number to start from
+ * @param specificOffset the specific offset to start from in the specified partition
+ * @return this instance for method chaining
+ */",ok,0.1429,0.1,0.766
+v4_persona,1,sleuthkit/autopsy,"    /**
+     * Verify the ICCID (Integrated Circuit Card Identifier) number and
+     * normalize format.
+     *
+     * E.118 defines as up to 22 digits long including luhn check digit while
+     * GSM Phase 1 defines it as a 20 digit operator specific structure. They
+     * begin with 89 which is the ISO 7812 Major Industry Identifier for
+     * telecommunication, followed by a contry code of 1-3 digits as definted by
+     * ITU-T E.164, followed by issuer identifier 1-4 digits, followed by 1 luhn
+     * checksum digit (sometimes omitted). The hexidecimal digit F is used as
+     * filler when necessary in GSM Phase 1 specification.
+     *
+     * 18 digits appears to be the shortest ICCID in use.
+     *
+     * @param data The string to normalize and validate
+     *
+     * @return the data with common number seperators removed and lower cased if
+     *         the data was determined to be a possible ICCID
+     *
+     * @throws CorrelationAttributeNormalizationException if the data was not a
+     *                                                    valid ICCID
+     */","/**
+ * Normalizes the given USB ID data.
+ * 
+ * @param data the USB ID data to be normalized
+ * @throws CorrelationAttributeNormalizationException if an error occurs during normalization
+ */",ok,0.1538,0.1302,0.808
+v4_persona,2,realm/realm-java,"    /**
+     * Links the current user with a new user identity represented by the given credentials.
+     * <p>
+     * Linking a user with more credentials, mean the user can login either of these credentials.
+     * It also makes it possible to ""upgrade"" an anonymous user by linking it with e.g.
+     * Email/Password credentials.
+     * <pre>
+     * {@code
+     * // Example
+     * RealmApp app = new RealmApp(""app-id"")
+     * RealmUser user = app.login(RealmCredentials.anonymous());
+     * app.linkUser(RealmCredentials.emailPassword(""email"", ""password""));
+     * }
+     * </pre>
+     * <p>
+     * Note: It is not possible to link two existing users of MongoDB Realm. The provided credentials
+     * must not have been used by another user.
+     *
+     * @param credentials the credentials to link with the current user.
+     * @throws IllegalStateException if no user is currently logged in.
+     * @return the {@link io.realm.RealmUser} the credentials were linked to.
+     */","/**
+ * Switches the current user to the specified RealmUser instance.
+ * 
+ * @param user the RealmUser instance to switch to
+ * @return the switched RealmUser instance
+ * @throws NullPointerException if the user parameter is null
+ */",ok,0.2436,0.1795,0.8267
+v4_persona,3,apache/flink,"	/**
+	 * Reads all the bytes from a file. The method ensures that the file is
+	 * closed when all bytes have been read or an I/O error, or other runtime
+	 * exception, is thrown.
+	 *
+	 * <p>This is an implementation that follow {@link java.nio.file.Files#readAllBytes(java.nio.file.Path)},
+	 * and the difference is that it limits the size of the direct buffer to avoid
+	 * direct-buffer OutOfMemoryError. When {@link java.nio.file.Files#readAllBytes(java.nio.file.Path)}
+	 * or other interfaces in java API can do this in the future, we should remove it.
+	 *
+	 * @param path
+	 *        the path to the file
+	 * @return a byte array containing the bytes read from the file
+	 *
+	 * @throws IOException
+	 *         if an I/O error occurs reading from the stream
+	 * @throws OutOfMemoryError
+	 *         if an array of the required size cannot be allocated, for
+	 *         example the file is larger that {@code 2GB}
+	 */","/**
+ * Reads the contents of a file into a string using the specified character set.
+ * 
+ * @param file the file to read from
+ * @param charsetName the character set to use for decoding the file contents
+ * @return the contents of the file as a string
+ * @throws IOException if an I/O error occurs while reading the file
+ */",ok,0.3518,0.2814,0.8454
+v4_persona,4,apache/ambari,"  /**
+   * validate cluster name character and length requirements and throw IllegalArgumentException if not valid.
+   * <p>
+   * Character Requirements
+   * <p>
+   * A through Z
+   * a through z
+   * 0 through 9
+   * _ (underscore)
+   * - (dash)
+   * Length Requirements
+   * <p>
+   * Minimum: 1 character
+   * Maximum: 100 characters
+   * @see AmbariManagementControllerImpl#CLUSTER_NAME_VALIDATION_REGEXP
+   *
+   * @param clusterName name to validate
+   * @throws IllegalArgumentException if validation result
+   */","```java
+/**
+ * Validates a cluster name by checking for null, empty, and invalid characters.
+ *
+ * @param clusterName the name of the cluster to validate
+ * @throws IllegalArgumentException if the cluster name is invalid
+ */
+public static void validateClusterName(String clusterName) {
+    // method implementation...
+}
+```",ok,0.3516,0.2857,0.8455
+v4_persona,5,apache/flink,"	/**
+	 * Reads all the bytes from an input stream. Uses {@code initialSize} as a hint
+	 * about how many bytes the stream will have and uses {@code directBufferSize}
+	 * to limit the size of the direct buffer used to read.
+	 *
+	 * @param source
+	 *        the input stream to read from
+	 * @param initialSize
+	 *        the initial size of the byte array to allocate
+	 * @param maxDirectBufferSize
+	 *        the maximum size of the direct buffer used to read
+	 * @return a byte array containing the bytes read from the file
+	 *
+	 * @throws IOException
+	 *         if an I/O error occurs reading from the stream
+	 * @throws OutOfMemoryError
+	 *         if an array of the required size cannot be allocated
+	 */","/**
+ * Reads the contents of a file into a string using the specified character set.
+ * 
+ * @param file the file to read
+ * @param charsetName the character set to use for decoding the file contents
+ * @return the contents of the file as a string
+ * @throws IOException if an I/O error occurs while reading the file
+ */",ok,0.4103,0.3462,0.8512
+v4_persona,6,ballerina-platform/ballerina-lang,"    /**
+     * <p>
+     * Parse module variable declaration.
+     * </p>
+     *
+     * <code>
+     * module-var-decl := module-init-var-decl | module-no-init-var-decl
+     * <br/><br/>
+     * module-init-var-decl := metadata isolated-final-quals typed-binding-pattern = expression ;
+     * <br/><br/>
+     * module-no-init-var-decl := metadata [final] type-descriptor variable-name ;
+     * <br/><br/>
+     * isolated-final-quals := (final | isolated-qual)*
+     * </code>
+     *
+     * @param metadata           Preceding metadata
+     * @param topLevelQualifiers Preceding top level qualifiers
+     * @return Parsed node
+     */","/**
+ * Parses a module variable declaration from the given metadata.
+ * 
+ * @param metadata the metadata to parse
+ * @return the parsed module variable declaration
+ * @throws NullPointerException if the metadata is null
+ * @throws IllegalArgumentException if the metadata is not a valid module variable declaration
+ */",ok,0.2593,0.1852,0.7926
+v4_persona,7,DSpace/DSpace,"    /**
+     * Deletes an EPerson. The argument cascade defines whether all references
+     * on an EPerson should be deleted as well (by either deleting the
+     * referencing object - e.g. WorkspaceItem, ResourcePolicy - or by setting
+     * the foreign key null - e.g. archived Items). If cascade is set to false
+     * and the EPerson is referenced somewhere, this leads to an
+     * AuthorizeException. EPersons may be referenced by Items, ResourcePolicies
+     * and workflow tasks.
+     *
+     * @param context DSpace context
+     * @param ePerson The EPerson to delete.
+     * @param cascade Whether to delete references on the EPerson (cascade =
+     * true) or to abort the deletion (cascade = false) if the EPerson is
+     * referenced within DSpace.
+     *
+     * @throws SQLException
+     * @throws AuthorizeException
+     * @throws IOException
+     */","/**
+ * Retrieves the count of search results based on the provided query and metadata fields.
+ * 
+ * @param context the application context
+ * @param query the search query (may be null)
+ * @return the count of search results
+ * @throws SQLException if an error occurs while searching
+ */",ok,0.2432,0.1622,0.8179
+v4_persona,8,apache/kafka,"    /**
+     * Get metadata about partitions for all topics that the user is authorized to view. This method will issue a
+     * remote call to the server.
+     *
+     * @param timeout The maximum time this operation will block
+     *
+     * @return The map of topics and its partitions
+     * @throws org.apache.kafka.common.errors.TimeoutException if time spent blocking exceeds the {@code timeout}
+     * @throws org.apache.kafka.common.errors.WakeupException if {@link #wakeup()} is called before or while this
+     *             function is called
+     * @throws org.apache.kafka.common.errors.InterruptException if the calling thread is interrupted before or while
+     *             this function is called
+     * @throws org.apache.kafka.common.errors.TimeoutException if the topic metadata could not be fetched before
+     *             expiration of the configured request timeout
+     * @throws org.apache.kafka.common.KafkaException for any other unrecoverable errors
+     */","```java
+/**
+ * Retrieves the committed offset and metadata for the specified topic partition.
+ * 
+ * @param partition the topic partition for which to retrieve the committed offset and metadata
+ * @return the committed offset and metadata for the specified topic partition
+ * @throws CoordinatorException if an error occurs while fetching committed offsets from the coordinator
+ */
+```",ok,0.2809,0.1798,0.8187
+v4_persona,9,ReactiveX/RxJava,"    /**
+     * Assert that the TestSubscriber contains the given first and optional rest values exactly
+     * and if so, clears the internal list of values.
+     * <p>
+     * <code><pre>
+     * TestSubscriber ts = new TestSubscriber();
+     * 
+     * ts.onNext(1);
+     * 
+     * ts.assertAndConsume(1);
+     * 
+     * ts.onNext(2);
+     * ts.onNext(3);
+     * 
+     * ts.assertAndConsume(2, 3); // no mention of 1
+     * </pre></code>
+     * @param expectedFirstValue the expected first value
+     * @param expectedRestValues the optional rest values
+     */","/**
+ * Asserts that the list of values matches the expected values and consumes the list.
+ * 
+ * @param expectedFirstValue the first expected value
+ * @param expectedRestValues the remaining expected values
+ * 
+ * @throws AssertionError if the list of values does not match the expected values
+ */",ok,0.4314,0.3333,0.844
+v4_persona,10,sleuthkit/autopsy,"    /**
+     * Verify the wireless network name is valid
+     *
+     * SSIDs for wireless networks can be at most 32 characters, are case
+     * sensitive, and allow special characters.
+     *
+     * @param data The string to normalize and validate
+     *
+     * @return the unmodified data if the data was a valid length to be an SSID
+     *
+     * @throws CorrelationAttributeNormalizationException if the data was not a
+     *                                                    valid SSID
+     */","/**
+ * Normalizes the given USB ID data.
+ * 
+ * @param data the USB ID data to be normalized
+ * @throws CorrelationAttributeNormalizationException if the normalization process fails
+ */",ok,0.3291,0.2785,0.8405
+v4_persona,11,ome/bioformats,"  /**
+   * Read named table from a pre-initialized .mdb files.
+   * Each String[] in a table represents a row, and each element of the String[]
+   * represents the value of a particular column within the row.
+   *
+   * The first row in the table contains the names for each column.
+   *
+   * {@link #initialize(String)} must be called before calling parseTable.
+   *
+   * @param name table name
+   * @return table data or null if the named table does not exist
+   * @throws IOException if there is a problem reading the table data
+   */","```java
+/**
+ * Parses the database into a hierarchical structure of tables, where each table is a Vector of rows, and each row is a Vector of column values.
+ *
+ * @param none
+ * @return a Vector of tables, where each table is a Vector of rows, and each row is a Vector of String arrays
+ * @throws IOException if an I/O error occurs while parsing the database
+ */",ok,0.4028,0.25,0.8614
+v4_persona,12,apache/kafka,"    /**
+     * Get the consumer's current lag on the partition. Returns an ""empty"" {@link OptionalLong} if the lag is not known,
+     * for example if there is no position yet, or if the end offset is not known yet.
+     *
+     * <p>
+     * This method uses locally cached metadata and never makes a remote call.
+     *
+     * @param topicPartition The partition to get the lag for.
+     *
+     * @return This {@code Consumer} instance's current lag for the given partition.
+     *
+     * @throws IllegalStateException if the {@code topicPartition} is not assigned
+     **/","/**
+ * Retrieves the end offsets for the specified topic partitions within the given timeout.
+ * 
+ * @param partitions a collection of topic partitions to retrieve end offsets for
+ * @param timeout the maximum time to wait for end offsets to be retrieved
+ * @return a map of topic partitions to their corresponding end offsets
+ * @throws TimeoutException if the end offsets cannot be retrieved within the given timeout
+ * @throws KafkaException if an error occurs while retrieving end offsets
+ */",ok,0.3026,0.2105,0.8313
+v4_persona,13,realm/realm-java,"    /**
+     * Asynchronously returns a distinct set of objects of a specific class. If the result is
+     * sorted, the first object will be returned in case of multiple occurrences, otherwise it is
+     * undefined which object is returned.
+     *
+     * @param fieldName the field name.
+     * @return immediately a {@link RealmResults}. Users need to register a listener
+     * {@link io.realm.RealmResults#addChangeListener(RealmChangeListener)} to be notified when the
+     * query completes.
+     * @throws IllegalArgumentException if a field is null, does not exist, is an unsupported type,
+     * is not indexed, or points to linked fields.
+     */","/**
+ * Returns a RealmResults of unique objects based on the specified field name.
+ * 
+ * @param fieldName the name of the field to use for uniqueness
+ * @return a RealmResults of unique objects
+ * @throws IllegalArgumentException if the field name is null or empty
+ * @throws RealmException if an error occurs while executing the query
+ */",ok,0.4593,0.2815,0.8554
+v4_persona,14,realm/realm-java,"    /**
+     * Returns a distinct set of objects from a specific class. When multiple distinct fields are
+     * given, all unique combinations of values in the fields will be returned. In case of multiple
+     * matches, it is undefined which object is returned. Unless the result is sorted, then the
+     * first object will be returned.
+     *
+     * @param firstFieldName first field name to use when finding distinct objects.
+     * @param remainingFieldNames remaining field names when determining all unique combinations of field values.
+     * @return a non-null {@link RealmResults} containing the distinct objects.
+     * @throws IllegalArgumentException if field names is empty or {@code null}, does not exist,
+     * is an unsupported type, or points to a linked field.
+     */","/**
+ * Returns a RealmResults containing unique values for the specified field.
+ * 
+ * @param fieldName the name of the field to retrieve unique values for
+ * @return a RealmResults containing unique values for the specified field
+ * @throws IllegalArgumentException if the field name is null or empty
+ * @throws RealmException if an error occurs while retrieving unique values
+ */",ok,0.3875,0.3125,0.8534
+v4_persona,15,DSpace/DSpace,"    /**
+     * This method will generate a short lived token to be used for bitstream downloads among other things.
+     *
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     *
+     * Example:
+     * <pre>
+     * {@code
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     * }
+     * </pre>
+     * @param request The StandardMultipartHttpServletRequest
+     * @return        The created short lived token
+     */","```java
+/**
+ * Returns a short-lived authentication token resource based on the provided HTTP request.
+ * 
+ * @param request the HTTP request containing authentication context
+ * @return a short-lived authentication token resource
+ * @throws NullPointerException if the request is null
+ * @throws IllegalArgumentException if the request is invalid
+ */
+```",ok,0.2642,0.2264,0.8023
+v4_persona,16,vaadin/flow,"    /**
+     * Runs the Vite build
+     *
+     * @param adapter
+     *            - the PluginAdapterBase.
+     * @throws TimeoutException
+     *             - while run webpack
+     * @throws InterruptedException
+     *             - while run webpack
+     * @throws IOException
+     *             - while run webpack
+     * @throws URISyntaxException
+     *             - while parsing nodeDownloadRoot()) to URI
+     */","/**
+ * Runs the Webpack build tool for the frontend application.
+ * 
+ * @param adapter the plugin adapter instance
+ * @throws IOException if an I/O error occurs
+ * @throws InterruptedException if the build process is interrupted
+ * @throws TimeoutException if the build process times out
+ * @throws URISyntaxException if the Webpack script path is invalid
+ */",ok,0.4103,0.3077,0.8247
+v4_persona,17,sleuthkit/autopsy,"    /**
+     * Gets the rows from the Personas table where persona accounts' names are
+     * similar to the given one. Persona marked as DELETED are not returned.
+     *
+     * @param partialName Name substring to match.
+     * @return Collection of personas matching the given name substring, may be
+     * empty if no match is found.
+     *
+     * @throws CentralRepoException If there is an error in querying the
+     * Personas table.
+     */","/**
+ * Retrieves a collection of personas associated with accounts whose unique identifiers match the given partial name.
+ * 
+ * @param partialName the partial name to search for in account unique identifiers
+ * @throws CentralRepoException if an error occurs while executing the SQL query
+ * @return a collection of personas that match the search criteria
+ */",ok,0.463,0.2778,0.8514
+v4_persona,18,sleuthkit/autopsy,"    /**
+     * Convert a geo result taken from the Geolocation and convert to a stream
+     * of tuples where each tuple represents a point with the closest city and
+     * the time stamp in seconds from epoch.
+     *
+     * @param geoResult The result from the Geolocation API.
+     * @param cityMapper The means of mapping a point to the closest city.
+     * @return A list of tuples where each tuple represents a point to be
+     * counted with a combination of the closest city and the timestamp.
+     * @throws IOException
+     */","/**
+ * Initializes a GeolocationSummary instance with a ClosestCityMapper and a SleuthkitCaseProvider.
+ * 
+ * @param cityMapper a supplier of ClosestCityMapper instances that may throw IOExceptions.
+ * @param provider a SleuthkitCaseProvider instance.
+ */",ok,0.2476,0.1714,0.8383
+v4_persona,19,sleuthkit/autopsy,"    /**
+     * Gets the rows from the Personas table where persona accounts' names are
+     * similar to the given one. Persona marked as DELETED are not returned.
+     *
+     * @param partialName Name substring to match.
+     * @return Collection of personas matching the given name substring, may be
+     * empty if no match is found.
+     *
+     * @throws CentralRepoException If there is an error in querying the
+     * Personas table.
+     */","/**
+ * Retrieves a collection of personas associated with accounts that have an identifier matching the given partial name.
+ * 
+ * @param partialName the partial account identifier to search for
+ * @throws CentralRepoException if an error occurs while executing the SQL query
+ * @return a collection of personas that match the search criteria
+ */",ok,0.434,0.2642,0.8527
+v4_persona,20,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","```java
+/**
+ * Returns a map containing string keys and integer values.
+ * 
+ * @param none
+ * @return a map containing string keys and integer values
+ * @throws none
+ */
+```",ok,0.028,0.028,0.7853
+v4_persona,21,openjdk/jdk,"    /**
+     * Creates a new List from a trusted array, checking for and rejecting null
+     * elements.
+     *
+     * <p>A trusted array has no references retained by the caller. It can therefore be
+     * safely reused as the List's internal storage, avoiding a defensive copy. Declared
+     * with Object... instead of E... as the parameter type so that varargs calls don't
+     * accidentally create an array of type other than Object[].
+     *
+     * @param <E> the List's element type
+     * @param input the input array
+     * @return the new list
+     */","/**
+ * Returns a copy of the specified collection as a list.
+ * 
+ * @param coll the collection to be copied
+ * @return a list copy of the specified collection
+ * @throws ClassCastException if the collection is not a List or is a SubList of an AbstractImmutableList
+ * @throws NullPointerException if the collection is null
+ */",ok,0.3231,0.1692,0.8238
+v4_persona,22,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","/**
+ * Creates a new instance of BatchMessageAcker with a BitSet initialized to represent a batch of the specified size.
+ * 
+ * @param batchSize the size of the batch
+ * @return a new instance of BatchMessageAcker
+ * @throws IllegalArgumentException if batchSize is less than 1
+ */",ok,0.1132,0.1006,0.7877
+v4_persona,23,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","/**
+ * Constructs a new KeyValue object with the specified key and value.
+ * 
+ * @param key the key of the KeyValue object
+ * @param value the value of the KeyValue object
+ * @throws NullPointerException if the key or value is null
+ */",ok,0.1667,0.1154,0.7905
+v4_persona,24,VoltDB/voltdb,"    /**
+    * This method parses a batch of SQL statements passed in as a string
+    * and verifies that they're all DDL statements.  If there are any statements
+    * that are not allowed in a DDL batch, this method will indicate the position
+    * and text of the first such statement.
+    *
+    * @param batch  A string containing one or more SQL statements
+    * @return Optional.absent() if all valid statements, or an
+    *   optional pair:
+    *     first  - the offset of the first invalid statement in the batch
+    *              (0 if it's the first stmt, 1 if it's the second, etc)
+    *     second - the text of the invalid statement
+    */","```java
+/**
+ * Finds the first invalid statement in a given DDL batch.
+ * 
+ * @param batch the DDL batch to check
+ * @return the index and statement of the first invalid statement, or an empty Optional if the batch is valid
+ * @throws NullPointerException if the batch is null
+ */
+```",ok,0.4306,0.2639,0.8436
+v5_cognitive,0,apache/flink,"	/**
+	 * Configures how to partition records from Flink's partitions into Kafka's partitions.
+	 *
+	 * <p>This strategy ensures that each Flink partition ends up in one Kafka partition.
+	 *
+	 * <p>Note: One Kafka partition can contain multiple Flink partitions. Examples:
+	 *
+	 * <p>More Flink partitions than Kafka partitions. Some (or all) Kafka partitions contain
+	 * the output of more than one flink partition:
+	 * <pre>
+	 *     Flink Sinks            Kafka Partitions
+	 *         1    ----------------&gt;    1
+	 *         2    --------------/
+	 *         3    -------------/
+	 *         4    ------------/
+	 * </pre>
+	 *
+	 *
+	 * <p>Fewer Flink partitions than Kafka partitions:
+	 * <pre>
+	 *     Flink Sinks            Kafka Partitions
+	 *         1    ----------------&gt;    1
+	 *         2    ----------------&gt;    2
+	 *                                      3
+	 *                                      4
+	 *                                      5
+	 * </pre>
+	 *
+	 * @see org.apache.flink.streaming.connectors.kafka.partitioner.FlinkFixedPartitioner
+	 */","/**
+ * Starts the Kafka instance from a specific offset for the given partition.
+ * 
+ * @param partition the partition number
+ * @param specificOffset the specific offset to start from
+ * @return this instance for method chaining
+ */",ok,0.1203,0.0752,0.7661
+v5_cognitive,1,sleuthkit/autopsy,"    /**
+     * Verify the ICCID (Integrated Circuit Card Identifier) number and
+     * normalize format.
+     *
+     * E.118 defines as up to 22 digits long including luhn check digit while
+     * GSM Phase 1 defines it as a 20 digit operator specific structure. They
+     * begin with 89 which is the ISO 7812 Major Industry Identifier for
+     * telecommunication, followed by a contry code of 1-3 digits as definted by
+     * ITU-T E.164, followed by issuer identifier 1-4 digits, followed by 1 luhn
+     * checksum digit (sometimes omitted). The hexidecimal digit F is used as
+     * filler when necessary in GSM Phase 1 specification.
+     *
+     * 18 digits appears to be the shortest ICCID in use.
+     *
+     * @param data The string to normalize and validate
+     *
+     * @return the data with common number seperators removed and lower cased if
+     *         the data was determined to be a possible ICCID
+     *
+     * @throws CorrelationAttributeNormalizationException if the data was not a
+     *                                                    valid ICCID
+     */","```java
+/**
+ * Normalizes a USB ID string.
+ * 
+ * @param data the USB ID string to normalize
+ * @return the normalized USB ID string
+ * @throws CorrelationAttributeNormalizationException if an error occurs during normalization
+ */
+```",ok,0.1494,0.1494,0.7989
+v5_cognitive,2,realm/realm-java,"    /**
+     * Links the current user with a new user identity represented by the given credentials.
+     * <p>
+     * Linking a user with more credentials, mean the user can login either of these credentials.
+     * It also makes it possible to ""upgrade"" an anonymous user by linking it with e.g.
+     * Email/Password credentials.
+     * <pre>
+     * {@code
+     * // Example
+     * RealmApp app = new RealmApp(""app-id"")
+     * RealmUser user = app.login(RealmCredentials.anonymous());
+     * app.linkUser(RealmCredentials.emailPassword(""email"", ""password""));
+     * }
+     * </pre>
+     * <p>
+     * Note: It is not possible to link two existing users of MongoDB Realm. The provided credentials
+     * must not have been used by another user.
+     *
+     * @param credentials the credentials to link with the current user.
+     * @throws IllegalStateException if no user is currently logged in.
+     * @return the {@link io.realm.RealmUser} the credentials were linked to.
+     */","/**
+ * Switches the current user to the specified user.
+ * 
+ * @param user the user to switch to
+ * @return the user that was switched to
+ */",ok,0.2162,0.1622,0.8337
+v5_cognitive,3,apache/flink,"	/**
+	 * Reads all the bytes from a file. The method ensures that the file is
+	 * closed when all bytes have been read or an I/O error, or other runtime
+	 * exception, is thrown.
+	 *
+	 * <p>This is an implementation that follow {@link java.nio.file.Files#readAllBytes(java.nio.file.Path)},
+	 * and the difference is that it limits the size of the direct buffer to avoid
+	 * direct-buffer OutOfMemoryError. When {@link java.nio.file.Files#readAllBytes(java.nio.file.Path)}
+	 * or other interfaces in java API can do this in the future, we should remove it.
+	 *
+	 * @param path
+	 *        the path to the file
+	 * @return a byte array containing the bytes read from the file
+	 *
+	 * @throws IOException
+	 *         if an I/O error occurs reading from the stream
+	 * @throws OutOfMemoryError
+	 *         if an array of the required size cannot be allocated, for
+	 *         example the file is larger that {@code 2GB}
+	 */","```java
+/**
+ * Reads the contents of a file into a string using the specified character set.
+ * 
+ * @param file the file to be read
+ * @param charsetName the name of the character set to use for decoding
+ * @return the contents of the file as a string
+ * @throws IOException if an I/O error occurs while reading the file
+ */",ok,0.35,0.27,0.8442
+v5_cognitive,4,apache/ambari,"  /**
+   * validate cluster name character and length requirements and throw IllegalArgumentException if not valid.
+   * <p>
+   * Character Requirements
+   * <p>
+   * A through Z
+   * a through z
+   * 0 through 9
+   * _ (underscore)
+   * - (dash)
+   * Length Requirements
+   * <p>
+   * Minimum: 1 character
+   * Maximum: 100 characters
+   * @see AmbariManagementControllerImpl#CLUSTER_NAME_VALIDATION_REGEXP
+   *
+   * @param clusterName name to validate
+   * @throws IllegalArgumentException if validation result
+   */","```java
+/**
+ * Validates the given cluster name.
+ * 
+ * @param clusterName the cluster name to be validated
+ * @throws IllegalArgumentException if the cluster name is null, empty, or does not match the allowed pattern
+ */
+```",ok,0.3373,0.2651,0.8412
+v5_cognitive,5,apache/flink,"	/**
+	 * Reads all the bytes from an input stream. Uses {@code initialSize} as a hint
+	 * about how many bytes the stream will have and uses {@code directBufferSize}
+	 * to limit the size of the direct buffer used to read.
+	 *
+	 * @param source
+	 *        the input stream to read from
+	 * @param initialSize
+	 *        the initial size of the byte array to allocate
+	 * @param maxDirectBufferSize
+	 *        the maximum size of the direct buffer used to read
+	 * @return a byte array containing the bytes read from the file
+	 *
+	 * @throws IOException
+	 *         if an I/O error occurs reading from the stream
+	 * @throws OutOfMemoryError
+	 *         if an array of the required size cannot be allocated
+	 */","```java
+/**
+ * Reads the contents of a file into a string using the specified character set.
+ * 
+ * @param file the file to read
+ * @param charsetName the character set to use for decoding the file
+ * @return the contents of the file as a string
+ * @throws IOException if an I/O error occurs
+ */
+```",ok,0.3947,0.3289,0.8451
+v5_cognitive,6,ballerina-platform/ballerina-lang,"    /**
+     * <p>
+     * Parse module variable declaration.
+     * </p>
+     *
+     * <code>
+     * module-var-decl := module-init-var-decl | module-no-init-var-decl
+     * <br/><br/>
+     * module-init-var-decl := metadata isolated-final-quals typed-binding-pattern = expression ;
+     * <br/><br/>
+     * module-no-init-var-decl := metadata [final] type-descriptor variable-name ;
+     * <br/><br/>
+     * isolated-final-quals := (final | isolated-qual)*
+     * </code>
+     *
+     * @param metadata           Preceding metadata
+     * @param topLevelQualifiers Preceding top level qualifiers
+     * @return Parsed node
+     */","/**
+ * Parses a module variable declaration.
+ * 
+ * @param metadata metadata for the variable declaration
+ * @return the parsed module variable declaration
+ */",ok,0.2558,0.2093,0.8118
+v5_cognitive,7,DSpace/DSpace,"    /**
+     * Deletes an EPerson. The argument cascade defines whether all references
+     * on an EPerson should be deleted as well (by either deleting the
+     * referencing object - e.g. WorkspaceItem, ResourcePolicy - or by setting
+     * the foreign key null - e.g. archived Items). If cascade is set to false
+     * and the EPerson is referenced somewhere, this leads to an
+     * AuthorizeException. EPersons may be referenced by Items, ResourcePolicies
+     * and workflow tasks.
+     *
+     * @param context DSpace context
+     * @param ePerson The EPerson to delete.
+     * @param cascade Whether to delete references on the EPerson (cascade =
+     * true) or to abort the deletion (cascade = false) if the EPerson is
+     * referenced within DSpace.
+     *
+     * @throws SQLException
+     * @throws AuthorizeException
+     * @throws IOException
+     */","```java
+/**
+ * Returns the count of search results based on the provided query and metadata fields.
+ * 
+ * @param context the application context
+ * @param query the search query
+ * @return the count of search results
+ * @throws SQLException if an error occurs while executing the query
+ */
+```",ok,0.2162,0.1622,0.8105
+v5_cognitive,8,apache/kafka,"    /**
+     * Get metadata about partitions for all topics that the user is authorized to view. This method will issue a
+     * remote call to the server.
+     *
+     * @param timeout The maximum time this operation will block
+     *
+     * @return The map of topics and its partitions
+     * @throws org.apache.kafka.common.errors.TimeoutException if time spent blocking exceeds the {@code timeout}
+     * @throws org.apache.kafka.common.errors.WakeupException if {@link #wakeup()} is called before or while this
+     *             function is called
+     * @throws org.apache.kafka.common.errors.InterruptException if the calling thread is interrupted before or while
+     *             this function is called
+     * @throws org.apache.kafka.common.errors.TimeoutException if the topic metadata could not be fetched before
+     *             expiration of the configured request timeout
+     * @throws org.apache.kafka.common.KafkaException for any other unrecoverable errors
+     */","```java
+/**
+ * Returns the committed offset and metadata for the specified topic partition.
+ * 
+ * @param partition the topic partition for which to retrieve the committed offset
+ * @return the committed offset and metadata for the specified topic partition
+ */
+```",ok,0.2331,0.135,0.8113
+v5_cognitive,9,ReactiveX/RxJava,"    /**
+     * Assert that the TestSubscriber contains the given first and optional rest values exactly
+     * and if so, clears the internal list of values.
+     * <p>
+     * <code><pre>
+     * TestSubscriber ts = new TestSubscriber();
+     * 
+     * ts.onNext(1);
+     * 
+     * ts.assertAndConsume(1);
+     * 
+     * ts.onNext(2);
+     * ts.onNext(3);
+     * 
+     * ts.assertAndConsume(2, 3); // no mention of 1
+     * </pre></code>
+     * @param expectedFirstValue the expected first value
+     * @param expectedRestValues the optional rest values
+     */","```java
+/**
+ * Asserts that the iterable contains the specified values and then consumes them.
+ * 
+ * @param expectedFirstValue the first value to be asserted
+ * @param expectedRestValues the remaining values to be asserted
+ */
+```",ok,0.3478,0.3478,0.8363
+v5_cognitive,10,sleuthkit/autopsy,"    /**
+     * Verify the wireless network name is valid
+     *
+     * SSIDs for wireless networks can be at most 32 characters, are case
+     * sensitive, and allow special characters.
+     *
+     * @param data The string to normalize and validate
+     *
+     * @return the unmodified data if the data was a valid length to be an SSID
+     *
+     * @throws CorrelationAttributeNormalizationException if the data was not a
+     *                                                    valid SSID
+     */","```java
+/**
+ * Normalizes the given USB ID data.
+ *
+ * @param data the USB ID data to be normalized
+ * @return the normalized USB ID data
+ * @throws CorrelationAttributeNormalizationException if an error occurs during normalization
+ */
+```",ok,0.3678,0.2759,0.8209
+v5_cognitive,11,ome/bioformats,"  /**
+   * Read named table from a pre-initialized .mdb files.
+   * Each String[] in a table represents a row, and each element of the String[]
+   * represents the value of a particular column within the row.
+   *
+   * The first row in the table contains the names for each column.
+   *
+   * {@link #initialize(String)} must be called before calling parseTable.
+   *
+   * @param name table name
+   * @return table data or null if the named table does not exist
+   * @throws IOException if there is a problem reading the table data
+   */","```java
+/**
+ * Reads named table from a pre-initialized .mdb files.
+ * 
+ * @throws IOException if an I/O error occurs
+ */
+```",ok,0.2424,0.2424,0.8676
+v5_cognitive,12,apache/kafka,"    /**
+     * Get the consumer's current lag on the partition. Returns an ""empty"" {@link OptionalLong} if the lag is not known,
+     * for example if there is no position yet, or if the end offset is not known yet.
+     *
+     * <p>
+     * This method uses locally cached metadata and never makes a remote call.
+     *
+     * @param topicPartition The partition to get the lag for.
+     *
+     * @return This {@code Consumer} instance's current lag for the given partition.
+     *
+     * @throws IllegalStateException if the {@code topicPartition} is not assigned
+     **/","/**
+ * Returns a map of end offsets for the specified partitions.
+ * 
+ * @param partitions a collection of topic partitions to retrieve end offsets for
+ * @param timeout the maximum time to wait for the operation to complete
+ * @return a map of topic partitions to their corresponding end offsets
+ * @throws Exception if an error occurs while fetching end offsets",ok,0.2815,0.1926,0.8356
+v5_cognitive,13,realm/realm-java,"    /**
+     * Asynchronously returns a distinct set of objects of a specific class. If the result is
+     * sorted, the first object will be returned in case of multiple occurrences, otherwise it is
+     * undefined which object is returned.
+     *
+     * @param fieldName the field name.
+     * @return immediately a {@link RealmResults}. Users need to register a listener
+     * {@link io.realm.RealmResults#addChangeListener(RealmChangeListener)} to be notified when the
+     * query completes.
+     * @throws IllegalArgumentException if a field is null, does not exist, is an unsupported type,
+     * is not indexed, or points to linked fields.
+     */","/**
+ * Returns a RealmResults containing distinct objects based on the specified field.
+ * 
+ * @param fieldName the name of the field to consider for distinct values
+ * @return a RealmResults containing distinct objects
+ */",ok,0.3304,0.2087,0.8465
+v5_cognitive,14,realm/realm-java,"    /**
+     * Returns a distinct set of objects from a specific class. When multiple distinct fields are
+     * given, all unique combinations of values in the fields will be returned. In case of multiple
+     * matches, it is undefined which object is returned. Unless the result is sorted, then the
+     * first object will be returned.
+     *
+     * @param firstFieldName first field name to use when finding distinct objects.
+     * @param remainingFieldNames remaining field names when determining all unique combinations of field values.
+     * @return a non-null {@link RealmResults} containing the distinct objects.
+     * @throws IllegalArgumentException if field names is empty or {@code null}, does not exist,
+     * is an unsupported type, or points to a linked field.
+     */","/**
+ * Returns a RealmResults containing unique values for the specified field.
+ * 
+ * @param fieldName the name of the field to get unique values for
+ * @return a RealmResults containing unique values for the specified field
+ */",ok,0.3,0.2571,0.8418
+v5_cognitive,15,DSpace/DSpace,"    /**
+     * This method will generate a short lived token to be used for bitstream downloads among other things.
+     *
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     *
+     * Example:
+     * <pre>
+     * {@code
+     * curl -v -X POST https://{dspace-server.url}/api/authn/shortlivedtokens -H ""Authorization: Bearer eyJhbG...COdbo""
+     * }
+     * </pre>
+     * @param request The StandardMultipartHttpServletRequest
+     * @return        The created short lived token
+     */","```java
+/**
+ * Obtains a short-lived login authentication token from the REST authentication service.
+ * 
+ * @param request The HTTP request containing context information.
+ * @return An authentication token resource.
+ */
+```",ok,0.2472,0.2022,0.8185
+v5_cognitive,16,vaadin/flow,"    /**
+     * Runs the Vite build
+     *
+     * @param adapter
+     *            - the PluginAdapterBase.
+     * @throws TimeoutException
+     *             - while run webpack
+     * @throws InterruptedException
+     *             - while run webpack
+     * @throws IOException
+     *             - while run webpack
+     * @throws URISyntaxException
+     *             - while parsing nodeDownloadRoot()) to URI
+     */","/**
+ * Runs the Webpack frontend build tool using the provided PluginAdapterBase instance.
+ * 
+ * @param adapter the PluginAdapterBase instance to use for running Webpack
+ * @throws IOException if an I/O error occurs
+ * @throws InterruptedException if the thread is interrupted while running Webpack
+ * @throws TimeoutException if the Webpack build times out
+ * @throws URISyntaxException if a URI syntax error occurs
+ */",ok,0.5412,0.4471,0.8218
+v5_cognitive,17,sleuthkit/autopsy,"    /**
+     * Gets the rows from the Personas table where persona accounts' names are
+     * similar to the given one. Persona marked as DELETED are not returned.
+     *
+     * @param partialName Name substring to match.
+     * @return Collection of personas matching the given name substring, may be
+     * empty if no match is found.
+     *
+     * @throws CentralRepoException If there is an error in querying the
+     * Personas table.
+     */","```java
+/**
+ * Retrieves a collection of Persona objects based on a partial account identifier.
+ * 
+ * @param partialName a partial account identifier to search for
+ * @return a collection of Persona objects
+ * @throws CentralRepoException if an error occurs during the database query
+ */",ok,0.3299,0.3093,0.8426
+v5_cognitive,18,sleuthkit/autopsy,"    /**
+     * Convert a geo result taken from the Geolocation and convert to a stream
+     * of tuples where each tuple represents a point with the closest city and
+     * the time stamp in seconds from epoch.
+     *
+     * @param geoResult The result from the Geolocation API.
+     * @param cityMapper The means of mapping a point to the closest city.
+     * @return A list of tuples where each tuple represents a point to be
+     * counted with a combination of the closest city and the timestamp.
+     * @throws IOException
+     */","/**
+ * Initializes a new instance of GeolocationSummary with a city mapper and a Sleuthkit case provider.
+ * 
+ * @param cityMapper a supplier of ClosestCityMapper instances that may throw IOException
+ * @param provider a Sleuthkit case provider
+ */",ok,0.2703,0.1982,0.8397
+v5_cognitive,19,sleuthkit/autopsy,"    /**
+     * Gets the rows from the Personas table where persona accounts' names are
+     * similar to the given one. Persona marked as DELETED are not returned.
+     *
+     * @param partialName Name substring to match.
+     * @return Collection of personas matching the given name substring, may be
+     * empty if no match is found.
+     *
+     * @throws CentralRepoException If there is an error in querying the
+     * Personas table.
+     */","```java
+/**
+ * Returns a collection of Persona objects based on the given partial account identifier.
+ * 
+ * @param partialName the partial account identifier to search for
+ * @return a collection of Persona objects
+ * @throws CentralRepoException if an error occurs while executing the SQL query
+ */",ok,0.404,0.3232,0.8445
+v5_cognitive,20,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","```java
+/**
+ * Returns the value associated with the given key in the test map.
+ *
+ * @param key the key to look up in the map
+ * @return the value associated with the given key, or null if not found
+ * @throws NullPointerException if the key is null
+ */
+```",ok,0.1963,0.1472,0.7857
+v5_cognitive,21,openjdk/jdk,"    /**
+     * Creates a new List from a trusted array, checking for and rejecting null
+     * elements.
+     *
+     * <p>A trusted array has no references retained by the caller. It can therefore be
+     * safely reused as the List's internal storage, avoiding a defensive copy. Declared
+     * with Object... instead of E... as the parameter type so that varargs calls don't
+     * accidentally create an array of type other than Object[].
+     *
+     * @param <E> the List's element type
+     * @param input the input array
+     * @return the new list
+     */","/**
+ * Creates a copy of the specified collection, returning it as a list.
+ * 
+ * @param coll the collection to copy
+ * @return a list containing the elements of the specified collection
+ */",ok,0.3273,0.2,0.8455
+v5_cognitive,22,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","/**
+ * Creates a new instance of BatchMessageAcker with a BitSet initialized to represent a batch of the specified size.
+ * 
+ * @param batchSize the size of the batch
+ * @return a new instance of BatchMessageAcker
+ */",ok,0.106,0.106,0.7941
+v5_cognitive,23,apache/pulsar,"/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */","/**
+ * Constructs a new KeyValue object with the specified key and value.
+ * 
+ * @param key the key to be associated with this KeyValue object
+ * @param value the value to be associated with this KeyValue object
+ */",ok,0.1438,0.0915,0.7952
+v5_cognitive,24,VoltDB/voltdb,"    /**
+    * This method parses a batch of SQL statements passed in as a string
+    * and verifies that they're all DDL statements.  If there are any statements
+    * that are not allowed in a DDL batch, this method will indicate the position
+    * and text of the first such statement.
+    *
+    * @param batch  A string containing one or more SQL statements
+    * @return Optional.absent() if all valid statements, or an
+    *   optional pair:
+    *     first  - the offset of the first invalid statement in the batch
+    *              (0 if it's the first stmt, 1 if it's the second, etc)
+    *     second - the text of the invalid statement
+    */","```java
+/**
+ * Finds the first non-DML statement in a DDL batch.
+ * 
+ * @param batch the DDL batch to search
+ * @return the first non-DML statement and its index, or an empty Optional if all statements are DML
+ */",ok,0.3529,0.2059,0.8495
