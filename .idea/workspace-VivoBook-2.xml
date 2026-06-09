@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="90c21651-8631-4ca6-a686-ce5fe79b5248" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/documentation-debt-project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/documentation-debt-project.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "git-widget-placeholder": "main"
+  }
+}]]></component>
+  <component name="TaskManager">
+    <servers />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/documentation_debt_project$llm_baseline.coverage" NAME="llm_baseline Coverage Results" MODIFIED="1779919308701" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/llm_generation" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$evaluate_and_plot.coverage" NAME="evaluate_and_plot Coverage Results" MODIFIED="1780514608058" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/analysis" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$apply_inline_doc_changes.coverage" NAME="apply_inline_doc_changes Coverage Results" MODIFIED="1780496257838" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/llm_generation" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$extract_readme_prs.coverage" NAME="extract_readme_prs Coverage Results" MODIFIED="1780003587254" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/preprocessing" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$exp_doc_pairs_llm.coverage" NAME="exp_doc_pairs_llm Coverage Results" MODIFIED="1780612975264" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/llm_generation" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$exp_prompt_variants.coverage" NAME="exp_prompt_variants Coverage Results" MODIFIED="1780934913346" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/llm_generation" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$build_pr_dataset.coverage" NAME="build_pr_dataset Coverage Results" MODIFIED="1780092379027" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/data_collection" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$meta_prompting.coverage" NAME="meta_prompting Coverage Results" MODIFIED="1780687520190" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/llm_generation" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$generate_docs_multi_llm.coverage" NAME="generate_docs_multi_llm Coverage Results" MODIFIED="1780511119921" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/llm_generation" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$select_golden_set.coverage" NAME="select_golden_set Coverage Results" MODIFIED="1780003651071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/preprocessing" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$extract_doc_pairs.coverage" NAME="extract_doc_pairs Coverage Results" MODIFIED="1780607494389" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/preprocessing" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$compare_results.coverage" NAME="compare_results Coverage Results" MODIFIED="1780514451175" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/analysis" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$classify_readme_sections.coverage" NAME="classify_readme_sections Coverage Results" MODIFIED="1780514349010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/analysis" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$dataset_statistics.coverage" NAME="dataset_statistics Coverage Results" MODIFIED="1779919260385" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/analysis" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$apply_readme_changes.coverage" NAME="apply_readme_changes Coverage Results" MODIFIED="1780436703685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/scripts/llm_generation" />
+    <SUITE FILE_PATH="coverage/documentation_debt_project$make_folder_tree.coverage" NAME="make_folder_tree Coverage Results" MODIFIED="1780935161658" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/additional" />
+  </component>
+</project>
