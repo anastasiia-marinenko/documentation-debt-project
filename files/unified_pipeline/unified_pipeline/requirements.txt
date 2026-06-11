@@ -1,0 +1,14 @@
+python-dotenv
+pandas
+pyarrow
+openpyxl
+rouge-score
+bert-score
+nltk
+scikit-learn
+sentence-transformers
+matplotlib
+groq
+google-genai
+huggingface-hub
+openai            # used ONLY for DeepSeek's OpenAI-compatible endpoint
