@@ -57,7 +57,7 @@ def main():
     ap.add_argument("--datasets", nargs="+", default=list(C.DATASETS))
     ap.add_argument("--dataset", default="code_review")
     ap.add_argument("--one-model", default="groq")
-    ap.add_argument("--per-dataset", type=int, default=5)  # IRA items per dataset
+    ap.add_argument("--per-dataset", type=int, default=None)  # default: IRA_TOTAL_SAMPLES/datasets (~60)
     ap.add_argument("--results", nargs="+", default=None)   # input jsonl(s) for evaluate
     ap.add_argument("--metrics", default="metrics.csv")     # metrics csv name
     ap.add_argument("--xlsx", default="cross_comparison.xlsx")  # workbook name

@@ -26,7 +26,7 @@ DATASETS = {
     # --- the 5 active datasets ---
     "code_review":        {"raw": DATA_RAW / "train_complete.jsonl",       "lang": "java"},  # Lin et al. 2026
     "funcom":             {"raw": DATA_RAW / "funcom",                     "lang": "java"},  # dats.train + coms.train (also reads data/raw root)
-    "tesoro":             {"raw": DATA_RAW / "tesoro_comment.json",                     "lang": "java"},  # put tesoro_comment.json here
+    "tesoro":             {"raw": DATA_RAW / "tesoro_comment.json",        "lang": "java"},  # put tesoro_comment.json here
     "codereval":          {"raw": DATA_RAW / "CEJavaRaw.jsonl",            "lang": "java"},  # input / docstring
     "robustness_copilot": {"raw": DATA_RAW / "robustness_copilot.csv",     "lang": "java"},  # body / javaDoc
     # --- excluded from current scope (kept for later) ---
@@ -54,10 +54,10 @@ MODELS = {
     "starchat":    {"provider": "hf",      "model": "HuggingFaceH4/starchat2-15b-v0.1",   "enabled": False},
     "llama2":      {"provider": "hf",      "model": "meta-llama/Llama-2-7b-chat-hf",       "enabled": False},
     "magicoder":   {"provider": "hf",      "model": "ise-uiuc/Magicoder-S-DS-6.7B",        "enabled": False},
-    "codellama":   {"provider": "hf",      "model": "codellama/CodeLlama-7b-Instruct-hf",  "enabled": False},
+    "codellama":   {"provider": "hf",      "model": "codellama/CodeLlama-7b-Instruct-hf",  "enabled": True},   # gated: accept license on HF
     "codegen":     {"provider": "hf_text", "model": "Salesforce/codegen-2B-multi",         "enabled": False},  # base -> text_generation
-    "qwen_coder":  {"provider": "hf",      "model": "Qwen/Qwen2.5-Coder-7B-Instruct",      "enabled": False},
-    "deepseek":    {"provider": "deepseek","model": "deepseek-coder",                      "enabled": False},  # needs DEEPSEEK_API_KEY
+    "qwen_coder":  {"provider": "hf",      "model": "Qwen/Qwen2.5-Coder-7B-Instruct",      "enabled": True},
+    "deepseek":    {"provider": "deepseek","model": "deepseek-coder",                      "enabled": True},   # needs DEEPSEEK_API_KEY
     # PanGu-Coder (Huawei) is NOT openly hosted on HF — needs special access.
     # Add it here with a provider once you obtain an endpoint.
     "pangu_coder": {"provider": "hf",      "model": "REPLACE_WITH_ACCESSIBLE_ENDPOINT",    "enabled": False},
@@ -79,5 +79,5 @@ PROMPT_VARIANTS = ["v1_minimal", "v2_structured", "v3_template",
 DEFAULT_PROMPT = "v3_template"
 
 # ── IRA sampling ──
-IRA_TOTAL_SAMPLES = 25
+IRA_TOTAL_SAMPLES = 383   # statistically significant (95% conf, 5% margin); use sample-size calculator
 IRA_SEED = 42

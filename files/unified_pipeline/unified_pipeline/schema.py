@@ -9,7 +9,7 @@ Everything downstream (generation, metrics, IRA) only ever sees DocPair.
 from __future__ import annotations
 from dataclasses import dataclass, asdict, field
 from typing import Optional
-import hashlib
+import hashlib, re
 
 
 # Common task vocabulary across datasets (kept for the comparison table).
@@ -18,6 +18,18 @@ TASK_SUMMARIZATION  = "code_summarization"
 TASK_SATD           = "satd_detection"
 TASK_REVIEW         = "review_comment"
 TASK_INCONSISTENCY  = "code_comment_inconsistency"
+
+
+_BLOCK = re.compile(r"/\*\*.*?\*/|/\*.*?\*/", re.DOTALL)
+
+def strip_doc_comments(code: Optional[str]) -> str:
+    """Remove Javadoc/block comments (/** ... */ and /* ... */) from code so the
+    model can NEVER copy the reference documentation back. Prevents the leakage
+    that inflates scores when a dataset ships code WITH its doc already attached
+    (e.g. CoderEval's `input` field)."""
+    if not code:
+        return code or ""
+    return _BLOCK.sub("", code).strip()
 
 
 @dataclass
@@ -33,6 +45,8 @@ class DocPair:
     meta: dict = field(default_factory=dict)
 
     def __post_init__(self):
+        # Honesty guard: code the model sees must never contain the reference doc.
+        self.code_unit = strip_doc_comments(self.code_unit)
         if not self.pair_id:
             h = hashlib.md5(
                 (self.dataset + self.code_unit + self.reference_doc).encode("utf-8")

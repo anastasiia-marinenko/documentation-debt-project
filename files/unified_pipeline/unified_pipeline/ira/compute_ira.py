@@ -40,6 +40,20 @@ def compute(xlsx=None):
     if ks: print(f"mean weighted kappa: {np.mean(ks):.3f}")
     print("Landis & Koch: .2-.4 fair, .4-.6 moderate, .6-.8 substantial, .8-1 almost perfect")
 
+    # Record disagreements for the joint review meeting (supervisor request).
+    disc = []
+    for it in ITEMS + ["overall_0_10"]:
+        if it in a.columns and it in n.columns:
+            for i in idx:
+                va, vn = a.loc[i, it], n.loc[i, it]
+                if pd.notna(va) and pd.notna(vn) and va != vn:
+                    disc.append({"ira_id": i, "criterion": it,
+                                 "Anastasiia": va, "Nasser": vn,
+                                 "abs_diff": abs(va - vn), "resolution_note": ""})
+    out = C.DATA_RESULTS / "ira_discrepancies.xlsx"
+    pd.DataFrame(disc).to_excel(out, index=False)
+    print(f"\n{len(disc)} disagreements written -> {out}  (discuss & fill resolution_note)")
+
 
 if __name__ == "__main__":
     compute(sys.argv[1] if len(sys.argv) > 1 else None)

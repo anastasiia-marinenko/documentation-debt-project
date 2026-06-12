@@ -1,0 +1,1271 @@
+dataset,model,variant,task_type,repo,pair_id,rouge1,rougeL,bleu,meteor,bertscore_f1,cosine,generated,reference_doc
+code_review,groq,self_refine,doc_generation,apache/carbondata,code_review:8684cb3586,0.0272,0.0272,0.0031,0.1646,0.8105,0.3449,"javascript
+/**
+ * Initializes the CarbonProperties instance by creating a new Properties object,
+ * loading properties from the configuration, and validating and loading default properties.
+ */
+class CarbonProperties {
+  constructor() {
+    // Create a new Properties object to store configuration properties
+    this.properties = new Properties();
+
+    // Load properties from the configuration
+    this.loadProperties();
+
+    // Validate and load default properties
+    this.validateAndLoadDefaultProperties();
+  }
+
+  /**
+   * Loads properties from the configuration.
+   */
+  loadProperties() {
+    // Load properties from a file or other configuration source
+    // For example, using the `fs` module in Node.js
+    const fs = require('fs');
+    const config = fs.readFileSync('config.properties', 'utf8');
+    this.properties.load(config);
+  }
+
+  /**
+   * Validates and loads default properties.
+   */
+  validateAndLoadDefaultProperties() {
+    // Define default properties
+    const defaultProperties = {
+      // Example default properties
+      'carbon.host': 'localhost',
+      'carbon.port': 8080,
+    };
+
+    // Validate and load default properties
+    Object.keys(defaultProperties).forEach((key) => {
+      if (!this.properties.containsKey(key)) {
+        this.properties.setProperty(key, defaultProperties[key]);
+      }
+    });
+  }
+}
+
+// Example usage:
+const carbonProperties = new CarbonProperties();
+console.log(carbonProperties.properties);","  /**
+   * Boolean type properties default value
+   */"
+code_review,groq,meta_prompting,doc_generation,apache/carbondata,code_review:8684cb3586,0.1111,0.1111,0.0133,0.2294,0.8529,0.452,"/**
+ * Initializes a new instance of the CarbonProperties class, loading default properties and validating their configuration.
+ * 
+ * @throws IOException if an error occurs while loading properties
+ * @throws ConfigurationException if default properties are invalid
+ */","  /**
+   * Boolean type properties default value
+   */"
+code_review,groq,self_refine,doc_generation,bndtools/bnd,code_review:ecdb2e2345,0.2,0.1524,0.0127,0.1903,0.8074,0.1456,"javascript
+/**
+ * Retrieves the file extension from a given file name, returning a default value if no extension is found.
+ *
+ * @param {string} fileName The file name to extract the extension from.
+ * @param {string} [deflt=''] The default value to return if no extension is found.
+ * @returns {string} The file extension, or the default value if no extension is found.
+ */
+function getFileExtension(fileName, deflt = '') {
+  // Find the last occurrence of a dot (.) in the file name
+  const lastDotIndex = fileName.lastIndexOf('.');
+
+  // If a dot is found, return the substring after the dot
+  if (lastDotIndex !== -1) {
+    return fileName.substring(lastDotIndex + 1);
+  }
+
+  // If no dot is found, return the default value
+  return deflt;
+}
+
+// Example usage:
+console.log(getFileExtension('example.txt'));  // Output: txt
+console.log(getFileExtension('example'));  // Output: (empty string)
+console.log(getFileExtension('example.txt', 'unknown'));  // Output: txt
+console.log(getFileExtension('example', 'unknown'));  // Output: unknown","	/**
+	 * Creates a symbolic link from {@code link} to the {@code target}, or
+	 * copies {@code target} to {@code link} if running on Windows.
+	 * <p>
+	 * Creating symbolic links on Windows requires administrator permissions, so
+	 * copying is a safer fallback.
+	 *
+	 * @param link the location of the symbolic link, or destination of the
+	 *            copy.
+	 * @param target the target of the symbolic link, or source of the copy.
+	 * @return {@code true} if the operation succeeds, {@code false} otherwise.
+	 */"
+code_review,groq,meta_prompting,doc_generation,bndtools/bnd,code_review:ecdb2e2345,0.2695,0.1986,0.0231,0.1722,0.8247,0.3716,"/**
+ * Returns the file extension from the given file name, or the default value if no extension is found.
+ * 
+ * @param fileName the file name to extract the extension from
+ * @param deflt the default value to return if no extension is found
+ * @return the file extension (without leading dot) if found, or the default value if not found
+ * @throws NullPointerException if fileName is null
+ * @throws IllegalArgumentException if deflt is null
+ */","	/**
+	 * Creates a symbolic link from {@code link} to the {@code target}, or
+	 * copies {@code target} to {@code link} if running on Windows.
+	 * <p>
+	 * Creating symbolic links on Windows requires administrator permissions, so
+	 * copying is a safer fallback.
+	 *
+	 * @param link the location of the symbolic link, or destination of the
+	 *            copy.
+	 * @param target the target of the symbolic link, or source of the copy.
+	 * @return {@code true} if the operation succeeds, {@code false} otherwise.
+	 */"
+code_review,groq,self_refine,doc_generation,testcontainers/testcontainers-java,code_review:23cf984027,0.1277,0.0851,0.0121,0.2655,0.8661,0.2595,"java
+/**
+ * Constructs a new instance of JdbcDatabaseContainer with the specified Docker image name.
+ * 
+ * @param dockerImageName the name of the Docker image to use for the database container
+ */
+public JdbcDatabaseContainer(String dockerImageName) {
+    this.dockerImageName = dockerImageName;
+    // Initialize other properties and setup the container as needed
+}","    /**
+     * @return the database name
+     */"
+code_review,groq,meta_prompting,doc_generation,testcontainers/testcontainers-java,code_review:23cf984027,0.2069,0.1379,0.0207,0.4585,0.8655,0.3977,"/**
+ * Initializes a new JdbcDatabaseContainer instance with the specified Docker image name.
+ * 
+ * @param dockerImageName the name of the Docker image to use for the database container
+ */","    /**
+     * @return the database name
+     */"
+code_review,groq,self_refine,doc_generation,GoogleCloudPlatform/java-docs-samples,code_review:5a30a50108,0.0851,0.0851,0.0088,0.3074,0.8459,0.4111,"javascript
+/**
+ * Unregisters the Stackdriver Trace Exporter after use.
+ * This ensures that any resources used by the exporter are properly cleaned up.
+ */
+function unregisterStackdriverTraceExporter() {
+  // Check if the exporter has been registered
+  if (global.stackdriverTraceExporter) {
+    // Unregister the exporter
+    global.stackdriverTraceExporter.close();
+    global.stackdriverTraceExporter = null;
+  }
+}","/**
+ * Tests for stackdriver tracing sample.
+ */"
+code_review,groq,meta_prompting,doc_generation,GoogleCloudPlatform/java-docs-samples,code_review:5a30a50108,0.2105,0.2105,0.0228,0.3507,0.8692,0.4974,"/**
+ * Unregisters the Stackdriver Trace Exporter. 
+ * 
+ * @throws IllegalStateException if the exporter has not been registered.","/**
+ * Tests for stackdriver tracing sample.
+ */"
+code_review,groq,self_refine,doc_generation,ReactiveX/RxJava,code_review:3b6f4ff1e2,0.0833,0.0694,0.0066,0.0604,0.7647,-0.0245,"typescript
+/**
+ * Creates a new instance of CompletableSubject that can be used to emit a single completion event.
+ * 
+ * @returns A new CompletableSubject instance
+ */
+function createCompletableSubject(): any {
+    // Create a new CompletableSubject instance
+    const completableSubject = new CompletableSubject();
+
+    // Return the new CompletableSubject instance
+    return completableSubject;
+}
+
+// Example usage:
+const completableSubject = createCompletableSubject();
+completableSubject.subscribe({
+    onComplete: () => console.log('Completed'),
+});
+completableSubject.onComplete();","/**
+ * Copyright 2016 Netflix, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the ""License""); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See
+ * the License for the specific language governing permissions and limitations under the License.
+ */"
+code_review,groq,meta_prompting,doc_generation,ReactiveX/RxJava,code_review:3b6f4ff1e2,0.0583,0.0583,0.0005,0.0463,0.792,0.0624,"/**
+ * Creates a new instance of a CompletableSubject. 
+ * 
+ * @return a new instance of CompletableSubject
+ */","/**
+ * Copyright 2016 Netflix, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the ""License""); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See
+ * the License for the specific language governing permissions and limitations under the License.
+ */"
+code_review,groq,self_refine,doc_generation,vaticle/typedb,code_review:767e639107,0.0,0.0,0.0025,0.0679,0.7763,-0.0585,"javascript
+/**
+ * Creates a new instance of UndefineQueryImpl with the specified variable patterns and transaction.
+ * 
+ * @param {Array<string>} varPatterns The variable patterns to be undefined.
+ * @param {object} tx The transaction to operate within, or null if no transaction is provided.
+ * @returns {UndefineQueryImpl} A new instance of UndefineQueryImpl.
+ */
+function createUndefineQuery(varPatterns, tx = null) {
+    // Check if varPatterns is an array to ensure it can be iterated over
+    if (!Array.isArray(varPatterns)) {
+        throw new Error('varPatterns must be an array of variable patterns');
+    }
+
+    // Check if tx is null or an object to ensure it can be used as a transaction
+    if (tx === null || (typeof tx === 'object' && tx !== null)) {
+        // If tx is null, create a new transaction object
+        tx = {};
+    } else {
+        throw new Error('tx must be null or an object');
+    }
+
+    // Create a new instance of UndefineQueryImpl with the specified variable patterns and transaction
+    const undefineQuery = new UndefineQueryImpl(varPatterns, tx);
+
+    return undefineQuery;
+}","/**
+ * @author Felix Chapman
+ */"
+code_review,groq,meta_prompting,doc_generation,vaticle/typedb,code_review:767e639107,0.0,0.0,0.0078,0.1376,0.8115,-0.019,"java
+/**
+ * Creates a new instance of UndefineQueryImpl with the specified var patterns and transaction.
+ * 
+ * @param varPatterns the var patterns to be used in the query
+ * @param tx the transaction, or null if none is specified
+ * @return a new instance of UndefineQueryImpl
+ * @throws NullPointerException if varPatterns is null
+ */","/**
+ * @author Felix Chapman
+ */"
+code_review,groq,self_refine,doc_generation,apache/pulsar,code_review:f652bf1cc4,0.2892,0.241,0.0848,0.3461,0.8457,0.5667,"java
+/**
+ * Reads a value of type {@code T} from the specified byte array.
+ * 
+ * This method is a convenience wrapper around {@link #read(byte[], int, int)}.
+ * It assumes the entire byte array is to be read.
+ * 
+ * @param bytes the byte array to read from
+ * @return the read value
+ */
+public <T> T read(byte[] bytes) {
+    return read(bytes, 0, bytes.length);
+}","    /**
+     * serialize bytes convert pojo
+     *
+     * @param bytes the data
+     * @param offset the byte[] initial position
+     * @param length the byte[] read length
+     * @return the serialized object
+     */"
+code_review,groq,meta_prompting,doc_generation,apache/pulsar,code_review:f652bf1cc4,0.2826,0.2174,0.0777,0.3026,0.833,0.5451,"java
+/**
+ * Reads a value of type T from the given byte array, starting from the beginning of the array.
+ * 
+ * This method is equivalent to calling <code>read(bytes, 0, bytes.length)</code>.
+ * 
+ * @param bytes the byte array to read from
+ * @return the read value of type T
+ * @throws IndexOutOfBoundsException if the byte array is null or its length is 0
+ * @throws IOException if an I/O error occurs
+ */","    /**
+     * serialize bytes convert pojo
+     *
+     * @param bytes the data
+     * @param offset the byte[] initial position
+     * @param length the byte[] read length
+     * @return the serialized object
+     */"
+code_review,groq,self_refine,doc_generation,googleapis/google-cloud-java,code_review:893625c7af,0.2143,0.1857,0.0077,0.2021,0.8374,0.5972,"javascript
+/**
+ * Constructs a new RowMutation instance with the specified table ID, key, and mutation.
+ * 
+ * @param {string} tableId The ID of the table where the mutation will be applied.
+ * @param {string} key The key of the row being mutated.
+ * @param {object} mutation The mutation to be applied to the row.
+ */
+class RowMutation {
+  constructor(tableId, key, mutation) {
+    this.tableId = tableId;
+    this.key = key;
+    this.mutation = mutation;
+  }
+}
+
+// Example usage:
+const mutation = new RowMutation('table-123', 'row-456', {
+  // Example mutation object
+  'field1': 'value1',
+  'field2': 'value2',
+});
+
+console.log(mutation.tableId); // Output: table-123
+console.log(mutation.key); // Output: row-456
+console.log(mutation.mutation); // Output: { field1: 'value1', field2: 'value2' }","  /**
+   * Creates new instance of mutation builder by wrapping existing mutation builder.
+   *
+   * <p>Sample code:
+   *
+   * <pre><code>
+   * Mutation mutation = Mutation.create()
+   *     .setCell(""[FAMILY_NAME]"", ""[QUALIFIER]"", [TIMESTAMP], ""[VALUE]"");
+   * RowMutation rowMutation = RowMutation.create(""[TABLE]"", ""[ROW_KEY]"", mutation);
+   * </code></pre>
+   */"
+code_review,groq,meta_prompting,doc_generation,googleapis/google-cloud-java,code_review:893625c7af,0.25,0.1591,0.0124,0.1905,0.8174,0.6674,"/**
+ * Constructs a RowMutation instance with the specified table ID, key, and mutation.
+ * 
+ * @param tableId the ID of the table that the mutation applies to
+ * @param key the key of the row being mutated
+ * @param mutation the mutation to be applied to the row
+ * @throws NullPointerException if any of the parameters are null
+ */","  /**
+   * Creates new instance of mutation builder by wrapping existing mutation builder.
+   *
+   * <p>Sample code:
+   *
+   * <pre><code>
+   * Mutation mutation = Mutation.create()
+   *     .setCell(""[FAMILY_NAME]"", ""[QUALIFIER]"", [TIMESTAMP], ""[VALUE]"");
+   * RowMutation rowMutation = RowMutation.create(""[TABLE]"", ""[ROW_KEY]"", mutation);
+   * </code></pre>
+   */"
+code_review,groq,self_refine,doc_generation,VoltDB/voltdb,code_review:3779314eb2,0.0535,0.0334,0.002,0.0401,0.7987,0.1325,"Here's a possible implementation of the `verifyCredentialsAreAlwaysTheSame` method:
+
+```java
+private static final String STORED_USERNAME = ""storedUsername"";
+private static final String STORED_HASHED_PASSWORD = ""storedHashedPassword"";
+
+private boolean verifyCredentialsAreAlwaysTheSame(String username, byte[] hashedPassword) {
+    // Check if credentials have already been set
+    if (STORED_USERNAME != null && STORED_HASHED_PASSWORD != null) {
+        // Compare provided credentials with stored credentials
+        if (username.equals(STORED_USERNAME) && Arrays.equals(hashedPassword, STORED_HASHED_PASSWORD)) {
+            return true;
+        } else {
+            // If credentials don't match, reset stored credentials
+            STORED_USERNAME = null;
+            STORED_HASHED_PASSWORD = null;
+        }
+    }
+
+    // If credentials haven't been set yet, set them and return true
+    STORED_USERNAME = username;
+    STORED_HASHED_PASSWORD = hashedPassword;
+    return true;
+}
+```
+
+However, this approach has a significant flaw: it uses static fields to store the credentials, which can lead to concurrency issues if multiple threads access the method simultaneously. A better approach would be to use a thread-safe data structure, such as `AtomicReference`:
+
+```java
+private AtomicReference<String> storedUsername = new AtomicReference<>();
+private AtomicReference<byte[]> storedHashedPassword = new AtomicReference<>();
+
+private boolean verifyCredentialsAreAlwaysTheSame(String username, byte[] hashedPassword) {
+    // Check if credentials have already been set
+    if (storedUsername.get() != null && storedHashedPassword.get() != null) {
+        // Compare provided credentials with stored credentials
+        if (username.equals(storedUsername.get()) && Arrays.equals(hashedPassword, storedHashedPassword.get())) {
+            return true;
+        } else {
+            // If credentials don't match, reset stored credentials
+            storedUsername.set(null);
+            storedHashedPassword.set(null);
+        }
+    }
+
+    // If credentials haven't been set yet, set them and return true
+    storedUsername.set(username);
+    storedHashedPassword.set(hashedPassword);
+    return true;
+}
+```
+
+This implementation ensures that the credentials are stored and retrieved in a thread-safe manner.","    /**
+     * Synchronously invoke a procedure call blocking until a result is available.
+     * @param batchTimeout procedure invocation batch timeout.
+     * @param procName class name (not qualified by package) of the procedure to execute.
+     * @param parameters vararg list of procedure's parameter values.
+     * @return array of VoltTable results.
+     * @throws org.voltdb.client.ProcCallException
+     * @throws NoConnectionsException
+     */"
+code_review,groq,meta_prompting,doc_generation,VoltDB/voltdb,code_review:3779314eb2,0.1189,0.0757,0.007,0.1946,0.8245,0.2373,"java
+/**
+ * Verifies that the provided username and hashed password match the stored credentials.
+ * 
+ * If no credentials have been set, this method sets the provided username and hashed password as the stored credentials.
+ * 
+ * If credentials have already been set, this method checks if the provided username matches the stored username and if the provided hashed password matches the stored hashed password.
+ * 
+ * @param username the username to verify
+ * @param hashedPassword the hashed password to verify
+ * @return true if the provided credentials match the stored credentials, false otherwise
+ * @throws NullPointerException if the provided username is null
+ * @throws NullPointerException if the provided hashed password is null
+ * @throws IllegalArgumentException if the provided hashed password is not a valid byte array
+ * @throws IllegalStateException if the credentials have already been set and the provided username does not match the stored username
+ */","    /**
+     * Synchronously invoke a procedure call blocking until a result is available.
+     * @param batchTimeout procedure invocation batch timeout.
+     * @param procName class name (not qualified by package) of the procedure to execute.
+     * @param parameters vararg list of procedure's parameter values.
+     * @return array of VoltTable results.
+     * @throws org.voltdb.client.ProcCallException
+     * @throws NoConnectionsException
+     */"
+code_review,groq,self_refine,doc_generation,realm/realm-java,code_review:9e3cf5cc8c,0.0282,0.0282,0.0078,0.1521,0.8456,-0.0105,"javascript
+/**
+ * Callback invoked when the schema of the underlying Realm has changed.
+ * Refreshes the current schema if it is not null.
+ * 
+ * @param {Realm} realm - The Realm instance that has been updated.
+ */
+function onSchemaChanged(realm) {
+    // Check if the current schema is not null
+    if (this.schema !== null) {
+        // Refresh the current schema
+        this.schema = realm.schema;
+    }
+}","    /**
+     * Thread pool executor used for write operations - only one thread is needed as writes cannot
+     * be parallelized.
+     */"
+code_review,groq,meta_prompting,doc_generation,realm/realm-java,code_review:9e3cf5cc8c,0.0476,0.0476,0.0155,0.1087,0.8423,0.1204,"java
+/**
+ * Callback invoked when the schema of the underlying Realm has changed.
+ * 
+ * @param schema The updated RealmSchema.
+ * 
+ * @throws IllegalArgumentException if the provided schema is null.
+ */","    /**
+     * Thread pool executor used for write operations - only one thread is needed as writes cannot
+     * be parallelized.
+     */"
+code_review,groq,self_refine,doc_generation,apache/flink,code_review:667fd243f9,0.2835,0.1417,0.005,0.2328,0.8059,0.706,"Here's a completed version of the code:
+
+```java
+/**
+ * The main entry point for the Flink application.
+ * 
+ * This method sets up a Flink StreamExecutionEnvironment, creates a data stream from a collection,
+ * and executes it by adding a sink to an HBase database.
+ * 
+ * @param args command-line arguments (not used in this example)
+ * @throws Exception if an error occurs during execution
+ */
+public static void main(String[] args) throws Exception {
+    // Create a StreamExecutionEnvironment
+    StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
+
+    // Create a data stream from a collection
+    DataStream<String> dataStream = env.fromElements(""Hello, HBase!"", ""This is a test."");
+
+    // Add a sink to an HBase database
+    dataStream.addSink(new HBaseSink());
+
+    // Execute the data stream
+    env.execute(""Flink HBase Example"");
+}
+```
+
+However, this code snippet assumes that you have already created a class named `HBaseSink` that extends `RichSinkFunction` and implements the necessary logic for writing data to an HBase database.
+
+Here's a basic example of what the `HBaseSink` class might look like:
+
+```java
+public class HBaseSink extends RichSinkFunction<String> {
+    private Connection connection;
+
+    @Override
+    public void open(Configuration parameters) throws Exception {
+        // Create a connection to the HBase database
+        connection = ConnectionFactory.createConnection(new Properties());
+    }
+
+    @Override
+    public void close() throws Exception {
+        // Close the connection to the HBase database
+        if (connection != null) {
+            connection.close();
+        }
+    }
+
+    @Override
+    public void invoke(String value, Context context) throws Exception {
+        // Write the data to the HBase database
+        Table table = connection.getTable(""my_table"");
+        Put put = new Put(Bytes.toBytes(""row_key""));
+        put.addColumn(Bytes.toBytes(""column_family""), Bytes.toBytes(""column""), Bytes.toBytes(value));
+        table.put(put);
+        table.close();
+    }
+}
+```
+
+This is a very basic example and may need to be modified to suit your specific use case. You will also need to add the necessary dependencies to your project to use HBase and Flink.","/**
+ * This is an example showing how to use the HBaseSink in the Streaming API.
+ *
+ * To run the example you need a local HBase database that has a table ""flink-example"" with a column family ""cf"".
+ * In the example, the HBase sink takes an input of type {@link Tuple3} and perform different operations based on the input.
+ * The first field of a input value is used as the row key, the second field is treated as an opcode that
+ * determines which type of HBase operation is performed and the third field is the value to written.
+ */"
+code_review,groq,meta_prompting,doc_generation,apache/flink,code_review:667fd243f9,0.2826,0.1304,0.0102,0.1735,0.8319,0.6722,"java
+/**
+ * Configures and executes a Flink job that writes data to an HBase table.
+ * 
+ * This method creates a Flink execution environment, reads data from a collection
+ * (identified by {@code dataSource}) and writes it to an HBase table using a custom
+ * HBase sink and mapper.
+ * 
+ * @param dataSource the collection of data to be written to HBase
+ * @throws Exception if an error occurs during job execution, including but not limited to:
+ *         {@link org.apache.flink.api.common.functions.InvalidTypesException},
+ *         {@link org.apache.flink.runtime.JobExecutionException},
+ *         {@link org.apache.flink.runtime.RuntimeException}
+ */","/**
+ * This is an example showing how to use the HBaseSink in the Streaming API.
+ *
+ * To run the example you need a local HBase database that has a table ""flink-example"" with a column family ""cf"".
+ * In the example, the HBase sink takes an input of type {@link Tuple3} and perform different operations based on the input.
+ * The first field of a input value is used as the row key, the second field is treated as an opcode that
+ * determines which type of HBase operation is performed and the third field is the value to written.
+ */"
+code_review,groq,self_refine,doc_generation,vaadin/flow,code_review:abd4e2ac02,0.1528,0.1111,0.0066,0.1288,0.8317,0.5541,"typescript
+/**
+ * Constructs a new VaadinSession instance, initializing the underlying VaadinService and resource registry.
+ *
+ * @param service the VaadinService instance to associate with this session
+ */
+class VaadinSession {
+  private service: VaadinService;
+  private resourceRegistry: ResourceRegistry;
+
+  constructor(service: VaadinService) {
+    this.service = service;
+    this.resourceRegistry = new ResourceRegistry();
+    this.init();
+  }
+
+  private init(): void {
+    // Initialize the VaadinService
+    this.service.init();
+
+    // Initialize the resource registry
+    this.resourceRegistry.init();
+  }
+}
+
+class VaadinService {
+  private initialized: boolean;
+
+  init(): void {
+    this.initialized = true;
+    console.log(""VaadinService initialized"");
+  }
+}
+
+class ResourceRegistry {
+  private resources: { [key: string]: any };
+
+  init(): void {
+    this.resources = {};
+    console.log(""Resource registry initialized"");
+  }
+}","    /**
+     * Checks whether the session is properly initialized/in use.
+     * <p>
+     * The session is initialized if
+     * {@link #refreshTransients(WrappedSession, VaadinService)} has been called
+     * for it. If the session is just created or deserialized but not yet in
+     * real use then it's not initialized and it's state is incomplete.
+     * 
+     * @return whether the session is initialized
+     */"
+code_review,groq,meta_prompting,doc_generation,vaadin/flow,code_review:abd4e2ac02,0.2151,0.1505,0.0118,0.1429,0.8347,0.5145,"/**
+ * Initializes a new VaadinSession instance with the given VaadinService.
+ * 
+ * This constructor sets the VaadinService instance and creates a new StreamResourceRegistry.
+ * 
+ * @param service the VaadinService instance to associate with this VaadinSession
+ * @throws NullPointerException if the service parameter is null
+ */","    /**
+     * Checks whether the session is properly initialized/in use.
+     * <p>
+     * The session is initialized if
+     * {@link #refreshTransients(WrappedSession, VaadinService)} has been called
+     * for it. If the session is just created or deserialized but not yet in
+     * real use then it's not initialized and it's state is incomplete.
+     * 
+     * @return whether the session is initialized
+     */"
+code_review,groq,self_refine,doc_generation,Alluxio/alluxio,code_review:397ea351cd,0.0367,0.0367,0.0056,0.2068,0.8029,0.6411,"Here's a refactored version of the code with some improvements for readability and maintainability:
+
+```java
+/**
+ * Tests the builder pattern for {@link DeleteLineageOptions} with cascade deletion enabled.
+ */
+public void builderTest() {
+    // Create a new TachyonConf instance
+    TachyonConf conf = new TachyonConf();
+    
+    // Use the builder to create a DeleteLineageOptions instance with cascade deletion enabled
+    DeleteLineageOptions options = new DeleteLineageOptions.Builder(conf)
+        .setCascade(true)
+        .build();
+    
+    // Verify that the cascade option is set as expected
+    Assert.assertTrue(options.isCascade());
+}
+```
+
+However, this test is quite simple and does not provide much value. It would be better to test the builder pattern with multiple options and edge cases. Here's an example of how you could expand the test:
+
+```java
+/**
+ * Tests the builder pattern for {@link DeleteLineageOptions} with various options.
+ */
+public void builderTest() {
+    // Create a new TachyonConf instance
+    TachyonConf conf = new TachyonConf();
+    
+    // Test the builder with cascade deletion enabled
+    DeleteLineageOptions optionsCascade = new DeleteLineageOptions.Builder(conf)
+        .setCascade(true)
+        .build();
+    Assert.assertTrue(optionsCascade.isCascade());
+    
+    // Test the builder with cascade deletion disabled
+    DeleteLineageOptions optionsNoCascade = new DeleteLineageOptions.Builder(conf)
+        .setCascade(false)
+        .build();
+    Assert.assertFalse(optionsNoCascade.isCascade());
+    
+    // Test the builder with other options
+    DeleteLineageOptions optionsWithOtherOptions = new DeleteLineageOptions.Builder(conf)
+        .setCascade(true)
+        .setOtherOption(""value"")
+        .build();
+    Assert.assertTrue(optionsWithOtherOptions.isCascade());
+    Assert.assertEquals(""value"", optionsWithOtherOptions.getOtherOption());
+}
+```
+
+This expanded test covers more scenarios and provides more confidence in the builder pattern.","/**
+ * Tests for {@link DeleteLineageOptions}.
+ */"
+code_review,groq,meta_prompting,doc_generation,Alluxio/alluxio,code_review:397ea351cd,0.0465,0.0465,0.0096,0.1389,0.8479,0.5343,"java
+/**
+ * Creates a DeleteLineageOptions object with cascade deletion enabled and asserts that the cascade option is set to true.
+ * 
+ * @param conf the Tachyon configuration to use when building the DeleteLineageOptions object
+ * @throws TachyonConfException if the Tachyon configuration is invalid
+ */","/**
+ * Tests for {@link DeleteLineageOptions}.
+ */"
+code_review,groq,self_refine,doc_generation,apache/skywalking,code_review:6be0151ee6,0.0,0.0,0.0012,0.037,0.7498,-0.0346,"**Purpose and Behavior of `test_serialize` Method**
+
+The `test_serialize` method is used to test the serialization of an object. It is typically used in unit tests to verify that an object can be successfully serialized and deserialized without losing its state.
+
+**Method Signature**
+
+```java
+/**
+ * Tests the serialization of an object.
+ * 
+ * @param obj the object to be serialized
+ * @param expected the expected serialized form of the object
+ * @throws IOException if an I/O error occurs during serialization
+ */
+public void test_serialize(Object obj, String expected) throws IOException;
+```
+
+**Parameters**
+
+* `obj`: the object to be serialized
+* `expected`: the expected serialized form of the object
+
+**Return Values**
+
+None
+
+**Exceptions**
+
+* `IOException`: if an I/O error occurs during serialization
+
+**Javadoc Comments**
+
+```java
+/**
+ * Tests the serialization of an object.
+ * 
+ * @param obj the object to be serialized
+ * @param expected the expected serialized form of the object
+ * @throws IOException if an I/O error occurs during serialization
+ */
+public void test_serialize(Object obj, String expected) throws IOException {
+    // Serialize the object
+    String serialized = serialize(obj);
+
+    // Check if the serialized form matches the expected form
+    assertEquals(expected, serialized);
+}
+
+/**
+ * Serializes an object.
+ * 
+ * @param obj the object to be serialized
+ * @return the serialized form of the object
+ * @throws IOException if an I/O error occurs during serialization
+ */
+private String serialize(Object obj) throws IOException {
+    // Use a serialization mechanism (e.g., JSON, XML) to serialize the object
+    // For example, using Jackson for JSON serialization:
+    ObjectMapper mapper = new ObjectMapper();
+    return mapper.writeValueAsString(obj);
+}
+```
+
+In this example, the `test_serialize` method takes an object and its expected serialized form as parameters. It serializes the object using a serialization mechanism (e.g., JSON, XML) and checks if the serialized form matches the expected form. If the serialized form does not match the expected form, the test fails. If an I/O error occurs during serialization, the method throws an `IOException`.
+
+Note that the `serialize` method is a private helper method that uses a serialization mechanism (e.g., Jackson for JSON serialization) to serialize the object. The actual serialization mechanism used may vary depending on the requirements of the application.","/**
+ * @author jsbxyyx
+ */"
+code_review,groq,meta_prompting,doc_generation,apache/skywalking,code_review:6be0151ee6,0.0,0.0,0.0094,0.1648,0.8071,0.1036,"java
+/**
+ * Tests the serialization of a ServiceResetCommand instance.
+ * 
+ * This method creates a ServiceResetCommand instance, serializes it, and then
+ * asserts that the serialized command and its arguments match the expected values.
+ * 
+ * @throws Exception if an error occurs during serialization
+ */","/**
+ * @author jsbxyyx
+ */"
+code_review,groq,self_refine,doc_generation,jenkinsci/jenkins,code_review:7f2f07e4b6,0.0571,0.0381,0.0022,0.0806,0.8128,-0.0198,"java
+import java.util.HashMap;
+import java.util.Map;
+
+public class ExtensionListMemoizer {
+    private static final Map<Class<?>, ExtensionList> memo = new HashMap<>();
+
+    public static <T> ExtensionList getExtensionList(Class<T> key) {
+        if (!memo.containsKey(key)) {
+            // Create the ExtensionList instance and store it in the memo map
+            memo.put(key, createExtensionList(key));
+        }
+        return memo.get(key);
+    }
+
+    private static <T> ExtensionList createExtensionList(Class<T> clazz) {
+        // This is where you would put the expensive computation to create the ExtensionList instance
+        // For demonstration purposes, we'll just return a dummy instance
+        return new DummyExtensionList();
+    }
+
+    private static class DummyExtensionList extends ExtensionList {
+        // Implementation of ExtensionList methods
+    }
+}","    /**
+     * Returns the enabled and activated administrative monitors.
+     */"
+code_review,groq,meta_prompting,doc_generation,jenkinsci/jenkins,code_review:7f2f07e4b6,0.0606,0.0606,0.0068,0.1592,0.8299,0.0759,"java
+/**
+ * Memoizes the creation of extension lists for a given class, 
+ * caching the result to avoid redundant computation. The result is computed by 
+ * {@link ExtensionList#create(Jenkins, Class)}.
+ * 
+ * @param key the class for which to create the extension list
+ * @return the memoized extension list
+ * @throws NullPointerException if the key is null
+ * @throws ExtensionListCreationException if an error occurs during creation
+ */","    /**
+     * Returns the enabled and activated administrative monitors.
+     */"
+code_review,groq,self_refine,doc_generation,apache/pulsar,code_review:48eae6dcb1,0.1762,0.0933,0.006,0.0764,0.7782,0.0284,"java
+/**
+ * Constructs a new instance of the DelayInjectionMetadataStore.
+ * 
+ * @param store the metadata store instance to be used for storing and retrieving metadata
+ * @param config the configuration for the scheduled executor that will be used for delay injection
+ */
+public DelayInjectionMetadataStore(MetadataStore store, Config config) {
+    // Initialize the metadata store instance
+    this.store = store;
+    
+    // Configure the scheduled executor for delay injection
+    this.executor = Executors.newScheduledThreadPool(1);
+    this.executor.scheduleAtFixedRate(this::injectDelayed, 0, config.getDelay(), TimeUnit.SECONDS);
+}","/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */"
+code_review,groq,meta_prompting,doc_generation,apache/pulsar,code_review:48eae6dcb1,0.1184,0.0789,0.0018,0.0621,0.7935,0.0559,"/**
+ * Constructs a new DelayInjectionMetadataStore instance, initializing the underlying metadata store and scheduling thread.
+ * 
+ * @param store the extended metadata store to use for storing metadata
+ * @throws NullPointerException if the provided store is null
+ */","/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */"
+code_review,groq,self_refine,doc_generation,micronaut-projects/micronaut-core,code_review:f93abceffc,0.0,0.0,0.0023,0.0625,0.8014,0.0885,"java
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Optional;
+
+public class DateFinder {
+
+    /**
+     * Finds the first date matching the given name and returns it as a ZonedDateTime in the GMT time zone.
+     * 
+     * @param name the name to search for
+     * @return an Optional containing the first matching date, or an empty Optional if no match is found or the date string is invalid
+     */
+    public static Optional<ZonedDateTime> findDate(String name) {
+        // Define the date format to match
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(""yyyy-MM-dd HH:mm:ss"");
+
+        // Try to parse the date string
+        try {
+            // Attempt to parse the date string into a ZonedDateTime
+            ZonedDateTime date = ZonedDateTime.parse(name, formatter);
+
+            // If the date is in the GMT time zone, return it as is
+            if (date.getZone().equals(ZoneId.of(""GMT""))) {
+                return Optional.of(date);
+            } else {
+                // If the date is not in the GMT time zone, convert it to GMT
+                return Optional.of(date.withZoneSameInstant(ZoneId.of(""GMT"")));
+            }
+        } catch (DateTimeParseException e) {
+            // If the date string is invalid, return an empty Optional
+            return Optional.empty();
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(findDate(""2022-01-01 00:00:00"")); // Optional[ZonedDateTime]
+        System.out.println(findDate(""invalid date"")); // Optional.empty
+    }
+}","    /**
+     * {@code ""Bearer ""}.
+     */"
+code_review,groq,meta_prompting,doc_generation,micronaut-projects/micronaut-core,code_review:f93abceffc,0.0,0.0,0.0054,0.1128,0.8055,0.2142,"java
+/**
+ * Finds a ZonedDateTime instance from the given name, parsing the name as a date in RFC 1123 format.
+ * 
+ * If the name cannot be parsed as a valid date, an empty Optional is returned.
+ * 
+ * @param name the name to parse as a date
+ * @return an Optional containing the parsed ZonedDateTime instance, or an empty Optional if parsing fails
+ * @throws DateTimeParseException if the name cannot be parsed as a valid date
+ */","    /**
+     * {@code ""Bearer ""}.
+     */"
+code_review,groq,self_refine,doc_generation,broadinstitute/gatk,code_review:fed6ef20ed,0.1538,0.1538,0.0062,0.1,0.8264,0.5047,"java
+/**
+ * Returns the class of the annotation feature.
+ * 
+ * @return the class of the annotation feature, specifically {@link GencodeGtfFeature}
+ */
+public Class<?> getAnnotationFeatureClass() {
+    return GencodeGtfFeature.class;
+}","    /**
+     * Creates a {@link GencodeFuncotation}s based on a given spanning deletion {@link Allele}.
+     *
+     * Reports reference bases as if they are on the {@link Strand#POSITIVE} strand.
+     * @param variant The {@link VariantContext} associated with this annotation.
+     * @param annotationTranscript The transcript ID to use for populating this funcotation.
+     * @param reference The {@link ReferenceContext} in which the given {@link Allele}s appear.
+     * @return An IGR funcotation for the given allele.
+     */"
+code_review,groq,meta_prompting,doc_generation,broadinstitute/gatk,code_review:fed6ef20ed,0.2245,0.1633,0.0086,0.1153,0.8186,0.3894,"/**
+ * Returns the class of the annotation feature.
+ * 
+ * @return the class of the annotation feature, which is guaranteed to be a subclass of Feature.
+ * @throws NullPointerException if the returned class is null.
+ */","    /**
+     * Creates a {@link GencodeFuncotation}s based on a given spanning deletion {@link Allele}.
+     *
+     * Reports reference bases as if they are on the {@link Strand#POSITIVE} strand.
+     * @param variant The {@link VariantContext} associated with this annotation.
+     * @param annotationTranscript The transcript ID to use for populating this funcotation.
+     * @param reference The {@link ReferenceContext} in which the given {@link Allele}s appear.
+     * @return An IGR funcotation for the given allele.
+     */"
+code_review,groq,self_refine,doc_generation,vespa-engine/vespa,code_review:699b532d75,0.0,0.0,0.0019,0.0507,0.7454,-0.0101,"Here's an example implementation of the `compare` method:
+
+```java
+/**
+ * Compares the given hardware information with the actual hardware information.
+ * 
+ * @param node the hardware information to compare
+ * @param actualHardware the actual hardware information
+ * @return a YamasSpecReport containing the comparison results
+ */
+public static YamasSpecReport compare(HardwareInfo node, HardwareInfo actualHardware) {
+    YamasSpecReport report = new YamasSpecReport();
+
+    // Compare CPU information
+    if (node.getCpuInfo() != null && actualHardware.getCpuInfo() != null) {
+        if (!node.getCpuInfo().equals(actualHardware.getCpuInfo())) {
+            report.addComparisonResult(""CPU"", ""Mismatch"", ""Expected: "" + node.getCpuInfo() + "", Actual: "" + actualHardware.getCpuInfo());
+        }
+    } else if (node.getCpuInfo() != null || actualHardware.getCpuInfo() != null) {
+        report.addComparisonResult(""CPU"", ""Missing"", ""Expected: "" + (node.getCpuInfo() != null ? node.getCpuInfo() : ""null"") + "", Actual: "" + (actualHardware.getCpuInfo() != null ? actualHardware.getCpuInfo() : ""null""));
+    }
+
+    // Compare memory information
+    if (node.getMemoryInfo() != null && actualHardware.getMemoryInfo() != null) {
+        if (!node.getMemoryInfo().equals(actualHardware.getMemoryInfo())) {
+            report.addComparisonResult(""Memory"", ""Mismatch"", ""Expected: "" + node.getMemoryInfo() + "", Actual: "" + actualHardware.getMemoryInfo());
+        }
+    } else if (node.getMemoryInfo() != null || actualHardware.getMemoryInfo() != null) {
+        report.addComparisonResult(""Memory"", ""Missing"", ""Expected: "" + (node.getMemoryInfo() != null ? node.getMemoryInfo() : ""null"") + "", Actual: "" + (actualHardware.getMemoryInfo() != null ? actualHardware.getMemoryInfo() : ""null""));
+    }
+
+    // Compare storage information
+    if (node.getStorageInfo() != null && actualHardware.getStorageInfo() != null) {
+        if (!node.getStorageInfo().equals(actualHardware.getStorageInfo())) {
+            report.addComparisonResult(""Storage"", ""Mismatch"", ""Expected: "" + node.getStorageInfo() + "", Actual: "" + actualHardware.getStorageInfo());
+        }
+    } else if (node.getStorageInfo() != null","/**
+ * Created by olaa on 04/07/2017.
+ */"
+code_review,groq,meta_prompting,doc_generation,vespa-engine/vespa,code_review:699b532d75,0.0256,0.0256,0.0057,0.1316,0.7993,0.0577,"java
+/**
+ * Compares the provided hardware information with the actual hardware information and returns a YamasSpecReport.
+ * The report includes metrics on the match between the provided and actual hardware, as well as dimensions for each comparison.
+ * 
+ * @param node the provided hardware information, cannot be null
+ * @param actualHardware the actual hardware information, cannot be null
+ * @return a YamasSpecReport containing the comparison results, never null
+ * @throws NullPointerException if either node or actualHardware is null
+ */","/**
+ * Created by olaa on 04/07/2017.
+ */"
+code_review,groq,self_refine,doc_generation,sleuthkit/autopsy,code_review:60769e2983,0.0317,0.0159,0.0036,0.1172,0.809,0.1775,"javascript
+/**
+ * Constructs a PListViewer instance, initializing the outline view and setting up its properties.
+ * 
+ * This constructor creates an OutlineView, adds it to the panel, and configures its properties,
+ * including setting the nodes column label and property columns.
+ * 
+ * @see #initComponents()
+ * @see #customize()
+ */
+function PListViewer() {
+    // Create an OutlineView instance
+    const outlineView = new OutlineView();
+
+    // Add the OutlineView to the panel
+    this.panel.add(outlineView);
+
+    // Configure the properties of the OutlineView
+    this.configureOutlineView(outlineView);
+}
+
+/**
+ * Configures the properties of the OutlineView.
+ * 
+ * @param {OutlineView} outlineView The OutlineView instance to configure.
+ */
+PListViewer.prototype.configureOutlineView = function(outlineView) {
+    // Set the nodes column label
+    outlineView.setNodesColumnLabel(""Nodes"");
+
+    // Set the property columns
+    outlineView.setPropertyColumns([
+        { label: ""Property 1"", key: ""property1"" },
+        { label: ""Property 2"", key: ""property2"" },
+        { label: ""Property 3"", key: ""property3"" }
+    ]);
+}","/**
+ * PListViewer - a file viewer for binary plist files. 
+ *
+ */"
+code_review,groq,meta_prompting,doc_generation,sleuthkit/autopsy,code_review:60769e2983,0.0333,0.0333,0.0081,0.1412,0.8576,0.5027,"java
+/**
+ * Initializes the PListViewer instance by creating an OutlineView, setting up its properties, and customizing its appearance.
+ * 
+ * This method creates an OutlineView, adds it to the panel, sets up its properties, and customizes its appearance.
+ * 
+ * @throws NullPointerException if the Bundle is null
+ * @throws IllegalArgumentException if any of the property columns are null
+ */","/**
+ * PListViewer - a file viewer for binary plist files. 
+ *
+ */"
+code_review,groq,self_refine,doc_generation,DSpace/DSpace,code_review:6dacfb6129,0.1404,0.0936,0.0049,0.218,0.7543,0.0124,"java
+/**
+ * Tests the retrieval of authorization features.
+ * 
+ * Verifies that the API returns the expected number of features, 
+ * and that unauthorized and forbidden responses are returned for 
+ * unauthenticated and unauthorized users, respectively.
+ * 
+ * @throws Exception if an error occurs during the test
+ */
+public class AuthorizationFeaturesTest {
+
+    @Test
+    public void testRetrieveFeatures() throws Exception {
+        // Arrange
+        // Set up the API client with authentication
+        // Set up the expected number of features
+
+        // Act
+        // Call the API to retrieve the features
+        List<Feature> features = apiClient.getFeatures();
+
+        // Assert
+        // Verify that the API returns the expected number of features
+        assertEquals(expectedNumberOfFeatures, features.size());
+
+        // Test unauthorized response for unauthenticated user
+        apiClient.logout();
+        try {
+            apiClient.getFeatures();
+            fail(""Expected Unauthorized response for unauthenticated user"");
+        } catch (UnauthorizedException e) {
+            // Expected
+        }
+
+        // Test forbidden response for unauthorized user
+        apiClient.loginWithUnauthorizedUser();
+        try {
+            apiClient.getFeatures();
+            fail(""Expected Forbidden response for unauthorized user"");
+        } catch (ForbiddenException e) {
+            // Expected
+        }
+    }
+}","/**
+ * The contents of this file are subject to the license and copyright
+ * detailed in the LICENSE and NOTICE files at the root of the source
+ * tree and available online at
+ *
+ * http://www.dspace.org/license/
+ */"
+code_review,groq,meta_prompting,doc_generation,DSpace/DSpace,code_review:6dacfb6129,0.132,0.1117,0.0058,0.2137,0.797,0.0744,"java
+/**
+ * Finds all features and performs a series of assertions on the API response.
+ * 
+ * This method retrieves all features, limits the result to a maximum of 20 features,
+ * and then performs a GET request to the /api/authz/features endpoint with an admin token.
+ * It asserts that the response status is OK, the number of features is within the expected limit,
+ * the self link contains the expected path, the page size is 20, and the total number of elements is the actual number of features.
+ * 
+ * The method then performs a GET request to the /api/authz/features endpoint without a token and asserts that the response status is UNAUTHORIZED.
+ * Finally, it retrieves an ePerson token, performs a GET request to the /api/authz/features endpoint with the ePerson token, and asserts that the response status is FORBIDDEN.
+ * 
+ * @throws Exception if any of the assertions fail, or if there is an issue with the authzFeatureService, admin or ePerson tokens, or the HTTP requests
+ */","/**
+ * The contents of this file are subject to the license and copyright
+ * detailed in the LICENSE and NOTICE files at the root of the source
+ * tree and available online at
+ *
+ * http://www.dspace.org/license/
+ */"
+code_review,groq,self_refine,doc_generation,netty/netty,code_review:b696690ed7,0.2957,0.1043,0.0072,0.1609,0.8114,0.5909,"typescript
+/**
+ * Constructs a new instance of the CorsHandler with the specified configuration.
+ *
+ * @param config The CORS configuration to use.
+ */
+class CorsHandler {
+  private config: any;
+
+  constructor(config: any) {
+    if (!config) {
+      throw new Error('CORS configuration is required');
+    }
+
+    this.config = config;
+  }
+
+  // Add methods to handle CORS requests here
+}
+
+// Example usage:
+const corsConfig = {
+  origin: ['http://example.com', 'http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  headers: ['Content-Type', 'Authorization'],
+};
+
+const corsHandler = new CorsHandler(corsConfig);","/**
+ * Handles <a href=""http://www.w3.org/TR/cors/"">Cross Origin Resource Sharing</a> (CORS) requests.
+ * <p>
+ * This handler can be configured using a {@link io.netty.handler.codec.http.cors.CorsConfig}, please
+ * refer to this class for details about the configuration options available.
+ */"
+code_review,groq,meta_prompting,doc_generation,netty/netty,code_review:b696690ed7,0.2462,0.1231,0.0152,0.1571,0.8411,0.5901,"/**
+ * Initializes a new instance of the CorsHandler with the specified CorsConfig.
+ * 
+ * @param config the CorsConfig instance to use for CORS handling
+ */","/**
+ * Handles <a href=""http://www.w3.org/TR/cors/"">Cross Origin Resource Sharing</a> (CORS) requests.
+ * <p>
+ * This handler can be configured using a {@link io.netty.handler.codec.http.cors.CorsConfig}, please
+ * refer to this class for details about the configuration options available.
+ */"
+code_review,groq,self_refine,doc_generation,cdapio/cdap,code_review:30630648fd,0.125,0.0833,0.0098,0.1786,0.8193,0.533,"typescript
+/**
+ * Constructs a new instance of ServiceWorkerTwillRunnable, initializing it with the provided ServiceWorker.
+ * 
+ * @param worker the ServiceWorker instance to be associated with this runnable
+ */
+class ServiceWorkerTwillRunnable {
+    private worker: ServiceWorker;
+
+    constructor(worker: ServiceWorker) {
+        this.worker = worker;
+    }
+
+    // Add methods and properties as needed
+}","/**
+ * {@link TwillRunnable} to run a {@link ServiceWorker}.
+ */"
+code_review,groq,meta_prompting,doc_generation,cdapio/cdap,code_review:30630648fd,0.2,0.1333,0.0179,0.2119,0.8598,0.6428,"/**
+ * Initializes a new instance of the ServiceWorkerTwillRunnable class with the specified ServiceWorker.
+ * 
+ * @param worker the ServiceWorker instance to be used by this ServiceWorkerTwillRunnable
+ */","/**
+ * {@link TwillRunnable} to run a {@link ServiceWorker}.
+ */"
+code_review,groq,self_refine,doc_generation,line/armeria,code_review:43c7bdca2f,0.1053,0.0789,0.0073,0.1688,0.8494,0.3954,"typescript
+/**
+ * Unwraps the underlying client request context.
+ * 
+ * @return the underlying client request context
+ */
+public get RequestContext(): any {
+    // Implement the logic to unwrap the underlying client request context
+    // For example, using a decorator or a middleware to inject the request context
+    // Here, we assume that the request context is stored in a property called 'requestContext'
+    return this.requestContext;
+}","    /**
+     * @param ctx used to parse http properties
+     * @param headersBuilder receives headers injected by {@link HttpClientHandler#handleSend(brave.http.HttpClientRequest)}.
+     */"
+code_review,groq,meta_prompting,doc_generation,line/armeria,code_review:43c7bdca2f,0.0645,0.0645,0.0271,0.1989,0.8607,0.4586,"/**
+ * Returns the underlying {@link ClientRequestContext} instance. 
+ * @return the underlying {@link ClientRequestContext} instance
+ */","    /**
+     * @param ctx used to parse http properties
+     * @param headersBuilder receives headers injected by {@link HttpClientHandler#handleSend(brave.http.HttpClientRequest)}.
+     */"
+code_review,groq,self_refine,doc_generation,mulesoft/mule,code_review:e64b28dc05,0.048,0.04,0.0048,0.1355,0.7866,0.4811,"java
+/**
+ * Validates the given extension model, checking for overrides of equals and hashCode methods.
+ * 
+ * @param extensionModel the extension model to validate
+ * @param problemsReporter the reporter to report any validation issues
+ */
+public void validate(ExtensionModel extensionModel, ProblemsReporter problemsReporter) {
+    // Check if equals method is overridden
+    if (extensionModel.getClass().getDeclaredMethod(""equals"", Object.class) != null) {
+        // Check if equals method is correctly overridden
+        if (!isCorrectlyOverridden(extensionModel, ""equals"", Object.class, problemsReporter)) {
+            return;
+        }
+    }
+
+    // Check if hashCode method is overridden
+    if (extensionModel.getClass().getDeclaredMethod(""hashCode"") != null) {
+        // Check if hashCode method is correctly overridden
+        if (!isCorrectlyOverridden(extensionModel, ""hashCode"", null, problemsReporter)) {
+            return;
+        }
+    }
+
+    // If no issues found, report success
+    problemsReporter.reportSuccess(""Extension model is valid"");
+}
+
+/**
+ * Checks if the given method is correctly overridden in the given class.
+ * 
+ * @param clazz the class to check
+ * @param methodName the name of the method to check
+ * @param parameterTypes the parameter types of the method to check
+ * @param problemsReporter the reporter to report any validation issues
+ * @return true if the method is correctly overridden, false otherwise
+ */
+private boolean isCorrectlyOverridden(Class<?> clazz, String methodName, Class<?>[] parameterTypes, ProblemsReporter problemsReporter) {
+    try {
+        // Get the method from the class
+        Method method = clazz.getDeclaredMethod(methodName, parameterTypes);
+
+        // Check if the method is correctly overridden
+        if (method.getDeclaringClass() != Object.class) {
+            // If the method is not correctly overridden, report an issue
+            problemsReporter.reportIssue(""Method "" + methodName + "" is not correctly overridden"");
+            return false;
+        }
+    } catch (NoSuchMethodException e) {
+        // If the method does not exist, report an issue
+        problemsReporter.reportIssue(""Method "" + methodName + "" does not exist"");
+        return false;
+    }
+
+    return true;
+}","/**
+ * Validates that POJOs parameter overrides Equals and HashCode
+ *
+ * @since 4.2
+ */"
+code_review,groq,meta_prompting,doc_generation,mulesoft/mule,code_review:e64b28dc05,0.122,0.122,0.0159,0.2326,0.8464,0.5759,"java
+/**
+ * Validates the extension model for overrides of equals and hashCode methods.
+ * 
+ * This method checks for the presence of equals and hashCode methods in object types
+ * and reports any issues found to the provided problems reporter.
+ * 
+ * @param extensionModel the extension model to validate, must be in compile-time mode and not in AST mode
+ * @param problemsReporter the reporter to report any issues found
+ * @throws NullPointerException if extensionModel or problemsReporter is null
+ */","/**
+ * Validates that POJOs parameter overrides Equals and HashCode
+ *
+ * @since 4.2
+ */"

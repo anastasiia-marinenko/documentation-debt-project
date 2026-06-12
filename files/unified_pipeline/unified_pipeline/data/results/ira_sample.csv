@@ -1,9 +1,9 @@
 ira_id,dataset,model,variant,task_type,repo,pair_id,rouge1,rougeL,bleu,meteor,bertscore_f1,cosine,generated,reference_doc
-0,code_review,groq,v3_template,doc_generation,VoltDB/voltdb,code_review:3779314eb2,0.1573,0.1348,0.0146,0.1346,0.843,0.3031,"/**
+0,code_review,groq,v3_template,doc_generation,VoltDB/voltdb,code_review:df61f7404e,0.1379,0.1149,0.0147,0.1445,0.8371,0.2949,"/**
  * Verifies that the provided credentials are always the same as the stored credentials.
  * @param username The username to verify.
- * @return True if the credentials are the same, false otherwise.
- * @throws Exception This method does not throw any exceptions.
+ * @return true if the credentials are the same, false otherwise.
+ * @throws NullPointerException if the username is null.
  */","    /**
      * Synchronously invoke a procedure call blocking until a result is available.
      * @param batchTimeout procedure invocation batch timeout.
@@ -13,32 +13,35 @@ ira_id,dataset,model,variant,task_type,repo,pair_id,rouge1,rougeL,bleu,meteor,be
      * @throws org.voltdb.client.ProcCallException
      * @throws NoConnectionsException
      */"
-1,code_review,groq,v3_template,doc_generation,micronaut-projects/micronaut-core,code_review:f93abceffc,0.0,0.0,0.0064,0.124,0.7789,0.2639,"/**
- * Finds the date from the given name, parsing it as an RFC 1123 date and time string and converting it to GMT.
- * @param name the name to find the date for
- * @return an optional ZonedDateTime object representing the found date, or an empty optional if no date was found
+1,code_review,groq,v3_template,doc_generation,micronaut-projects/micronaut-core,code_review:52afb76b5e,0.0,0.0,0.0078,0.1376,0.7847,0.2428,"/**
+ * Finds the first date matching the given name and returns it as a ZonedDateTime in GMT.
+ * @param name the name to find a date for
+ * @return an Optional containing the ZonedDateTime if found, otherwise an empty Optional
  * @throws DateTimeParseException if the date string is not in the correct format
  */","    /**
      * {@code ""Bearer ""}.
      */"
-2,code_review,groq,v3_template,doc_generation,apache/carbondata,code_review:8684cb3586,0.1905,0.0952,0.0218,0.2128,0.8537,0.4078,"/**
- * Initializes the CarbonProperties instance with default properties.
- * @param none none
- * @return none none
- * @throws Exception none
+2,code_review,groq,v3_template,doc_generation,apache/carbondata,code_review:a223f6ca97,0.0513,0.0513,0.0108,0.1339,0.8348,0.3533,"/**
+ * Initializes a new instance of the CarbonProperties class.
+ * @param none No parameters are required for this method.
+ * @return none This method does not return any value.
+ * @throws Exception If an error occurs during initialization.
  */","  /**
    * Boolean type properties default value
    */"
-3,code_review,groq,v3_template,doc_generation,line/armeria,code_review:43c7bdca2f,0.0,0.0,0.0242,0.1652,0.8372,0.4129,"/**
- * Removes the outer wrapping context from the client request context.
- * @return The unwrapped client request context.
+3,code_review,groq,v3_template,doc_generation,line/armeria,code_review:13ca552a37,0.0606,0.0606,0.0322,0.1316,0.8368,0.4152,"/**
+ * Unwraps the client request context.
+ * @param none none
+ * @return the unwrapped client request context
  */","    /**
      * @param ctx used to parse http properties
      * @param headersBuilder receives headers injected by {@link HttpClientHandler#handleSend(brave.http.HttpClientRequest)}.
      */"
-4,code_review,groq,v3_template,doc_generation,vaadin/flow,code_review:abd4e2ac02,0.1333,0.1333,0.0047,0.0698,0.8228,0.6057,"/**
+4,code_review,groq,v3_template,doc_generation,vaadin/flow,code_review:4207ea3963,0.2588,0.1882,0.0105,0.1282,0.8251,0.6523,"/**
  * Initializes a new VaadinSession instance with the given VaadinService.
- * @param service The VaadinService instance to be used by this VaadinSession.
+ * @param service The VaadinService instance to use for this session.
+ * @return This VaadinSession instance.
+ * @throws NullPointerException if the service is null.
  */","    /**
      * Checks whether the session is properly initialized/in use.
      * <p>
@@ -49,30 +52,250 @@ ira_id,dataset,model,variant,task_type,repo,pair_id,rouge1,rougeL,bleu,meteor,be
      * 
      * @return whether the session is initialized
      */"
-5,codereval,groq,v3_template,doc_generation,636767191a6d9265ec017c0f,codereval:e4b4f91fcc,1.0,1.0,1.0,1.0,0.9938,1.0,"/**
- * Enlarges this byte vector so that it can receive 'size' more bytes.
- * @param size number of additional bytes that this byte vector should be able to receive.
+5,code_review,groq,v3_template,doc_generation,realm/realm-java,code_review:6af8103326,0.0,0.0,0.0116,0.084,0.8247,0.1123,"/**
+ * Called when the schema of the Realm has changed.
+ * @param callback The callback object that triggered the schema change.
+ * @return The refreshed Realm schema.
+ * @throws Exception if an error occurs while refreshing the schema.
+ */","    /**
+     * Thread pool executor used for write operations - only one thread is needed as writes cannot
+     * be parallelized.
+     */"
+6,code_review,groq,v3_template,doc_generation,apache/skywalking,code_review:055c0b3248,0.0,0.0,0.0163,0.2083,0.8141,0.05,"/**
+ * Tests the serialization of a ServiceResetCommand.
+ * @param command the ServiceResetCommand to serialize
+ * @return the serialized Command
+ * @throws Exception if serialization fails
+ */","/**
+ * @author jsbxyyx
+ */"
+7,code_review,groq,v3_template,doc_generation,bndtools/bnd,code_review:cb14ce66b6,0.2837,0.1844,0.0128,0.1938,0.8234,0.3761,"/**
+ * Returns the file extension from a given file name, or a default value if the file name does not have an extension.
+ * @param fileName the file name to extract the extension from
+ * @param deflt the default value to return if the file name does not have an extension
+ * @return the file extension, or the default value if the file name does not have an extension
+ * @throws Exception None
+ */","	/**
+	 * Creates a symbolic link from {@code link} to the {@code target}, or
+	 * copies {@code target} to {@code link} if running on Windows.
+	 * <p>
+	 * Creating symbolic links on Windows requires administrator permissions, so
+	 * copying is a safer fallback.
+	 *
+	 * @param link the location of the symbolic link, or destination of the
+	 *            copy.
+	 * @param target the target of the symbolic link, or source of the copy.
+	 * @return {@code true} if the operation succeeds, {@code false} otherwise.
+	 */"
+8,code_review,groq,v3_template,doc_generation,cdapio/cdap,code_review:932f0f7414,0.2222,0.1481,0.021,0.2193,0.8716,0.646,"/**
+ * Initializes a new instance of the ServiceWorkerTwillRunnable class with the specified ServiceWorker.
+ * @param worker The ServiceWorker instance to be used.
+ */","/**
+ * {@link TwillRunnable} to run a {@link ServiceWorker}.
+ */"
+9,code_review,groq,v3_template,doc_generation,vaticle/typedb,code_review:0eae1ce0ac,0.0,0.0,0.0128,0.1705,0.8218,0.0487,"/**
+ * Creates a new instance of UndefineQueryImpl.
+ * @param varPatterns A list of VarPatternAdmin objects.
+ * @param tx The Grakn transaction, or null if none.
+ * @return A new instance of UndefineQueryImpl.
+ */","/**
+ * @author Felix Chapman
+ */"
+10,code_review,groq,v3_template,doc_generation,testcontainers/testcontainers-java,code_review:965b6511fd,0.2069,0.1379,0.0214,0.4635,0.8368,0.3829,"/**
+ * Creates a new JdbcDatabaseContainer instance with the specified Docker image name.
+ * @param dockerImageName The name of the Docker image to use for the database container.
+ */","    /**
+     * @return the database name
+     */"
+11,code_review,groq,v3_template,doc_generation,Alluxio/alluxio,code_review:2b55a8bac3,0.0556,0.0556,0.0114,0.1485,0.8553,0.5496,"/**
+ * Deletes a lineage with cascade option.
+ * @param options DeleteLineageOptions object to configure the deletion.
+ * @return None, as this method does not return any value.
+ * @throws Exception if an error occurs during deletion.
+ */","/**
+ * Tests for {@link DeleteLineageOptions}.
+ */"
+12,code_review,groq,v3_template,doc_generation,apache/pulsar,code_review:31ce4e8b2f,0.1477,0.1074,0.0013,0.0664,0.7897,0.033,"/**
+ * Initializes a new instance of the DelayInjectionMetadataStore class.
+ * @param store The MetadataStoreExtended instance to be used for metadata storage.
+ * @throws Exception If there is an issue creating the scheduler.
+ */","/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * ""License""); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */"
+13,code_review,groq,v3_template,doc_generation,GoogleCloudPlatform/java-docs-samples,code_review:588397bd08,0.0,0.0,0.0269,0.1685,0.889,0.4311,"/**
+ * Unregisters the StackdriverTraceExporter.
+ * @throws Exception if there is an issue unregistering the exporter.
+ */","/**
+ * Tests for stackdriver tracing sample.
+ */"
+14,code_review,groq,v3_template,doc_generation,ReactiveX/RxJava,code_review:b9f97b4a40,0.02,0.02,0.0001,0.0291,0.7933,0.0706,"/**
+ * Creates a new CompletableSubject instance.
+ * @return A new CompletableSubject instance.
+ */","/**
+ * Copyright 2016 Netflix, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the ""License""); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an ""AS IS"" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See
+ * the License for the specific language governing permissions and limitations under the License.
+ */"
+15,code_review,groq,v3_template,doc_generation,DSpace/DSpace,code_review:a6b7881120,0.2078,0.1299,0.0129,0.2277,0.8129,0.1783,"/**
+ * Retrieves all features and verifies the expected response for an admin user, 
+ * and then tests unauthorized and forbidden access for an eperson user.
+ * @param admin the admin user object
+ * @param eperson the eperson user object
+ * @param password the password for the users
+ */","/**
+ * The contents of this file are subject to the license and copyright
+ * detailed in the LICENSE and NOTICE files at the root of the source
+ * tree and available online at
+ *
+ * http://www.dspace.org/license/
+ */"
+16,code_review,groq,v3_template,doc_generation,broadinstitute/gatk,code_review:cfc5a2b923,0.1481,0.1235,0.0019,0.0865,0.8219,0.4121,"/**
+ * Returns the class of the annotation feature.
+ * @return The class of the annotation feature.
+ */","    /**
+     * Creates a {@link GencodeFuncotation}s based on a given spanning deletion {@link Allele}.
+     *
+     * Reports reference bases as if they are on the {@link Strand#POSITIVE} strand.
+     * @param variant The {@link VariantContext} associated with this annotation.
+     * @param annotationTranscript The transcript ID to use for populating this funcotation.
+     * @param reference The {@link ReferenceContext} in which the given {@link Allele}s appear.
+     * @return An IGR funcotation for the given allele.
+     */"
+17,code_review,groq,v3_template,doc_generation,netty/netty,code_review:37c96e5580,0.303,0.1212,0.0156,0.1714,0.8524,0.6106,"/**
+ * Initializes a new instance of the CorsHandler class with the specified CorsConfig.
+ * @param config The CorsConfig to use for handling CORS requests.
+ */","/**
+ * Handles <a href=""http://www.w3.org/TR/cors/"">Cross Origin Resource Sharing</a> (CORS) requests.
+ * <p>
+ * This handler can be configured using a {@link io.netty.handler.codec.http.cors.CorsConfig}, please
+ * refer to this class for details about the configuration options available.
+ */"
+18,code_review,groq,v3_template,doc_generation,vespa-engine/vespa,code_review:a3da3c4820,0.0784,0.0392,0.0096,0.2033,0.81,0.0899,"/**
+ * Compares two hardware nodes and returns a report on their similarity.
+ * @param node The first hardware node to compare.
+ * @param actualHardware The second hardware node to compare.
+ * @return A YamasSpecReport object containing the comparison results.
+ * @throws Exception No exceptions are thrown by this method.
+ */","/**
+ * Created by olaa on 04/07/2017.
+ */"
+19,code_review,groq,v3_template,doc_generation,mulesoft/mule,code_review:3246f50e7b,0.2632,0.2632,0.0369,0.5341,0.8696,0.6155,"/**
+ * Validates the extension model for overrides of equals and hashCode methods.
+ * @param extensionModel The extension model to validate.
+ * @param problemsReporter The reporter for problems found during validation.
+ */","/**
+ * Validates that POJOs parameter overrides Equals and HashCode
+ *
+ * @since 4.2
+ */"
+20,code_review,groq,v3_template,doc_generation,googleapis/google-cloud-java,code_review:fbd32ba2f2,0.2941,0.2059,0.0324,0.1759,0.8092,0.7451,"/**
+ * Creates a new RowMutation object.
+ * @param tableId the ID of the table
+ * @param key the key of the row to be mutated
+ * @param mutation the mutation to be applied to the row
+ */","  /**
+   * Creates new instance of mutation builder by wrapping existing mutation builder.
+   *
+   * <p>Sample code:
+   *
+   * <pre><code>
+   * Mutation mutation = Mutation.create()
+   *     .setCell(""[FAMILY_NAME]"", ""[QUALIFIER]"", [TIMESTAMP], ""[VALUE]"");
+   * RowMutation rowMutation = RowMutation.create(""[TABLE]"", ""[ROW_KEY]"", mutation);
+   * </code></pre>
+   */"
+21,code_review,groq,v3_template,doc_generation,apache/flink,code_review:dc73155187,0.2482,0.1022,0.0044,0.0983,0.8478,0.6561,"java
+/**
+ * Creates a Flink job that writes data to an HBase table.
+ * @param dataSource The collection of data to be written to HBase.
+ * @return None, as this method does not return any value.
+ * @throws Exception If an error occurs during job execution.
+ */","/**
+ * This is an example showing how to use the HBaseSink in the Streaming API.
+ *
+ * To run the example you need a local HBase database that has a table ""flink-example"" with a column family ""cf"".
+ * In the example, the HBase sink takes an input of type {@link Tuple3} and perform different operations based on the input.
+ * The first field of a input value is used as the row key, the second field is treated as an opcode that
+ * determines which type of HBase operation is performed and the third field is the value to written.
+ */"
+22,code_review,groq,v3_template,doc_generation,jenkinsci/jenkins,code_review:3cdf45c517,0.1154,0.0769,0.0096,0.2128,0.8157,0.0849,"java
+/**
+ * Memoizes the creation of ExtensionList instances based on the Jenkins instance and a given class.
+ * @param key the class for which the ExtensionList instance is to be created
+ * @return the ExtensionList instance for the given class
+ * @throws Exception if an error occurs during memoization
+ */","    /**
+     * Returns the enabled and activated administrative monitors.
+     */"
+23,code_review,groq,v3_template,doc_generation,sleuthkit/autopsy,code_review:757c6cd128,0.0952,0.0952,0.0123,0.1911,0.8593,0.4636,"java
+/**
+ * Initializes the PListViewer component.
+ * @param panel The panel to add the outline view to.
+ * @return A description of the return value, if any.
+ * @throws Exception An exception that may be thrown during initialization.
+ */","/**
+ * PListViewer - a file viewer for binary plist files. 
+ *
+ */"
+24,code_review,groq,v3_template,doc_generation,apache/pulsar,code_review:6062bcb471,0.3721,0.3721,0.0439,0.3035,0.8435,0.641,"/**
+ * Reads a value from a byte array.
+ * @param bytes The byte array to read from.
+ * @return The read value.
+ */","    /**
+     * serialize bytes convert pojo
+     *
+     * @param bytes the data
+     * @param offset the byte[] initial position
+     * @param length the byte[] read length
+     * @return the serialized object
+     */"
+25,codereval,groq,v3_template,doc_generation,636767691a6d9265ec0181aa,codereval:dc9e8b7ef3,0.6024,0.4819,0.1498,0.3606,0.8967,0.8676,"/**
+ * Returns a hash code for the given array, handling null arrays.
+ * @param array the array to calculate the hash code for
+ * @return a hash code for the array
+ * @throws NullPointerException if the array is null
  */","/** 
- * Enlarges this byte vector so that it can receive 'size' more bytes.
- * @param size number of additional bytes that this byte vector should be able to receive.
+ * Return a hash code based on the contents of the specified array. If <code>array</code> is <code>null</code>, this method returns 0.
+ * @param array the long array to obtain a hashcode
+ * @return the long array's hashcode, which could be 0 if the array is null.
  */
 "
-6,codereval,groq,v3_template,doc_generation,636767121a6d9265ec017b0a,codereval:70dfb8dfb0,1.0,1.0,1.0,1.0,0.9955,1.0,"/**
- * Skips bytes until the end of the current line.
- * @param headerPart The headers, which are being parsed.
- * @param end Index of the last byte, which has yet been processed.
- * @return Index of the \r\n sequence, which indicates end of line.
+26,codereval,groq,v3_template,doc_generation,636766f91a6d9265ec01777f,codereval:f4a4ee50f8,0.4304,0.3797,0.1639,0.4399,0.8426,0.6383,"/**
+ * Converts a Boolean object to a boolean primitive.
+ * @param bool the Boolean object to convert
+ * @return true if the Boolean object is true, false otherwise
  */","/** 
- * Skips bytes until the end of the current line.
- * @param headerPart The headers, which are being parsed.
- * @param end Index of the last byte, which has yet been processed.
- * @return Index of the \r\n sequence, which indicates end of line.
+ * <p>Converts a Boolean to a boolean handling <code>null</code> by returning <code>false</code>.</p> <pre> BooleanUtils.toBoolean(Boolean.TRUE)  = true BooleanUtils.toBoolean(Boolean.FALSE) = false BooleanUtils.toBoolean(null)          = false </pre>
+ * @param bool  the boolean to convert
+ * @return <code>true</code> or <code>false</code>, <code>null</code> returns <code>false</code>
  */
 "
-7,codereval,groq,v3_template,doc_generation,6367676d1a6d9265ec018229,codereval:d790444bc4,0.8947,0.8947,0.7754,0.8643,0.9731,0.9142,"/**
- * Trim the elements of the given String array, calling <code>String.trim()</code> on each of them.
- * @param array the original String array
- * @return the resulting array (of the same size) with trimmed elements
+27,codereval,groq,v3_template,doc_generation,6367676d1a6d9265ec018229,codereval:7e482a06df,0.5075,0.4478,0.2089,0.3964,0.8926,0.7447,"/**
+ * Trims the elements of the given array to remove leading and trailing whitespace.
+ * @param array the input array to be trimmed
+ * @return the trimmed array
  * @throws NullPointerException if the input array is null
  */","/** 
  * Trim the elements of the given String array, calling <code>String.trim()</code> on each of them.
@@ -80,81 +303,397 @@ ira_id,dataset,model,variant,task_type,repo,pair_id,rouge1,rougeL,bleu,meteor,be
  * @return the resulting array (of the same size) with trimmed elements
  */
 "
-8,codereval,groq,v3_template,doc_generation,636767791a6d9265ec018257,codereval:eaa087cc73,0.8182,0.8182,0.6438,0.911,0.9513,0.9566,"/**
- * Add a log record message to be displayed in the LogTable. This method is thread-safe as it posts requests to the SwingThread rather than processing directly.
- * @param lr LogRecord object containing the message to be displayed
+28,codereval,groq,v3_template,doc_generation,636767781a6d9265ec01823d,codereval:08d4b0aa0a,0.0,0.0,0.0132,0.1429,0.8466,0.2632,"/**
+ * Appends a sub-event to the logging event.
+ * @param event the logging event to append to
  * @return void
+ * @throws Exception if an error occurs during the append operation
+ */","/** 
+ * This method does actual writing
+ */
+"
+29,codereval,groq,v3_template,doc_generation,6367677e1a6d9265ec01830f,codereval:2af0abef80,0.2353,0.2353,0.018,0.2397,0.8823,0.4489,"/**
+ * Formats a given logging event into a string.
+ * @param event The logging event to be formatted.
+ * @return A string representation of the logging event.
+ */","/** 
+ * Produces a formatted string as specified by the conversion pattern.
+ */
+"
+30,codereval,groq,v3_template,doc_generation,636767441a6d9265ec017cc1,codereval:a6cb8bde2f,0.4286,0.3929,0.0418,0.3089,0.893,0.8173,"/**
+ * Rotates the given node to the right, effectively changing the left and right child nodes.
+ * @param node The node to be rotated.
+ * @return The new root node after rotation.
+ * @throws NullPointerException If the given node is null.
+ */","/** 
+ * Performs a right node rotation.
+ * @param node a node to rotate
+ * @return a new parent of the {@code node}
+ */
+"
+31,codereval,groq,v3_template,doc_generation,636767121a6d9265ec017b0a,codereval:06869ad278,0.475,0.425,0.124,0.3871,0.9,0.7303,"/**
+ * Parses the end of line from the given header part and end value.
+ * @param headerPart The part of the header to parse.
+ * @param end The end value to parse the line with.
+ * @return The parsed end of line value.
+ */","/** 
+ * Skips bytes until the end of the current line.
+ * @param headerPart The headers, which are being parsed.
+ * @param end Index of the last byte, which has yet been processed.
+ * @return Index of the \r\n sequence, which indicates end of line.
+ */
+"
+32,codereval,groq,v3_template,doc_generation,6367670b1a6d9265ec017a00,codereval:bb3a7ba4c8,0.4894,0.4468,0.1517,0.4529,0.8602,0.7316,"/**
+ * Checks if two byte arrays are of the same length.
+ * @param array1 The first byte array to compare.
+ * @param array2 The second byte array to compare.
+ * @return True if the arrays are the same length, false otherwise.
+ */","/** 
+ * <p>Checks whether two arrays are the same length, treating <code>null</code> arrays as length <code>0</code>.</p>
+ * @param array1 the first array, may be <code>null</code>
+ * @param array2 the second array, may be <code>null</code>
+ * @return <code>true</code> if length of arrays matches, treating<code>null</code> as an empty array
+ */
+"
+33,codereval,groq,v3_template,doc_generation,636767a41a6d9265ec018582,codereval:9e56ef84fa,0.1928,0.1205,0.0096,0.203,0.8465,0.6275,"/**
+ * Writes a delimited message to the specified output stream based on the provided schema and buffer.
+ * @param out The output stream to write to.
+ * @param message The message to be written.
+ * @param schema The schema to use for writing the message.
+ * @param buffer The buffer to use for writing the message.
+ * @return The number of bytes written.
+ * @throws IOException If an I/O error occurs.
+ */","/** 
+ * Serializes the  {@code message}, prefixed with its length, into an  {@link OutputStream}.
+ * @return the size of the message
+ */
+"
+34,codereval,groq,v3_template,doc_generation,6367667f1a6d9265ec017457,codereval:639503e346,0.4242,0.303,0.0829,0.2417,0.874,0.75,"/**
+ * Decodes octets from the given ByteBuffer into a StringBuilder.
+ * @param i The index in the ByteBuffer.
+ * @param bb The ByteBuffer containing the octets to be decoded.
+ * @param sb The StringBuilder where the decoded octets will be appended.
+ */","/** 
+ * Decodes octets to characters using the UTF-8 decoding and appends the characters to a StringBuffer.
+ * @return the index to the next unchecked character in the string to decode
+ */
+"
+35,codereval,groq,v3_template,doc_generation,636767081a6d9265ec017989,codereval:2512f8671f,0.4,0.325,0.0275,0.1983,0.8404,0.7189,"/**
+ * Converts a Boolean array to a primitive boolean array.
+ * @param array The Boolean array to convert.
+ * @return A primitive boolean array.
+ */","/** 
+ * <p>Converts an array of object Booleans to primitives.</p> <p>This method returns <code>null</code> for a <code>null</code> input array.</p>
+ * @param array  a <code>Boolean</code> array, may be <code>null</code>
+ * @return a <code>boolean</code> array, <code>null</code> if null array input
+ * @throws NullPointerException if array content is <code>null</code>
+ */
+"
+36,codereval,groq,v3_template,doc_generation,636766f11a6d9265ec017658,codereval:7c98be00e0,0.4815,0.4444,0.1424,0.2726,0.8879,0.7999,"/**
+ * Returns the index of the last separator in the filename.
+ * @param filename the filename to search for the last separator
+ * @return the index of the last separator in the filename
+ */","/** 
+ * Returns the index of the last directory separator character. <p> This method will handle a file in either Unix or Windows format. The position of the last forward or backslash is returned. <p> The output will be the same irrespective of the machine that the code is running on.
+ * @param filename  the filename to find the last path separator in, null returns -1
+ * @return the index of the last separator character, or -1 if thereis no such character
+ */
+"
+37,codereval,groq,v3_template,doc_generation,6367670b1a6d9265ec0179fe,codereval:6511dc50c9,0.6774,0.6452,0.2837,0.6091,0.9089,0.8847,"/**
+ * Writes the specified byte array to the underlying output stream.
+ * @param b the byte array to be written
+ * @return N/A (void method)
+ * @throws IOException if an I/O error has occurred
+ */","/** 
+ * Writes <code>b.length</code> bytes from the specified byte array to this output stream.
+ * @param b The array of bytes to be written.
+ * @exception IOException if an error occurs.
+ */
+"
+38,codereval,groq,v3_template,doc_generation,6367672d1a6d9265ec017c73,codereval:2be0c17913,0.5455,0.3896,0.1333,0.4054,0.8788,0.7239,"/**
+ * Determines whether a message should be printed based on a given timestamp and message.
+ * @param timestamp The timestamp of the message.
+ * @param message The message to be printed.
+ * @return True if the message should be printed, false otherwise.
+ * @throws IllegalArgumentException If the timestamp is invalid.
+ */","/** 
+ * Returns true if the message should be printed in the given timestamp, otherwise returns false. If this method returns false, the message will not be printed. The timestamp is in seconds granularity. 
+ */
+"
+39,codereval,groq,v3_template,doc_generation,636766f81a6d9265ec01775c,codereval:1f6e7245a4,0.2979,0.2553,0.0358,0.1822,0.8168,0.4984,"/**
+ * Converts an object to a string representation.
+ * @param obj the object to be converted
+ * @return a string representation of the object
+ */","/** 
+ * <p>Gets the <code>toString</code> of an <code>Object</code> returning an empty string ("""") if <code>null</code> input.</p> <pre> ObjectUtils.toString(null)         = """" ObjectUtils.toString("""")           = """" ObjectUtils.toString(""bat"")        = ""bat"" ObjectUtils.toString(Boolean.TRUE) = ""true"" </pre>
+ * @see StringUtils#defaultString(String)
+ * @see String#valueOf(Object)
+ * @param obj  the Object to <code>toString</code>, may be null
+ * @return the passed in Object's toString, or nullStr if <code>null</code> input
+ * @since 2.0
+ */
+"
+40,codereval,groq,v3_template,doc_generation,636767641a6d9265ec01817d,codereval:9dc653b8b0,0.129,0.129,0.016,0.2427,0.8494,0.4344,"/**
+ * Generates a graph based on the provided target and result map.
+ * @param target The graph to be generated.
+ * @param resultMap A map containing the result data.
+ */","/** 
+ * Construct a complete bipartite graph
+ */
+"
+41,codereval,groq,v3_template,doc_generation,6367675f1a6d9265ec0180d3,codereval:61f495cad4,0.5316,0.3544,0.0442,0.2756,0.8929,0.8273,"/**
+ * Returns an isomorphic graph mapping that maps each node in the input graph to itself.
+ * @param graph The input graph.
+ * @return An isomorphic graph mapping that maps each node in the input graph to itself.
+ */","/** 
+ * Computes an identity automorphism (i.e. a self-mapping of a graph in which each vertex also maps to itself).
+ * @param graph the input graph
+ * @param < V > the graph vertex type
+ * @param < E > the graph edge type
+ * @return a mapping from graph to graph
+ */
+"
+42,codereval,groq,v3_template,doc_generation,636766ff1a6d9265ec017851,codereval:10c4e6f18f,0.5,0.35,0.1006,0.3314,0.8874,0.7478,"/**
+ * Finds the byte at the specified position in the byte array.
+ * @param pos The position to find the byte at.
+ * @return The byte at the specified position.
+ */","/** 
+ * Searches for a byte of specified value in the <code>buffer</code>, starting at the specified <code>position</code>.
+ * @param value The value to find.
+ * @param pos   The starting position for searching.
+ * @return The position of byte found, counting from beginning of the<code>buffer</code>, or <code>-1</code> if not found.
+ */
+"
+43,codereval,groq,v3_template,doc_generation,636766fe1a6d9265ec017833,codereval:0fb7017482,0.4941,0.3765,0.1042,0.3179,0.8957,0.677,"/**
+ * Deletes the specified file and forces it to be deleted on exit, even if it is locked by another process.
+ * @param file The file to be deleted
+ * @throws IOException If an I/O error occurs during the deletion process
+ */","/** 
+ * Schedules a file to be deleted when JVM exits. If file is directory delete it and all sub-directories.
+ * @param file  file or directory to delete, must not be {@code null}
+ * @throws NullPointerException if the file is {@code null}
+ * @throws IOException in case deletion is unsuccessful
+ */
+"
+44,codereval,groq,v3_template,doc_generation,636766821a6d9265ec0174b6,codereval:0d719c9877,0.3478,0.2899,0.0856,0.1502,0.8584,0.7861,"/**
+ * Resolves the arguments of a generic type based on a target type.
+ * @param genericType The generic type to resolve arguments for.
+ * @param targetType The target type to resolve arguments to.
+ * @return An array of classes representing the resolved arguments.
+ */","/** 
+ * Resolves the arguments for the  {@code genericType} using the type variable information for the{@code targetType}. Returns  {@code null} if {@code genericType} is not parameterized or ifarguments cannot be resolved.
+ */
+"
+45,codereval,groq,v3_template,doc_generation,636767821a6d9265ec0183a0,codereval:b417ead8da,0.3243,0.3243,0.0188,0.4291,0.8773,0.8003,"/**
+ * Deletes a file by the specified name from the file system.
+ * @param fileName the name of the file to be deleted
+ * @throws FileNotFoundException if the file does not exist
+ */","/** 
+ * Delete's the specified file if it exists 
+ */
+"
+46,codereval,groq,v3_template,doc_generation,6367667f1a6d9265ec01745c,codereval:34ce05f761,0.4375,0.375,0.0344,0.2934,0.8905,0.6398,"/**
+ * Adds a directory to the classpath.
+ * @param dir the directory to add to the classpath
+ */","/** 
+ * Add all the jar files in a dir to the classpath, represented as a Vector of URLs.
+ */
+"
+47,codereval,groq,v3_template,doc_generation,636766f61a6d9265ec017701,codereval:66c7202d1e,0.2188,0.1875,0.0121,0.2195,0.8417,0.6805,"/**
+ * Returns the index of the last occurrence of the specified search string within the specified string.
+ * @param str the string to search in
+ * @param searchStr the string to search for
+ * @return the index of the last occurrence of the search string, or -1 if not found
+ */","/** 
+ * Finds the last index within a String, handling <code>null</code>. This method uses  {@link String#lastIndexOf(String)}. 
+ */
+"
+48,codereval,groq,v3_template,doc_generation,636767791a6d9265ec018257,codereval:cb05926720,0.4878,0.2927,0.0284,0.3599,0.8957,0.3659,"/**
+ * Adds a message to the log.
+ * @param lr The log record to be added.
  */","/** 
  * Add a log record message to be displayed in the LogTable. This method is thread-safe as it posts requests to the SwingThread rather than processing directly.
  */
 "
-9,codereval,groq,v3_template,doc_generation,636767441a6d9265ec017cc1,codereval:e8997dcca8,1.0,1.0,1.0,1.0,0.9928,1.0,"/**
- * Performs a right node rotation.
- * @param node a node to rotate
- * @return a new parent of the {@code node}
+49,codereval,groq,v3_template,doc_generation,636766aa1a6d9265ec0175ce,codereval:33682923c0,0.6897,0.5862,0.2961,0.5579,0.9154,0.8399,"/**
+ * Visits the start of a frame in the stack, recording the offset, number of local variables, and number of stack variables.
+ * @param offset The offset of the frame in the stack.
+ * @param numLocal The number of local variables in the frame.
+ * @param numStack The number of stack variables in the frame.
+ * @return The number of bytes visited.
  */","/** 
- * Performs a right node rotation.
- * @param node a node to rotate
- * @return a new parent of the {@code node}
+ * Starts the visit of a new stack map frame, stored in  {@link #currentFrame}.
+ * @param offset   the bytecode offset of the instruction to which the frame corresponds.
+ * @param numLocal the number of local variables in the frame.
+ * @param numStack the number of stack elements in the frame.
+ * @return the index of the next element to be written in this frame.
  */
 "
-10,funcom,groq,v3_template,code_summarization,funcom,funcom:55e9822477,0.2857,0.2286,0.0357,0.2929,0.8225,0.4264,"/**
+50,funcom,groq,v3_template,code_summarization,funcom,funcom:55e9822477,0.25,0.2,0.0291,0.188,0.8053,0.3448,"/**
  * Sets the teachers for the current object, adding all provided teachers.
- * @param teachers A list of teachers to be added to the current object.
+ * @param teachers A collection of teachers to be added.
+ * @throws NullPointerException if the provided teachers collection is null.
  */","43104163, <s> adds the set of teachers to data bank </s>"
-11,funcom,groq,v3_template,code_summarization,funcom,funcom:af18c95fa8,0.3077,0.3077,0.1175,0.2716,0.8272,0.4239,"/**
- * Returns the status of the transaction manager.
- * @param tm the transaction manager
- * @return the status of the transaction manager
- * @throws SystemException if an error occurs
+51,funcom,groq,v3_template,code_summarization,funcom,funcom:af18c95fa8,0.28,0.24,0.0714,0.3778,0.8251,0.5366,"/**
+ * Returns the current status of the transaction manager.
+ * @param transactionId The ID of the transaction to retrieve the status for.
+ * @return The status of the transaction.
+ * @throws SystemException If an error occurs while retrieving the status.
  */","13711490, <s> obtain the status of the transaction associated with the current thread </s>"
-12,funcom,groq,v3_template,code_summarization,funcom,funcom:8b7aa8e689,0.0588,0.0588,0.0,0.0,0.7887,0.0932,"/**
+52,funcom,groq,v3_template,code_summarization,funcom,funcom:8b7aa8e689,0.0,0.0,0.0,0.0,0.7909,0.1152,"/**
  * Starts the bundle context.
- * @param context The context to start the bundle in.
- * @throws Exception If an error occurs while starting the context.
+ * @param context The context to start the bundle with.
+ * @throws Exception If an error occurs during the start process.
  */","44884467, <s> this method is called upon plug in activation </s>"
-13,funcom,groq,v3_template,code_summarization,funcom,funcom:6c68e174ef,0.1579,0.1316,0.0087,0.2356,0.8069,0.4519,"/**
- * Rolls back the current transaction if it exists.
- * @param tx The transaction to be rolled back.
- * @return Not applicable, as this method does not return a value.
- * @throws IllegalStateException If the transaction cannot be rolled back.
- * @throws SecurityException If the transaction cannot be accessed.
- * @throws SystemException If a system error occurs while rolling back the transaction.
- * @throws BusinessTransactionException If a business transaction error occurs.
+53,funcom,groq,v3_template,code_summarization,funcom,funcom:6c68e174ef,0.1408,0.1408,0.0144,0.2126,0.8075,0.4433,"/**
+ * Rolls back the transaction if it exists, otherwise throws an exception.
+ * @param tx the transaction to be rolled back
+ * @throws IllegalStateException if the transaction cannot be rolled back
+ * @throws SecurityException if there is a security issue during rollback
+ * @throws SystemException if there is a system issue during rollback
+ * @throws BusinessTransactionException if there is a business transaction issue during rollback
  */","13711521, <s> roll back the transaction associated with the current thread </s>"
-14,funcom,groq,v3_template,code_summarization,funcom,funcom:f2ffdb1ec4,0.1961,0.1961,0.0063,0.1863,0.8158,0.4091,"/**
+54,funcom,groq,v3_template,code_summarization,funcom,funcom:f2ffdb1ec4,0.2,0.1667,0.0092,0.2821,0.8121,0.4031,"/**
  * Retrieves the SOAP types for the given parameters.
- * @param params An array of parameters to retrieve SOAP types for.
- * @return The SOAP types for the given parameters.
- * @throws RuntimeException If an error occurs while retrieving the SOAP types.
+ * @param i The index of the parameter.
+ * @return The SOAP type for the parameter at the given index.
+ * @throws RuntimeException If the index is out of bounds or if the Java type does not have a corresponding SOAP type.
  */","13711479, <s> gives a string containing the axis types of the parameters </s>"
-15,robustness_copilot,groq,v3_template,doc_generation,dcache,robustness_copilot:fbbf37a5df,0.2295,0.2295,0.0271,0.2885,0.8423,0.5756,"/**
- * Adds a new cache entry to the cache, handling the creation of a new StorageClassInfo if necessary.
+55,funcom,groq,v3_template,code_summarization,funcom,funcom:fd4836e6b2,0.0833,0.0833,0.0045,0.0714,0.8119,0.3223,"/**
+ * Initializes a new zip file by enumerating its entries and adding them to the zip file.
+ * @param zf the zip file to be initialized
+ * @throws IOException if an I/O error occurs while reading the zip file
+ */","13711191, <s> initializes internal hash tables with jar file resources </s>"
+56,funcom,groq,v3_template,code_summarization,funcom,funcom:fb550406d1,0.12,0.12,0.0046,0.1261,0.7822,0.3952,"/**
+ * Reads a file from a JAR by its name.
+ * @param fileName The name of the file to read from the JAR.
+ * @return The contents of the file as a string.
+ * @throws IOException If an I/O error occurs while reading the file.
+ */","13711484, <s> reads inn a text file </s>"
+57,funcom,groq,v3_template,code_summarization,funcom,funcom:e6ca17b481,0.2143,0.1429,0.0109,0.1327,0.8119,0.4913,"/**
+ * Initializes default preferences in the store.
+ * @param none No parameters are required.
+ * @throws Exception No exceptions are expected.
+ */","44884476, <s> sets the default values of the preferences </s>"
+58,funcom,groq,v3_template,code_summarization,funcom,funcom:ee702bda0c,0.3333,0.2381,0.0398,0.3325,0.82,0.6173,"/**
+ * Retrieves a transaction object.
+ * @param txId the unique identifier of the transaction
+ * @return the transaction object
+ * @throws SystemException if the transaction is not found or an error occurs
+ */","13711514, <s> get the transaction object that represents the transaction context of the </s>"
+59,funcom,groq,v3_template,code_summarization,funcom,funcom:1f89ce9f48,0.1304,0.1304,0.0089,0.1293,0.7852,0.3913,"/**
+ * Adds a teacher to the system and returns true if successful.
+ * @param teacher the teacher to be added
+ * @return true if the teacher was added successfully, false otherwise
+ * @throws Exception if there is an error adding the teacher
+ */","43104151, <s> add teacher to data bank </s>"
+60,funcom,groq,v3_template,code_summarization,funcom,funcom:c3b26af508,0.0909,0.0909,0.0043,0.1933,0.7767,0.1274,"/**
+ * Adds a flow with the given priority and flag, and returns true if the flow is successfully added.
+ * @param priority The priority of the flow to be added.
+ * @return True if the flow is successfully added, false otherwise.
+ */","43104047, <s> adds a single </s>"
+61,funcom,groq,v3_template,code_summarization,funcom,funcom:98d30fea02,0.359,0.2564,0.0407,0.4069,0.8344,0.5619,"/**
+ * Retrieves the parameter names as a string for the given parameters.
+ * @param i the index of the parameter
+ * @return the parameter names as a string
+ */","13711481, <s> gives a string containing the parameter names given in get parameters </s>"
+62,funcom,groq,v3_template,code_summarization,funcom,funcom:a68bae4bcf,0.2424,0.1818,0.0104,0.1,0.8145,0.4151,"/**
+ * Begins a transaction.
+ * @param tm The transaction manager to use.
+ * @throws NamingException If the transaction manager cannot be created.
+ */","13711487, <s> create a new transaction and associate it with the current thread </s>"
+63,funcom,groq,v3_template,code_summarization,funcom,funcom:4af03d14ce,0.3636,0.3636,0.0228,0.284,0.8167,0.4223,"/**
+ * Adds a student to the students list.
+ * @param s The student to be added.
+ */","43104142, <s> add student to data bank </s>"
+64,funcom,groq,v3_template,code_summarization,funcom,funcom:9934bcd92d,0.3478,0.3478,0.0215,0.2808,0.8001,0.2687,"/**
+ * Adds a subject to the collection of subjects.
+ * @param s The subject to be added.
+ */","43104147, <s> add subject to data bank </s>"
+65,funcom,groq,v3_template,code_summarization,funcom,funcom:97b6c6c336,0.2778,0.2222,0.0142,0.1299,0.8173,0.5484,"/**
+ * Suspends a transaction.
+ * @param tm The transaction manager.
+ * @return The transaction manager after suspension.
+ * @throws SystemException If the transaction cannot be suspended.
+ */","13711500, <s> suspend the transaction currently associated with the calling thread and return </s>"
+66,funcom,groq,v3_template,code_summarization,funcom,funcom:883998e4fb,0.3158,0.2105,0.018,0.24,0.8106,0.6265,"/**
+ * Retrieves a transaction.
+ * @param TRANSACTION_ID The ID of the transaction to retrieve.
+ * @return The retrieved transaction.
+ * @throws SystemException If a system error occurs.
+ */","13711491, <s> get the transaction object that represents the transaction context of the </s>"
+67,funcom,groq,v3_template,code_summarization,funcom,funcom:b7bbc4ee78,0.2456,0.2456,0.0576,0.3843,0.8237,0.4213,"/**
+ * Retrieves the status of a business transaction.
+ * @param tx the business transaction to retrieve the status for
+ * @return the status of the business transaction
+ * @throws SystemException if there is an issue with the system
+ * @throws BusinessException if there is a business-related issue
+ */","13711512, <s> obtain the status of the transaction associated with the current thread </s>"
+68,funcom,groq,v3_template,code_summarization,funcom,funcom:c08b24413d,0.1786,0.1786,0.0104,0.1374,0.806,0.4068,"/**
+ * Sets the transaction to rollback only, throwing an exception if the transaction is already committed.
+ * @param transactionId the ID of the transaction to set rollback only
+ * @throws IllegalStateException if the transaction is already committed
+ * @throws SQLException if a database error occurs
+ */","13711496, <s> modify the transaction associated with the current thread such that the only </s>"
+69,funcom,groq,v3_template,code_summarization,funcom,funcom:4c60038f3e,0.28,0.2,0.012,0.1705,0.8127,0.5563,"/**
+ * Suspends a transaction if it is not null, detaches resources, and sets the transaction to null.
+ * @param tx The transaction to be suspended.
+ * @return The suspended transaction.
+ * @throws SystemException If the transaction cannot be suspended.
+ */","13711529, <s> suspend the transaction currently associated with the calling thread and return a </s>"
+70,funcom,groq,v3_template,code_summarization,funcom,funcom:a0e4c5f260,0.2174,0.1739,0.012,0.1786,0.8045,0.3832,"/**
+ * Sets the list of subjects for the given subject.
+ * @param subjectId the ID of the subject to set the subjects list for
+ * @return void
+ * @throws Exception if an error occurs while setting the subjects list
+ */","43104162, <s> adds the set of subjects to data bank </s>"
+71,funcom,groq,v3_template,code_summarization,funcom,funcom:8aefd0977a,0.2778,0.2778,0.0169,0.2566,0.8247,0.3923,"/**
+ * Retrieves the qname of the specified return type.
+ * @param id the id of the return type
+ * @return the qname of the return type
+ */","13711471, <s> the type of the variable that is to be returned </s>"
+72,funcom,groq,v3_template,code_summarization,funcom,funcom:43417cb212,0.2703,0.2703,0.0191,0.3932,0.8292,0.4651,"/**
+ * Returns the parameter types as a string for the given index.
+ * @param i the index of the parameter
+ * @return a string representation of the parameter types
+ */","13711486, <s> gives a string containing the java parameter types </s>"
+73,funcom,groq,v3_template,code_summarization,funcom,funcom:1c8fb9926d,0.186,0.186,0.0074,0.119,0.8167,0.6601,"/**
+ * Sets the transaction timeout in seconds.
+ * @param sec the number of seconds to wait for a transaction to complete
+ * @throws SystemException if the transaction timeout cannot be set
+ */","13711499, <s> modify the timeout value that is associated with transactions started by the </s>"
+74,funcom,groq,v3_template,code_summarization,funcom,funcom:3e0d1da8a5,0.3448,0.2759,0.0462,0.3074,0.8244,0.3823,"/**
+ * Sets the students of this class.
+ * @param students A collection of students to be added to this class.
+ */","43104159, <s> adds the set of students to data bank </s>"
+75,robustness_copilot,groq,v3_template,doc_generation,dcache,robustness_copilot:fbbf37a5df,0.2979,0.2979,0.0358,0.3784,0.8515,0.6436,"/**
+ * Adds a new cache entry to the storage system.
  * @param entry The cache entry to be added.
- * @throws CacheException If an error occurs while adding the cache entry.
- * @throws InterruptedException If the current thread is interrupted while adding the cache entry.
+ * @return None
+ * @throws CacheException If an error occurs during the operation.
+ * @throws InterruptedException If the operation is interrupted.
  */","/**
      * adds a CacheEntry to the list of HSM storage requests.
      *
      * @param entry
      */"
-16,robustness_copilot,groq,v3_template,doc_generation,tablesaw,robustness_copilot:a5739ebe1f,0.5507,0.4348,0.0567,0.4524,0.8905,0.6927,"/**
- * Returns the mapped row number based on the current state of the object.
+76,robustness_copilot,groq,v3_template,doc_generation,tablesaw,robustness_copilot:a5739ebe1f,0.4789,0.4225,0.0528,0.3935,0.8849,0.6938,"/**
+ * Returns the mapped row number based on the current sort order or selection.
  * @param rowNumber The original row number to be mapped.
  * @return The mapped row number.
- * @throws Exception if the object is not in a valid state.
+ * @throws Exception If an error occurs while accessing the sort order or selection.
  */","/**
    * Maps the view row number to the row number on the underlying source table.
    *
    * @param rowNumber the row number in the view.
    * @return the matching row number in the underlying table.
    */"
-17,robustness_copilot,groq,v3_template,doc_generation,cdk,robustness_copilot:3bca5eb67c,0.3934,0.3607,0.0551,0.5143,0.8525,0.6522,"java
+77,robustness_copilot,groq,v3_template,doc_generation,cdk,robustness_copilot:3bca5eb67c,0.3448,0.3103,0.0587,0.4431,0.85,0.6177,"java
 /**
- * Loads AtomTypePattern instances from a SMILES file.
- * @param smaIn Input stream containing SMILES file data.
- * @return An array of loaded AtomTypePattern instances.
- * @throws IOException If an I/O error occurs while reading the SMILES file.
+ * Loads AtomTypePattern objects from a given InputStream.
+ * @param smaIn InputStream containing AtomTypePattern data
+ * @return an array of loaded AtomTypePattern objects
+ * @throws IOException if an I/O error occurs while reading the InputStream
  */","/**
      * Internal - load the SMARTS patterns for each atom type from MMFFSYMB.sma.
      *
@@ -162,68 +701,361 @@ ira_id,dataset,model,variant,task_type,repo,pair_id,rouge1,rougeL,bleu,meteor,be
      * @return array of patterns
      * @throws IOException
      */"
-18,robustness_copilot,groq,v3_template,doc_generation,dcache,robustness_copilot:40abe749d2,0.0597,0.0597,0.0069,0.1064,0.7993,0.3581,"/**
- * Scans the fields of a given object and configures the corresponding AcCommandExecutor based on the field name.
- * @param obj The object to scan.
- * @param commands A map of commands where the key is a list of strings representing the field name and the value is the AcCommandExecutor.
- * @throws Exception This method does not throw any exceptions.
+78,robustness_copilot,groq,v3_template,doc_generation,dcache,robustness_copilot:40abe749d2,0.1277,0.1277,0.0113,0.2228,0.8067,0.4141,"/**
+ * Scans fields of a given object and associates them with their corresponding command executors based on the field name.
+ * @param obj The object to scan for fields.
+ * @param commands A map of commands to their executors.
  */","/**
      * Scan for help fields: fh_(= full help) or hh_(= help hint).
      */"
-19,robustness_copilot,groq,v3_template,doc_generation,cdk,robustness_copilot:7fd2d4d62f,0.5902,0.5902,0.1361,0.4867,0.8778,0.7368,"/**
- * Writes a molecule in Sybyl format to the output stream.
- * @param mol The molecule to write, containing atoms and bonds.
- * @throws IOException If an I/O error occurs while writing to the output stream.
+79,robustness_copilot,groq,v3_template,doc_generation,cdk,robustness_copilot:7fd2d4d62f,0.5965,0.5263,0.0664,0.4754,0.8836,0.7028,"/**
+ * Writes the given molecule to the output stream in Sybyl format.
+ * @param mol The molecule to be written.
+ * @throws IOException If an I/O error occurs during the writing process.
  */","/**
      * Writes a single frame in XYZ format to the Writer.
      *
      * @param mol the Molecule to write
      * @throws java.io.IOException if there is an error during writing
      */"
-20,tesoro,groq,v3_template,satd_detection,85,tesoro:eaf2024b02,0.12,0.12,0.0195,0.0836,0.8194,0.462,"/**
- * Adds a module for voice calls.
+80,robustness_copilot,groq,v3_template,doc_generation,cdk,robustness_copilot:5e864fecbc,0.5714,0.521,0.0565,0.4671,0.8447,0.8013,"/**
+ * Finds the prefix of the given string in the trie, returning the index of the best match found so far.
+ * @param trie The trie to search in.
+ * @param string The string to search for a prefix in.
+ * @param i The current index in the string.
+ * @param best The index of the best match found so far.
+ * @return The index of the best match found.
+ */","/**
+     * Find the longest prefix from position (i) in this string that
+     * is present in the trie symbol table.
+     *
+     * @param trie   trie node (start with root)
+     * @param string string to find a prefix of
+     * @param i      the position in the string
+     * @param best   best score so far (-1 to start)
+     * @return the length of the prefix
+     */"
+81,robustness_copilot,groq,v3_template,doc_generation,logstash-logback-encoder,robustness_copilot:043728039c,0.656,0.528,0.169,0.4281,0.8698,0.7585,"/**
+ * Enqueues an event into the disruptor ring buffer, potentially retrying if the buffer is full.
+ * @param event the event to enqueue
+ * @return true if the event was successfully enqueued, false otherwise
+ * @throws ShutdownInProgressException if the disruptor is shutting down
+ * @throws InterruptedException if the current thread is interrupted while waiting for the buffer to be available
+ */","/**
+     * Enqueue an event in the ring buffer, retrying if allowed by the configuration.
+     * 
+     * @param event the event to add to the ring buffer
+     * @return {@code true} if the event is successfully enqueued, {@code false} if the event
+     *         could not be added to the ring buffer.
+     * @throws ShutdownInProgressException thrown when the appender is shutdown while retrying
+     *         to enqueue the event
+     * @throws InterruptedException thrown when the logging thread is interrupted while retrying
+     */"
+82,robustness_copilot,groq,v3_template,doc_generation,dcache,robustness_copilot:240240c4f0,0.2979,0.2979,0.016,0.2432,0.8512,0.6901,"/**
+ * Converts a given attribute name to a group name by removing the ';' character and replacing 'X' with 'XX' and '.' with 'X'.
+ * @param attribute The attribute name to be converted.
+ * @return The converted group name.
+ */","/**
+     * Translates a attribute name into a name suitable for a named capturing group.
+     */"
+83,robustness_copilot,groq,v3_template,doc_generation,cdk,robustness_copilot:1508fc3d0d,0.2428,0.1618,0.003,0.1293,0.8338,0.7337,"/**
+ * Parses mobile hydrogens from a given InChI string.
+ * @param mobHydrAttachPositions A list of mobile hydrogen attachment positions.
+ * @return The total count of mobile hydrogens.
+ */","/**
+     * Parses mobile H group(s) in an InChI String.
+     * <p>
+     * Multiple InChI sequences of mobile hydrogens are joined into a single sequence (list),
+     * see step 1 of algorithm in paper.
+     * <br>
+     * Mobile H group has syntax (H[n][-[m]],a1,a2[,a3[,a4...]])
+     * Brackets [ ] surround optional terms.
+     * <ul>
+     *  <li>Term H[n] stands for 1 or, if the number n (n>1) is present, n mobile hydrogen atoms.</li>
+     *  <li>Term [-[m]], if present, stands for 1 or, if the number m (m>1) is present, m mobile negative charges.</li>
+     *  <li>a1,a2[,a3[,a4...]] are canonical numbers of atoms in the mobile H group.</li>
+     *  <li>no two mobile H groups may have an atom (a canonical number) in common.</li>
+     * </ul>
+     * @param mobHydrAttachPositions list of positions where mobile H can attach
+     * @param inputInchi InChI input
+     * @return overall count of hydrogens to be dispersed over the positions
+     */"
+84,robustness_copilot,groq,v3_template,doc_generation,twilio-java,robustness_copilot:fd22bb3726,0.5965,0.4912,0.0692,0.562,0.8693,0.8219,"/**
+ * Creates a Workflow object from a JSON string.
+ * @param json A JSON string representing a Workflow.
+ * @return A Workflow object.
+ * @throws IOException If an I/O error occurs during deserialization.
+ */","/**
+     * Converts a JSON workflow configuration to a workflow object.
+     *
+     * @param json JSON for workflow
+     * @return a workflow rule target object
+     * @throws IOException if unable to create object
+     */"
+85,robustness_copilot,groq,v3_template,doc_generation,matsim-libs,robustness_copilot:1494b00d3e,0.5714,0.4857,0.0503,0.3544,0.85,0.6724,"/**
+ * Revisits a node in the Dijkstra algorithm by updating its priority and adding it back to the priority queue.
+ * @param n The node to revisit.
+ * @param data The Dijkstra node data associated with the node.
+ * @param pendingNodes The priority queue of nodes to be processed.
+ * @param time The current time.
+ * @param cost The cost of the link to the node.
+ * @param outLink The link to the node.
+ */","/**
+	 * Changes the position of the given Node n in the pendingNodes queue and
+	 * updates its time and cost information.
+	 *
+	 * @param n
+	 *            The Node that is revisited.
+	 * @param data
+	 *            The data for n.
+	 * @param pendingNodes
+	 *            The nodes visited and not processed yet.
+	 * @param time
+	 *            The time of the visit of n.
+	 * @param cost
+	 *            The accumulated cost at the time of the visit of n.
+	 * @param outLink
+	 *            The link from which we came visiting n.
+	 */"
+86,robustness_copilot,groq,v3_template,doc_generation,cdk,robustness_copilot:29fff6904e,0.5667,0.5667,0.2328,0.4513,0.8716,0.7784,"/**
+ * Checks if all heavy atoms in the given IAtomContainer have been placed.
+ * @param ac The IAtomContainer to check.
+ * @return True if all heavy atoms are placed, false otherwise.
+ */","/**
+     *  True is all the atoms in the given AtomContainer have been placed.
+     *
+     * @param  ac  The AtomContainer to be searched
+     * @return     True is all the atoms in the given AtomContainer have been placed
+     */"
+87,robustness_copilot,groq,v3_template,doc_generation,cdk,robustness_copilot:c9462bbdc4,0.5263,0.4211,0.0396,0.4954,0.8672,0.7427,"java
+/**
+ * Encodes a molecular path into a string representation.
+ * @param path An array of atom indices representing the molecular path.
+ * @return A string representation of the molecular path.
+ * @throws Exception If an error occurs while encoding the path.
+ */","/**
+     * Encode the provided path of atoms to a string.
+     *
+     * @param path inclusive array of vertex indices
+     * @return encoded path
+     */"
+88,robustness_copilot,groq,v3_template,doc_generation,cdk,robustness_copilot:51866bbfdd,0.5205,0.3836,0.0541,0.4959,0.8543,0.6571,"/**
+ * Inserts a new value into the given array while maintaining the sorted order.
+ * @param v The value to be inserted into the array.
+ * @param vs The array of values to be sorted.
+ * @return The sorted array with the new value inserted.
+ */","/**
+     * Insert the vertex 'v' into sorted position in the array 'vs'.
+     *
+     * @param v  a vertex (int id)
+     * @param vs array of vertices (int ids)
+     * @return array with 'u' inserted in sorted order
+     */"
+89,robustness_copilot,groq,v3_template,doc_generation,acs-aem-commons,robustness_copilot:d9e4e245d2,0.1635,0.1058,0.0204,0.4396,0.8346,0.6063,"java
+/**
+ * Creates or updates nodes in the repository based on the provided JSON object.
+ * @param remoteAssetsResolver The remote assets resolver.
+ * @param key The key of the node to create or update.
+ * @param parentResource The parent resource of the node to create or update.
+ * @throws IOException If an I/O error occurs.
+ * @throws RepositoryException If a repository error occurs.
+ */
+private void createOrUpdateNodesForJsonObject(final ResourceResolver remoteAssetsResolver, final String key, final Resource parentResource) throws IOException, RepositoryException{
+    if (PROTECTED_NODES.contains(key)) {
+        return;
+    }
+    String objectPath = String.format(""%s/%s"", parentResource.getPath(), key);
+    JsonObject jsonObjectWithChildren = getJsonFromUri(objectPath);
+    String resourcePrimaryType = jsonObjectWithChildren.getAsJsonPrimitive(JcrConstants.JCR_PRIMARYTYPE).getAsString();
+    Resource resource = getOrCreateNode(remoteAssetsResolver, objectPath, resourcePrimaryType);
+    createOrUpdateNodes(remoteAssetsResolver, jsonObjectWithChildren, resource);
+    ValueMap resourceProperties = resource.adaptTo(ModifiableValueMap.class);
+    if (DamConstants.NT_DAM_ASSET.equals(parentResource.getValueMap().get(JcrConstants.JCR_PRIMARYTYPE, String.class)) && DamConstants.NT_DAM_ASSETCONTENT.equals(resourceProperties.get(JcrConstants.JCR_PRIMARYTYPE, String.class))) {
+        resourceProperties.put(RemoteAssets.IS_REMOTE_ASSET, true);
+        LOG.trace(""Property '{}' added for resource '{}'."", RemoteAssets.IS_REMOTE_ASSET, resource.getPath());
+        this.saveRefreshCount++;
+        if (this.saveRefreshCount == this.remoteAssetsConfig.getSaveInterval()) {
+            this.saveRefreshCount = 0;
+            remoteAssetsResolver.commit();
+            remoteAssetsResolver.refresh();
+            LOG.info(""Executed incremental save of node sync."");
+        }
+    }
+}","/**
+     * Handler for when a JSON element is an Object, representing a resource.
+     *
+     * @param key String
+     * @param parentResource Resource
+     * @throws IOException exception
+     * @throws RepositoryException exception
+     */"
+90,robustness_copilot,groq,v3_template,doc_generation,cron-utils,robustness_copilot:c1fbeddaf1,0.5862,0.4138,0.1643,0.5608,0.8778,0.8749,"/**
+ * Returns a CronField instance with a value of 0 for the given field name.
+ * @param name the name of the Cron field
+ * @return a Function that returns a CronField instance with a value of 0
+ */","/**
+     * Creates a Function that returns a On instance with zero value.
+     *
+     * @param name - Cron field name
+     * @return new CronField -> CronField instance, never null
+     */"
+91,robustness_copilot,groq,v3_template,doc_generation,matsim-libs,robustness_copilot:cce7d69457,0.4848,0.4242,0.0881,0.6039,0.8897,0.8503,"/**
+ * Adds a service to a carrier.
+ * @param carrier The carrier to add the service to.
+ * @param carrierService The service to add.
+ */","/**
+	 * Adds an {@link CarrierService} to the {@link Carrier}.
+	 * @param carrier
+	 * @param carrierService
+	 */"
+92,robustness_copilot,groq,v3_template,doc_generation,matsim-libs,robustness_copilot:ac3c62168a,0.5294,0.3088,0.0459,0.3017,0.8321,0.733,"/**
+ * Calculates the weight of an emission source based on its distance to a cell centroid, using a Gaussian smoothing function.
+ * @param emissionSource The coordinate of the emission source.
+ * @param cellCentroid The coordinate of the cell centroid.
+ * @param smoothingRadius The radius of the smoothing function.
+ * @return The calculated weight of the emission source.
+ * @throws IllegalArgumentException If the smoothing radius is not greater than 0.
+ */","/**
+     * This uses an exponential distance weighting to calculate the impact of point based emissions onto the centroid of
+     * a grid cell. The calculation is described in Kickhoefer's PhD thesis https://depositonce.tu-berlin.de/handle/11303/4386
+     * in Appendix A.2
+     *
+     * @param emissionSource Centroid of the link
+     * @param cellCentroid   Centroid of the impacted cell
+     * @return weight factor by which the emission value should be multiplied to calculate the impact of the cell
+     */"
+93,robustness_copilot,groq,v3_template,doc_generation,glowstone,robustness_copilot:5f8fd38b38,0.4421,0.2947,0.0228,0.2334,0.8533,0.4167,"/**
+ * Reads a compound list from the NBT file and applies the given consumer to the result.
+ * @param key The key to read the compound list from.
+ * @return Whether the operation was successful.
+ */","/**
+     * Applies the given function to a list subtag if it is present and its contents are compound
+     * tags. Processes the list as a single object; to process each tag separately, instead use
+     * {@link #iterateCompoundList(String, Consumer)}.
+     *
+     * @param key the key to look up
+     * @param consumer the function to apply
+     * @return true if the tag exists and was passed to the consumer; false otherwise
+     */"
+94,robustness_copilot,groq,v3_template,doc_generation,egeria,robustness_copilot:3250869573,0.6211,0.4596,0.2299,0.4813,0.8672,0.8445,"/**
+ * Finds a schema attribute entity based on the provided user ID and qualified name.
+ * @param userId the ID of the user making the request
+ * @param qualifiedName the qualified name of the schema attribute entity
+ * @return an optional containing the schema attribute entity, or an empty optional if not found
+ * @throws UserNotAuthorizedException if the user is not authorized to access the schema attribute entity
+ * @throws PropertyServerException if there is a problem accessing the property server
+ * @throws InvalidParameterException if the user ID or qualified name is invalid
+ */","/**
+     * Find out if the SchemaAttribute object is already stored in the repository. It uses the fully qualified name to retrieve the entity
+     *
+     * @param userId        the name of the calling user
+     * @param qualifiedName the qualifiedName name of the process to be searched
+     *
+     * @return optional with entity details if found, empty optional if not found
+     *
+     * @throws InvalidParameterException  the bean properties are invalid
+     * @throws UserNotAuthorizedException user not authorized to issue this request
+     * @throws PropertyServerException    problem accessing the property server
+     */"
+95,robustness_copilot,groq,v3_template,doc_generation,weblogic-kubernetes-operator,robustness_copilot:cb53a67ff3,0.8214,0.5,0.0855,0.6034,0.9211,0.9662,"/**
+ * Uses a specific version of Kubernetes schema.
+ * @param version The version of Kubernetes to use.
+ * @throws IOException If no schema is cached for the specified version.
+ */","/**
+   * Specifies the version of the Kubernetes schema to use.
+   *
+   * @param version a Kubernetes version string, such as ""1.9.0""
+   * @throws IOException if no schema for that version is cached.
+   */"
+96,robustness_copilot,groq,v3_template,doc_generation,mybatis-3,robustness_copilot:65e28633b1,0.48,0.36,0.1273,0.4172,0.8467,0.8426,"/**
+ * Returns a hash code value for the specified object. This method is consistent with Arrays#hashCode() and Objects#hashCode() in that it returns 0 for a null input.
+ * @param obj the object for which the hash code value is to be determined
+ * @return the hash code value for the specified object
+ * @throws NullPointerException if the specified object is null
+ */","/**
+   * Returns a hash code for {@code obj}.
+   *
+   * @param obj
+   *          The object to get a hash code for. May be an array or <code>null</code>.
+   * @return A hash code of {@code obj} or 0 if {@code obj} is <code>null</code>
+   */"
+97,robustness_copilot,groq,v3_template,doc_generation,matsim-libs,robustness_copilot:7363c79844,0.4615,0.4103,0.0572,0.4277,0.8354,0.6996,"/**
+ * Prepares the given Random object by generating 100 random double values.
+ * @param rng The Random object to be prepared.
+ */","/**
+         * Draw some random numbers to better initialize the pseudo-random number generator.
+         *
+         * @param rng the random number generator to initialize.
+         */"
+98,robustness_copilot,groq,v3_template,doc_generation,weblogic-kubernetes-operator,robustness_copilot:d18e08c6c4,0.4658,0.3836,0.1234,0.4836,0.8982,0.5831,"/**
+ * Creates a watch for a ConfigMap in a specified namespace.
+ * @param namespace The namespace in which to create the ConfigMap watch.
+ * @return A Watchable object for the ConfigMap.
+ * @throws ApiException If an error occurs while creating the watch.
+ */","/**
+   * Creates a web hook object to track config map calls.
+   *
+   * @param namespace the namespace
+   * @return the active web hook
+   * @throws ApiException if there is an error on the call that sets up the web hook.
+   */"
+99,robustness_copilot,groq,v3_template,doc_generation,jeromq,robustness_copilot:7f41db4df1,0.5882,0.4706,0.1819,0.5569,0.8681,0.7427,"/**
+ * Returns the time until the first ticket in the queue is due to expire.
+ * @param none none
+ * @return the time until the first ticket is due to expire in milliseconds
+ * @throws none none
+ */","/**
+     * Returns the time in millisecond until the next ticket.
+     * @return the time in millisecond until the next ticket.
+     */"
+100,tesoro,groq,v3_template,satd_detection,85,tesoro:eaf2024b02,0.5902,0.5902,0.4055,0.8768,0.8562,0.7888,"java
+/**
+ * Adds a module for voice calls to the builder.
  * @param moduleInfo Module information
  * @return This builder instance
- */","// TODO(zachh): Support post-dial digits; consider using DialerPhoneNumber.
+ * @throws Exception if an error occurs
+ */
+
+public HistoryItemActionModulesBuilder addModuleForVoiceCall() {
+    if (moduleInfo.getIsBlocked()) {
+      return this;
+    }
+    // TODO(zachh): Support post-dial digits; consider using DialerPhoneNumber.
+    // Do not set PhoneAccountHandle so that regular PreCall logic will be used. The account used to
+    // place or receive the call should be ignored for voice calls.
+    CallIntentBuilder callIntentBuilder =
+        new CallIntentBuilder(moduleInfo.getNormalizedNumber(), getCallInitiationType())
+            .setAllowAssistedDial(moduleInfo.getCanSupportAssistedDialing());
+    modules.add(IntentModule.newCallModule(context, callIntentBuilder));
+    return this;
+}","// TODO(zachh): Support post-dial digits; consider using DialerPhoneNumber.
 // Do not set PhoneAccountHandle so that regular PreCall logic will be used. The account used to
 // place or receive the call should be ignored for voice calls."
-21,tesoro,groq,v3_template,satd_detection,16486,tesoro:a1ae3b59b2,0.0357,0.0357,0.0032,0.045,0.7947,-0.0326,"/**
- * This method runs a K-Means clustering algorithm on the input data and iteratively updates the centroids until convergence.
- * @param inputpath The path to the input data file.
- * @param outpath The path to the output directory.
- * @param k The number of centroids.
- * @param dimensions The number of dimensions in the data.
+101,tesoro,groq,v3_template,satd_detection,16486,tesoro:a1ae3b59b2,0.0,0.0,0.0,0.0439,0.7929,0.0768,"/**
+ * Initializes a k-means clustering job with the given parameters and runs the first iteration.
+ * @param args An array of strings containing the input path, output path, number of centroids, and dimensions.
+ * @throws IOException If an I/O error occurs.
+ * @throws ClassNotFoundException If a class cannot be found.
+ * @throws InterruptedException If the job is interrupted.
  */",// TODO check rewrite in future
-22,tesoro,groq,v3_template,satd_detection,24576,tesoro:ff74bd2337,0.1778,0.0889,0.0074,0.1412,0.8396,0.5742,"/**
- * Adds entries from the manifestEntries map to the main attributes of the given Manifest.
- * @param manifest The Manifest to add entries to.
- * @throws NullPointerException if manifest is null
+102,tesoro,groq,v3_template,satd_detection,24576,tesoro:ff74bd2337,0.1739,0.087,0.0072,0.1124,0.8433,0.5619,"/**
+ * Adds entries from the manifestEntries map to the main attributes of the manifest.
+ * @param manifest The manifest object to add entries to.
+ * @throws NullPointerException if the manifest is null.
  */","// If a manifest doesn't have a version, the other attributes won't get written out.  Lame."
-23,tesoro,groq,v3_template,satd_detection,24703,tesoro:85342f642d,0.16,0.12,0.0079,0.0781,0.8118,0.2755,"/**
- * Determines whether to start a JPA entity node with field access.
- * @param path The project path to the entity node.
- * @return Whether to start the node.
+103,tesoro,groq,v3_template,satd_detection,24703,tesoro:85342f642d,0.1515,0.1212,0.0045,0.0733,0.8152,0.4632,"/**
+ * Determines the access type for a JpaEntityMap based on its annotations.
+ * @param path The project path containing the JpaEntityMap object.
+ * @return true if the access type was determined successfully, false otherwise.
+ * @throws Exception if an error occurs while analyzing the JpaEntityMap annotations.
  */","// TODO: andrus, 4/28/2006 - actually we need to analyze preloaded classes and
 // see how they were annotated to choose the right access type..."
-24,tesoro,groq,v3_template,satd_detection,24673,tesoro:c83b5852d5,0.3333,0.2133,0.0543,0.2458,0.8603,0.6138,"java
-/**
+104,tesoro,groq,v3_template,satd_detection,24673,tesoro:c83b5852d5,0.4884,0.3721,0.1471,0.3694,0.8992,0.6822,"/**
  * Validates if a zone is available for a given tenant.
- * @param tenantId The ID of the tenant to check.
- * @return No return value.
+ * @param zone The name of the zone to validate.
+ * @return Not applicable, throws exception if zone is not found.
  * @throws IllegalArgumentException If the provided zone does not exist.
- */
-private void validateZoneAvailable(String tenantId, String zone) throws IllegalArgumentException {
-    List<ZoneDTO> zones;
-    try {
-      zones = zoneApi.getAvailableZones(tenantId);
-    } catch (ResourceAccessException e) {
-      // need to do something here to handle things more gracefully.
-      throw new RuntimeException(""Unable to validate zones."", e);
-    }
-    boolean found = zones.stream().anyMatch(z -> z.getName().equals(zone));
-    log.debug(""Found {} zones for tenant"", zoneApi.getAvailableZones(tenantId).size());
-    if (!found) throw new IllegalArgumentException(""Provided zone does not exist: "" + zone);
-}","/**
+ */","/**
    * Checks if the provided zone is an option for the client to connect to.
    * Any zone provided must have previously been created by ZoneManagement.
    *
@@ -231,3 +1063,148 @@ private void validateZoneAvailable(String tenantId, String zone) throws IllegalA
    * @param zone The zone provided in the envoySummary.
    * @throws IllegalArgumentException if the zone is not found.
    */"
+105,tesoro,groq,v3_template,satd_detection,32858,tesoro:bd61043334,0.0476,0.0476,0.0044,0.0575,0.8235,0.4975,"/**
+ * Returns a collection of directory entries for the specified path.
+ * @param path The path to retrieve directory entries for.
+ * @return A collection of directory entries.
+ * @throws IOException If an I/O error occurs while retrieving directory entries.
+ */",// TODO(felly): Support directory traversal.
+106,tesoro,groq,v3_template,satd_detection,32867,tesoro:9bd272cae2,0.0351,0.0351,0.0,0.0,0.8,0.1366,"/**
+ * Defines a lock with the given name and configuration.
+ * @param name The name of the lock to define.
+ * @return True if the lock was successfully defined, false otherwise.
+ * @throws Exception If an error occurs while defining the lock.
+ */",// TODO: Configuration is not used because we don't support any other mode for now. For that : ISPN-8413
+107,tesoro,groq,v3_template,satd_detection,22,tesoro:0f822c7bcc,0.0444,0.0444,0.0052,0.0278,0.8151,0.2285,"/**
+ * Determines whether the instruction uses any registers.
+ * @param i Index of the right-hand side of the instruction.
+ * @return True if the instruction uses any registers, false otherwise.
+ * @throws Exception None
+ */","// FIXME: this is almost certainly boned.  a Reg could appear in the
+// address expressions."
+108,tesoro,groq,v3_template,satd_detection,119,tesoro:28b2f65ab9,0.0,0.0,0.0,0.0,0.7684,0.2109,"/**
+ * Reduces the list of alerts from a site into a map of vulnerabilities.
+ * @param site The site containing the alerts to reduce.
+ * @param zapRelations A map of plugin IDs to vulnerability names.
+ * @param groupVulnerabilities A map of vulnerability names to vulnerability objects.
+ * @throws MalformedURLException If an invalid URL is encountered.
+ */",//TODO: Convertir la serveridad
+109,tesoro,groq,v3_template,satd_detection,32850,tesoro:624c4823b7,0.0,0.0,0.0,0.0,0.8066,0.1845,"/**
+ * Checks if the provided email is valid by checking for the presence of '@' and '.' characters.
+ * @param email The email address to be validated
+ * @return True if the email is valid, false otherwise
+ */",//TODO: Replace this with your own logic
+110,tesoro,groq,v3_template,satd_detection,28,tesoro:2d67dcb780,0.0,0.0,0.0,0.0,0.8219,0.2179,"/**
+ * Processes the input JCas to annotate salient entities.
+ * @param jCas the input JCas to process
+ * @throws AnalysisEngineProcessException if an error occurs during processing
+ */",//TODO: For each model create separate implementation.
+111,tesoro,groq,v3_template,satd_detection,24673,tesoro:6c462d508c,0.0417,0.0417,0.0042,0.035,0.8097,0.0736,"/**
+ * Validates if a zone is available for a given tenant.
+ * @param zone The name of the zone to validate.
+ * @return Not applicable, throws exception if zone is not found.
+ * @throws IllegalArgumentException If the provided zone does not exist.
+ */",// need to do something here to handle things more gracefully.
+112,tesoro,groq,v3_template,satd_detection,16486,tesoro:73fe63f6d7,0.0,0.0,0.0,0.0397,0.7862,0.0473,"/**
+ * Initializes a K-Means clustering job with the provided input and output paths, number of centroids, and dimensions.
+ * @param args An array of strings containing the input path, output path, number of centroids, and dimensions.
+ * @return No return value, as this method is void.
+ * @throws IOException If an I/O error occurs during job initialization.
+ * @throws ClassNotFoundException If a class is not found during job initialization.
+ * @throws InterruptedException If the job is interrupted during execution.
+ */",//TODO check rewrite in future
+113,tesoro,groq,v3_template,satd_detection,32,tesoro:f2f1b024ea,0.1765,0.0588,0.0092,0.1111,0.8213,0.1272,"/**
+ * Generates the attribute for the linking resource element with the connected resource containers.
+ * @param connectedElements A list of connected elements to be linked.
+ */","// TODO: check here, may be necessary to remove the last space."
+114,tesoro,groq,v3_template,satd_detection,32849,tesoro:0755c43f75,0.0,0.0,0.0,0.0,0.8019,0.1875,"/**
+ * Checks if a given phone number is of legal length.
+ * @param tel The phone number to be checked.
+ * @return True if the phone number is of legal length, false otherwise.
+ * @throws Exception None
+ */",//TODO: Replace this with your own logic
+115,tesoro,groq,v3_template,satd_detection,119,tesoro:5dcc293444,0.0635,0.0635,0.0092,0.124,0.7712,0.4345,"/**
+ * Reduces a list of alerts into a map of vulnerabilities.
+ * @param site The site containing the alerts to process.
+ * @param zapRelations A map of plugin IDs to vulnerability names.
+ * @param groupVulnerabilities A map of vulnerability names to vulnerability objects.
+ * @throws MalformedURLException If a URL is malformed.
+ */","/**
+         * De las vulnerabilidades encontradas las mapeamos a objetos
+         * y las agrupamos por tipo de vulnerabilidad y url
+         */"
+116,tesoro,groq,v3_template,satd_detection,16486,tesoro:73fe63f6d7,0.022,0.022,0.002,0.037,0.7743,-0.0161,"/**
+ * This method initializes a K-Means clustering job and runs it once to obtain the initial centroids.
+ * @param inputpath The path to the input data.
+ * @param outpath The path to the output data.
+ * @param number_of_centroids The number of centroids to use in the K-Means algorithm.
+ * @param dimensions The number of dimensions in the data.
+ * @throws IOException If there is an issue with the input/output paths.
+ * @throws ClassNotFoundException If the K-Means class is not found.
+ * @throws InterruptedException If the job is interrupted.
+ */",//TODO check rewrite in future
+117,tesoro,groq,v3_template,satd_detection,119,tesoro:28b2f65ab9,0.0,0.0,0.0,0.0,0.7767,0.2188,"/**
+ * Reduces a list of alerts from a site into a map of vulnerabilities.
+ * @param site The site containing the alerts to reduce.
+ * @param zapRelations A map of plugin IDs to vulnerability names.
+ * @param groupVulnerabilities A map of vulnerability names to vulnerability objects.
+ */",//TODO: Convertir la serveridad
+118,tesoro,groq,v3_template,satd_detection,118,tesoro:8e3e02c196,0.1887,0.1509,0.008,0.0936,0.8379,0.3695,"/**
+ * Handles location changes by updating the current location and triggering a return to the previous location if the accuracy is within a certain threshold.
+ * @param location The new location.
+ */","// Bug report: cached GeoPoint is being returned as the first value.
+// Wait for the 2nd value to be returned, which is hopefully not cached?"
+119,tesoro,groq,v3_template,satd_detection,24704,tesoro:aba4958949,0.3333,0.2667,0.0178,0.1229,0.8267,0.6085,"/**
+ * Initializes the JPA relationship by setting the table name and foreign key column name.
+ * @param path The project path containing the JPA relationship and entity information.
+ * @return Whether the initialization was successful.
+ * @throws SimpleValidationFailure If the relationship target is invalid or the target entity has no IDs.
+ */","// JPA Spec, 2.1.8.2 (same for all relationship owners):
+// The following mapping defaults apply: [...]
+// Table A contains a foreign key to table B. The foreign key column
+// name is formed as the concatenation of the following: the name of
+// the relationship property or field of entityA; ""_"" ; the name of
+// the primary key column in table B. The foreign key column has the
+// same type as the primary key of table B."
+120,tesoro,groq,v3_template,satd_detection,85,tesoro:0a48ff33f2,0.44,0.4,0.1155,0.3947,0.864,0.6336,"java
+/**
+ * Adds a voice call module to the builder.
+ * @param moduleInfo Module information for the voice call module.
+ * @return The builder instance for chaining.
+ * @throws Exception if moduleInfo is blocked.
+ */","/**
+   * Adds a module for placing a voice call.
+   *
+   * <p>The method is a no-op if the number is blocked.
+   */"
+121,tesoro,groq,v3_template,satd_detection,24672,tesoro:77fce76cce,0.0,0.0,0.0,0.0,0.8066,0.1388,"/**
+ * Returns the Java name.
+ * @param service the service object
+ * @return the Java name
+ */",//TODO Capitalize first char??
+122,tesoro,groq,v3_template,satd_detection,100,tesoro:88c24c4d6b,0.1026,0.1026,0.0,0.0435,0.8227,0.646,"/**
+ * Checks if the given principal collection contains the specified role.
+ * @param principal the principal collection to check
+ * @return true if the principal collection contains the specified role, false otherwise
+ */","// TODO Auto-generated method stub
+// return super.hasRole(principal, roleIdentifier);"
+123,tesoro,groq,v3_template,satd_detection,119,tesoro:f3b4e80f03,0.2951,0.2951,0.0526,0.5606,0.8456,0.6952,"/**
+ * Reduces a list of alerts into a map of vulnerabilities.
+ * @param site The site containing the alerts to reduce.
+ * @param zapRelations A map of plugin IDs to vulnerability names.
+ * @param groupVulnerabilities A map of vulnerability names to vulnerabilities.
+ * @throws MalformedURLException If an invalid URL is encountered.
+ */","/**
+     * Reduce la lista de vulnerabilidades de zap.
+     * 
+     * @param site
+     * @param zapRelations
+     * @param groupVulnerabilities
+     * @throws MalformedURLException
+     */"
+124,tesoro,groq,v3_template,satd_detection,83,tesoro:fbb188f8d8,0.0513,0.0513,0.0058,0.0299,0.7892,0.2885,"/**
+ * Tests parsing of a negative integer literal.
+ * @param parser the expression parser to test
+ * @return the parsed expression
+ * @throws ExpressionException if an error occurs during parsing
+ */","//        Operator op = ((OperatorItem) item0)._operator; //  TODO check this value if we can, somehow"
