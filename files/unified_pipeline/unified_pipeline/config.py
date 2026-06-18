@@ -61,10 +61,11 @@ MODELS = {
     # PanGu-Coder (Huawei) is NOT openly hosted on HF — needs special access.
     # Add it here with a provider once you obtain an endpoint.
     "pangu_coder": {"provider": "hf",      "model": "REPLACE_WITH_ACCESSIBLE_ENDPOINT",    "enabled": False},
+    "deepseek_r1": {"provider": "ollama", "model": "deepseek-r1:8b", "enabled": True},
 }
 
 MAX_TOKENS   = 512
-MAX_TOKENS_VERBOSE = 2048      # gemini-style verbose models
+MAX_TOKENS_VERBOSE = 4096     # було 2048; R1 reasoning потребує місця
 TEMPERATURE  = 0.3
 SLEEP_GROQ   = 0.3
 SLEEP_GEMINI = 4.0             # 15 RPM free tier

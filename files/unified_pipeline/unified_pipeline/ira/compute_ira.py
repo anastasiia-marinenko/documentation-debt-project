@@ -1,59 +1,96 @@
 """
-ira/compute_ira.py — inter-rater agreement once both rater sheets are filled.
-Quadratic-weighted Cohen's kappa per ordinal item + Krippendorff alpha for overall.
+compute_ira.py — inter-rater agreement (Cohen's kappa) for the 2-rater Javadoc eval.
+
+Place in unified_pipeline/ira/  (or run standalone).  Run:  python compute_ira.py
+
+Computes, PER METRIC (correctness, relevance, informativeness, fluency), on the
+rows BOTH raters scored (the only valid basis for kappa):
+  - Cohen's kappa: unweighted, linear-weighted, quadratic-weighted
+  - exact-agreement % and within-1 %  (context for the "kappa paradox")
+  - each rater's mean and the mean gap (leniency direction)
+Plus each rater's bias vs the FINAL consensus (uses FINAL_RATING).
+
+Ordinal note: scores are 1-5 Likert -> report QUADRATIC weighted kappa as primary
+(a 4-vs-5 disagreement must not count like 1-vs-5). Unweighted + %agree are shown
+for transparency, important because the data is skewed high (kappa paradox).
 """
 from __future__ import annotations
 import sys
-from pathlib import Path
-import numpy as np, pandas as pd
+import pandas as pd
 from sklearn.metrics import cohen_kappa_score
-sys.path.append(str(Path(__file__).resolve().parents[1]))
-import config as C
 
-ITEMS = ["correct", "useful", "hallucination", "format_correct", "placement", "readability"]
-
-
-def _alpha_ordinal(x, y):
-    pairs = [(int(p), int(q)) for p, q in zip(x, y) if pd.notna(p) and pd.notna(q)]
-    if len(pairs) < 2: return float("nan")
-    vals = [v for pr in pairs for v in pr]; rng = (max(vals) - min(vals)) or 1
-    Do = np.mean([((p - q) / rng) ** 2 for p, q in pairs])
-    De = np.mean([((p - q) / rng) ** 2 for i, p in enumerate(vals) for q in vals[i+1:]])
-    return 1 - Do / De if De else float("nan")
+XLSX     = sys.argv[1] if len(sys.argv) > 1 else "../data/raw/evaluation_384_final_2_raters.xlsx"
+RATER_A  = "rater_Anastasiia"
+RATER_N  = "rater_Nasser"
+FINAL    = "FINAL_RATING"
+METRICS  = ["correctness", "relevance", "informativeness", "fluency"]
+LABELS   = [1, 2, 3, 4, 5]
+ONLY_COMPLEXITY = None          # e.g. "simple" to restrict; None = all rated rows
 
 
-def compute(xlsx=None):
-    xlsx = Path(xlsx or (C.DATA_RESULTS / "ira_eval_template.xlsx"))
-    a = pd.read_excel(xlsx, "rater_Anastasiia").set_index("ira_id")
-    n = pd.read_excel(xlsx, "rater_Nasser").set_index("ira_id")
-    idx = a.index.intersection(n.index); a, n = a.loc[idx], n.loc[idx]
-    print(f"Items compared: {len(idx)}\n{'item':16s}{'weighted_kappa':>16s}{'%exact':>9s}")
-    ks = []
-    for it in ITEMS:
-        x, y = a[it], n[it]; m = x.notna() & y.notna()
-        x, y = x[m].astype(int), y[m].astype(int)
-        if len(x) == 0: continue
-        k = 1.0 if x.nunique() == 1 and y.nunique() == 1 and (x == y).all() else \
-            cohen_kappa_score(x, y, weights="quadratic", labels=[0, 1, 2])
-        ks.append(k); print(f"{it:16s}{k:>16.3f}{(x==y).mean()*100:>8.0f}%")
-    print(f"\noverall_0_10 Krippendorff alpha: {_alpha_ordinal(a['overall_0_10'], n['overall_0_10']):.3f}")
-    if ks: print(f"mean weighted kappa: {np.mean(ks):.3f}")
-    print("Landis & Koch: .2-.4 fair, .4-.6 moderate, .6-.8 substantial, .8-1 almost perfect")
+def _num(df, m):
+    return pd.to_numeric(df[m], errors="coerce")
 
-    # Record disagreements for the joint review meeting (supervisor request).
-    disc = []
-    for it in ITEMS + ["overall_0_10"]:
-        if it in a.columns and it in n.columns:
-            for i in idx:
-                va, vn = a.loc[i, it], n.loc[i, it]
-                if pd.notna(va) and pd.notna(vn) and va != vn:
-                    disc.append({"ira_id": i, "criterion": it,
-                                 "Anastasiia": va, "Nasser": vn,
-                                 "abs_diff": abs(va - vn), "resolution_note": ""})
-    out = C.DATA_RESULTS / "ira_discrepancies.xlsx"
-    pd.DataFrame(disc).to_excel(out, index=False)
-    print(f"\n{len(disc)} disagreements written -> {out}  (discuss & fill resolution_note)")
+
+def _pair(a_df, b_df, m):
+    """Aligned, complete pairs for metric m (inner-join on ID, drop missing)."""
+    j = pd.concat([_num(a_df, m).rename("a"), _num(b_df, m).rename("b")], axis=1).dropna()
+    return j["a"].astype(int), j["b"].astype(int)
+
+
+def main():
+    A = pd.read_excel(XLSX, sheet_name=RATER_A).set_index("ID")
+    N = pd.read_excel(XLSX, sheet_name=RATER_N).set_index("ID")
+    F = pd.read_excel(XLSX, sheet_name=FINAL).set_index("ID")
+
+    if ONLY_COMPLEXITY:
+        keep = A.index[A["complexity_category"] == ONLY_COMPLEXITY]
+        A, N, F = A.loc[A.index.isin(keep)], N.loc[N.index.isin(keep)], F.loc[F.index.isin(keep)]
+
+    rows = []
+    for m in METRICS:
+        a, n = _pair(A, N, m)
+        rows.append({
+            "metric": m, "N": len(a),
+            "kappa_unweighted": round(cohen_kappa_score(a, n, labels=LABELS), 3),
+            "kappa_linear":     round(cohen_kappa_score(a, n, weights="linear", labels=LABELS), 3),
+            "kappa_quadratic":  round(cohen_kappa_score(a, n, weights="quadratic", labels=LABELS), 3),
+            "exact_%":  round((a.values == n.values).mean() * 100, 1),
+            "within1_%": round((abs(a.values - n.values) <= 1).mean() * 100, 1),
+            "mean_A": round(a.mean(), 2), "mean_N": round(n.mean(), 2),
+        })
+    res = pd.DataFrame(rows)
+
+    # pooled across all four metrics
+    aa = pd.concat([_pair(A, N, m)[0] for m in METRICS], ignore_index=True)
+    nn = pd.concat([_pair(A, N, m)[1] for m in METRICS], ignore_index=True)
+    pooled = {
+        "metric": "POOLED", "N": len(aa),
+        "kappa_unweighted": round(cohen_kappa_score(aa, nn, labels=LABELS), 3),
+        "kappa_linear":     round(cohen_kappa_score(aa, nn, weights="linear", labels=LABELS), 3),
+        "kappa_quadratic":  round(cohen_kappa_score(aa, nn, weights="quadratic", labels=LABELS), 3),
+        "exact_%":  round((aa.values == nn.values).mean() * 100, 1),
+        "within1_%": round((abs(aa.values - nn.values) <= 1).mean() * 100, 1),
+        "mean_A": round(aa.mean(), 2), "mean_N": round(nn.mean(), 2),
+    }
+    res = pd.concat([res, pd.DataFrame([pooled])], ignore_index=True)
+
+    pd.set_option("display.width", 200)
+    print("=== Inter-rater agreement (rater_A vs rater_N, doubly-rated rows) ===")
+    print(res.to_string(index=False))
+
+    # bias of each rater vs consensus (this is what FINAL_RATING is for)
+    print("\n=== Rater bias vs FINAL consensus (mean rater - mean final) ===")
+    for m in METRICS:
+        for nm, df in [("Anastasiia", A), ("Nasser", N)]:
+            r, f = _pair(df, F, m)
+            print(f"  {m:16s} {nm:10s} N={len(r):3d}  bias={(r.values - f.values).mean():+.2f}")
+
+    res.to_csv("ira_kappa_results.csv", index=False)
+    print("\nWrote ira_kappa_results.csv")
+    print("Primary IRA measure = kappa_quadratic (ordinal 1-5). Interpret (Landis & Koch): "
+          "<0.20 slight, 0.21-0.40 fair, 0.41-0.60 moderate, 0.61-0.80 substantial, >0.80 almost perfect.")
 
 
 if __name__ == "__main__":
-    compute(sys.argv[1] if len(sys.argv) > 1 else None)
+    main()

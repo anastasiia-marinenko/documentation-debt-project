@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 import config as C
+import os, re
 
 
 def _groq(model, prompt, max_tokens):
@@ -56,8 +57,21 @@ def _deepseek(model, prompt, max_tokens):
         max_tokens=max_tokens, temperature=C.TEMPERATURE)
     return r.choices[0].message.content.strip()
 
+def _ollama(model, prompt, max_tokens):
+    """Local Ollama (OpenAI-compatible endpoint). Strips DeepSeek-R1 <think> traces."""
+    from openai import OpenAI
+    client = OpenAI(api_key="ollama",
+                    base_url=os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1"))
+    r = client.chat.completions.create(
+        model=model, messages=[{"role": "user", "content": prompt}],
+        max_tokens=max_tokens, temperature=C.TEMPERATURE)
+    text = r.choices[0].message.content or ""
+    text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL)   # well-formed reasoning
+    text = re.sub(r"^.*?</think>", "", text, flags=re.DOTALL)         # stray/truncated </think>
+    return text.strip()
+
 _BACKENDS = {"groq": _groq, "gemini": _gemini, "hf": _hf,
-             "hf_text": _hf_text, "deepseek": _deepseek}
+             "hf_text": _hf_text, "deepseek": _deepseek, "ollama": _ollama}
 
 def call(provider, model, prompt, max_tokens=None):
     max_tokens = max_tokens or (C.MAX_TOKENS_VERBOSE if provider == "gemini" else C.MAX_TOKENS)
