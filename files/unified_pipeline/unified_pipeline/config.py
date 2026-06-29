@@ -62,6 +62,8 @@ MODELS = {
     # Add it here with a provider once you obtain an endpoint.
     "pangu_coder": {"provider": "hf",      "model": "REPLACE_WITH_ACCESSIBLE_ENDPOINT",    "enabled": False},
     "deepseek_r1": {"provider": "ollama", "model": "deepseek-r1:8b", "enabled": True},
+    "qwen_coder_14b": {"provider": "ollama", "model": "qwen2.5-coder:14b", "enabled": True},
+    "codegemma_7b": {"provider": "ollama", "model": "codegemma:7b-instruct", "enabled": True},
 }
 
 MAX_TOKENS   = 512

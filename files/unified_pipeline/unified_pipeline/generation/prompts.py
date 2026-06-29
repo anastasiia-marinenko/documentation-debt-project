@@ -93,10 +93,19 @@ def build_prompt(code, language, variant="v3_template"):
 # --- QUESTION REFINEMENT / Prompt Improvement (White §F; Schmidt §3.6) ---------------
 # This is what was previously (mis)labelled "meta": ask the LLM to improve the prompt.
 def question_refinement(base_prompt):
-    """White et al. 2023 §F: suggest a better version of the prompt, then use it."""
-    return ("Within the scope of code documentation, suggest a better version of the "
-            "prompt below so a code LLM produces more accurate, concise documentation. "
-            "Return ONLY the improved prompt text.\n\n---\n" + base_prompt + "\n---")
+    """White et al. 2023 §F (format-preserving): clarify the prompt WITHOUT changing
+    its task, its required output format, or removing any in-context examples."""
+    return (
+        "You are improving a prompt that instructs a code LLM to write a Javadoc comment. "
+        "Rewrite the prompt below to be clearer and more precise, but you MUST:\n"
+        "  - keep the exact same task (generate a Javadoc comment for the given method);\n"
+        "  - KEEP the instruction to output ONLY the Javadoc block (/** ... */) with no prose;\n"
+        "  - KEEP every code->Javadoc example verbatim if any are present;\n"
+        "  - keep the {placeholder}/method code intact;\n"
+        "  - keep it concise — do NOT make the output longer or add new requirements.\n"
+        "Return ONLY the improved prompt text, nothing else.\n\n---\n"
+        + base_prompt + "\n---"
+    )
 
 # Back-compat alias (old name) so existing scripts don't break:
 meta_improve_prompt = question_refinement

@@ -1,27 +1,51 @@
 """
-exp_prompt_select.py — select the BEST PROMPT per prompt-method (screening).
+exp_prompt_select_v4.py — prompt-selection with SINGLE-PATTERN BASELINES + multi-LLM.
 
-PLACE in unified_pipeline/ root (next to config.py).  Run:  python exp_prompt_select.py
+Built on top of exp_prompt_select.py — the 5 persona zero-shot wordings are the
+original candidates #0–#4 (5 distinct PERSONA framings), kept verbatim. The baselines
+are those same instruction bodies with the persona clause removed, so every comparison
+is a clean ablation.
 
-Design — PERSONA pattern fixed; prompt METHOD varied (4 methods kept):
-  M1 persona_zeroshot          control: persona, no meta
-  M2 persona_zeroshot + meta   self-refinement on the baseline
-  M3 persona_fewshot  + meta   in-context examples
-  M4 persona_cot      + meta   explicit reasoning
-Each method = 5 wordings. Every wording scored on the SAME 10 fixed examples
-(from 10_fixed_examples_for_prompt_engineering.xlsx, CodeSearchNet, mixed
-complexity), PAIRED, RUNS=5 times at a CONSTANT temperature.
-Winner per method = highest mean BERTScore-F1 (report mean +/- sd).
+DESIGN (9 methods x 5 wordings = 45 conditions), each scored on the SAME 10 fixed
+examples (paired), RUNS times at a constant temperature:
+  • baselines (no persona):  zeroshot · fewshot · cot
+  • + persona:               persona_zeroshot · persona_fewshot · persona_cot
+  • + persona + meta:        *_+meta   (meta refines the prompt with the SAME LLM)
 
-NOTE: all 5 wordings in each method are GENUINE competitors. The zero-shot
-prompt #0 is the user's preferred prompt, included verbatim as one fair
-candidate; the experiment decides on the data whether it wins.
+Ablation reads:
+  zeroshot  vs persona_zeroshot     -> effect of the PERSONA pattern
+  persona_X vs persona_X+meta       -> effect of META-refinement
+  zeroshot  vs fewshot vs cot       -> best base technique
 
-Grounding: persona/few-shot framing White et al. 2023; few-shot Brown et al.
-2020; CoT Wei et al. 2022 / Kojima et al. 2022; meta Suzgun & Kalai 2024.
+─ SCIENTIFIC GROUNDING ───────────────────────────────────────────────────────
+  • PERSONA pattern — White et al. (2023), "A Prompt Pattern Catalog…": assigning a
+    role conditions tone/precision. We hold the TASK fixed and vary only the role
+    across 5 professional viewpoints (developer / senior API-doc author / library
+    maintainer-reviewer / API technical writer / public-API owner) to probe persona
+    sensitivity, as recommended for pattern evaluation.
+  • Instruction body — encodes the standard Javadoc contract (summary sentence,
+    @param, @return, @throws) from the Oracle "How to Write Doc Comments" guidelines.
+  • ZERO-SHOT vs FEW-SHOT — Brown et al. (2020): in-context exemplars (here 2 canonical
+    code→Javadoc pairs) supply format/detail priors the model imitates.
+  • CHAIN-OF-THOUGHT — Wei et al. (2022) and zero-shot CoT Kojima et al. (2022):
+    eliciting explicit step-by-step reasoning about the method's contract before
+    emitting the doc block; reasoning is requested but hidden from the final output.
+  • META-PROMPTING / self-refinement — Suzgun & Kalai (2024); the refine-then-generate
+    idea also follows Self-Refine (Madaan et al. 2023) and White et al.'s Question-
+    Refinement pattern. Applied with the SAME LLM used for generation (per supervisor
+    feedback), so the prompt is tuned to that model.
+
+  META_ROUNDS NOTE: there is no fixed "correct" number of refinement rounds in the
+  literature — it is a hyperparameter. Self-refinement studies (e.g. Self-Refine,
+  Madaan et al. 2023) report that most of the gain appears in the first 1–2 iterations
+  with diminishing returns afterward, so 2 is a defensible default. State it explicitly
+  in the paper, and ideally justify it empirically with a small 1-vs-2-vs-3 sweep on a
+  few examples rather than asserting it.
+
+Metric: BERTScore-F1 vs the reference comment. Winner = highest mean per (model, method).
 """
 from __future__ import annotations
-import json, random, time, statistics, csv, collections, sys
+import json, random, time, statistics, csv, collections, sys, argparse
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
@@ -32,54 +56,47 @@ from generation.generate import _clean
 from generation.run_meta import meta_refine_prompt
 from evaluation import metrics as M
 from schema import strip_doc_comments
-
 import openpyxl
 
-import os, re
-
-# ----------------------------- knobs -----------------------------
+# ─────────────────────────── knobs ───────────────────────────────────────
 XLSX        = ROOT / "data" / "raw" / "10_fixed_examples_for_prompt_engineering.xlsx"
 SHEET       = "\u041b\u0438\u0441\u04421"   # "Лист1"
-MODEL_KEY = "deepseek_r1"     # було "groq" deepseek_r1
-N_PROMPTS   = 5               # wordings per method
-RUNS        = 1               # reruns per (prompt, example), averaged
-TEMP        = 0.5             # held CONSTANT across all conditions
-META_ROUNDS = 2               # question-refinement rounds (run_meta convention)
-MAX_CODE    = 4000            # char cap fed into prompts (ID 355 is ~6.3k chars)
+MODEL_KEYS  = ["deepseek_r1"]               # extend: ["deepseek_r1", "groq", "gemini"]
+RUNS        = 3
+TEMP        = 0.5
+META_ROUNDS = 2     # hyperparameter; 2 = pragmatic default (see docstring)
+MAX_CODE    = 4000
+# ── generation-robustness knobs (do NOT change the experiment conditions above) ──
+MAX_TOKENS_GEN = 8192   # was 512 (ollama default): give reasoning/long prompts room to finish
+MAX_RETRIES    = 3      # retry a (prompt,example,run) until a valid generation -> equal n
 SEED        = 42
 
-ONLY_METHOD = sys.argv[1] if len(sys.argv) > 1 else None
-OUT = C.DATA_RESULTS / (f"prompt_selection_{ONLY_METHOD}.jsonl" if ONLY_METHOD else "prompt_selection.jsonl")
-SUMMARY = C.DATA_RESULTS / "prompt_selection_summary.csv"
-
-
+ap = argparse.ArgumentParser()
+ap.add_argument("--model",  default=None)
+ap.add_argument("--method", default=None)
+args = ap.parse_args()
 
 random.seed(SEED)
-_spec = C.MODELS[MODEL_KEY]
-PROVIDER, MODEL = _spec["provider"], _spec["model"]
-C.TEMPERATURE = TEMP                       # threads temp through llm_clients backends
-call_fn = lambda pr: LLM.call(PROVIDER, MODEL, pr)
 
 
-def _style(lang: str) -> str:
+def _style(l: str) -> str:
     return {"java": "Javadoc (/** ... */)",
-            "python": 'a docstring (""" ... """)'}.get(lang.lower(), "a doc comment")
+            "python": 'a docstring (""" ... """)'}.get(l.lower(), "a doc comment")
 
 
-# ============ M1/M2 base: 5 PERSONA ZERO-SHOT wordings ============
-# prompt #0 = the user's preferred prompt, verbatim (fair candidate).
-def _zs0(c, l):
-    return ("You are an experienced Java developer writing API documentation. Write a "
-            "Javadoc comment for the following Java method. The comment must follow "
-            "standard Javadoc conventions: start with a concise summary sentence "
-            "describing what the method does, then document each parameter with @param, "
-            "the return value with @return (only if the method returns a value), and any "
-            "thrown exceptions with @throws. Output ONLY the Javadoc comment block "
-            "(/** ... */). Do not repeat the method code, and do not add explanations or "
-            "any other text. Method: " + c[:MAX_CODE])
-
+# ═══════════════════════════════════════════════════════════════════════════
+# PERSONA + ZERO-SHOT  (5 wordings) — PRESERVED VERBATIM from exp_prompt_select.py
+# ═══════════════════════════════════════════════════════════════════════════
 PERSONA_ZS = [
-    _zs0,
+    # #0 — your original preferred prompt (kept verbatim, now inline as a lambda).
+    lambda c, l: ("You are an experienced Java developer writing API documentation. Write a "
+                  "Javadoc comment for the following Java method. The comment must follow "
+                  "standard Javadoc conventions: start with a concise summary sentence "
+                  "describing what the method does, then document each parameter with @param, "
+                  "the return value with @return (only if the method returns a value), and any "
+                  "thrown exceptions with @throws. Output ONLY the Javadoc comment block "
+                  "(/** ... */). Do not repeat the method code, and do not add explanations or "
+                  "any other text. Method: " + c[:MAX_CODE]),
     lambda c, l: (f"Act as a senior {l} engineer and meticulous API-doc author. Write "
                   f"{_style(l)} for the method, documenting ONLY what the code does. "
                   f"Output ONLY the doc block.\n\n```{l}\n{c[:MAX_CODE]}\n```"),
@@ -97,7 +114,9 @@ PERSONA_ZS = [
                   f"```{l}\n{c[:MAX_CODE]}\n```"),
 ]
 
-# ============ M4 base: 5 PERSONA + CoT wordings ============
+# ═══════════════════════════════════════════════════════════════════════════
+# PERSONA + CoT  (5 wordings) — PRESERVED VERBATIM from exp_prompt_select.py
+# ═══════════════════════════════════════════════════════════════════════════
 PERSONA_COT = [
     lambda c, l: (f"Act as a senior {l} engineer. Reason step by step about the method's single "
                   f"responsibility, its parameters, return value and exceptions; then output ONLY "
@@ -116,23 +135,27 @@ PERSONA_COT = [
                   f"the doc block.\n\n```{l}\n{c[:MAX_CODE]}\n```"),
 ]
 
-# ============ M3 base: 5 PERSONA + FEW-SHOT wordings ============
-# Exemplars are canonical and DISJOINT from the 10 evaluation examples (no leakage).
+# ═══════════════════════════════════════════════════════════════════════════
+# FEW-SHOT EXEMPLARS — PRESERVED VERBATIM from exp_prompt_select.py
+# ═══════════════════════════════════════════════════════════════════════════
 FEWSHOT_EXEMPLARS = [
     {"code": ("public int add(int a, int b) {\n    return a + b;\n}"),
-     "doc": ("/**\n * Returns the sum of two integers.\n *\n * @param a the first addend\n"
-             " * @param b the second addend\n * @return the sum of {@code a} and {@code b}\n */")},
+     "doc":  ("/**\n * Returns the sum of two integers.\n *\n * @param a the first addend\n"
+              " * @param b the second addend\n * @return the sum of {@code a} and {@code b}\n */")},
     {"code": ("public String get(int index) {\n    if (index < 0 || index >= size)\n"
               "        throw new IndexOutOfBoundsException();\n    return items[index];\n}"),
-     "doc": ("/**\n * Returns the element at the specified position.\n *\n"
-             " * @param index the index of the element to return\n"
-             " * @return the element at {@code index}\n"
-             " * @throws IndexOutOfBoundsException if the index is out of range\n */")},
+     "doc":  ("/**\n * Returns the element at the specified position.\n *\n"
+              " * @param index the index of the element to return\n"
+              " * @return the element at {@code index}\n"
+              " * @throws IndexOutOfBoundsException if the index is out of range\n */")},
 ]
 
-def _fewshot_block(l):
+def _fewshot_block(l: str) -> str:
     return "\n\n".join(f"```{l}\n{e['code']}\n```\n{e['doc']}" for e in FEWSHOT_EXEMPLARS)
 
+# ═══════════════════════════════════════════════════════════════════════════
+# PERSONA + FEW-SHOT  (5 wordings) — PRESERVED VERBATIM from exp_prompt_select.py
+# ═══════════════════════════════════════════════════════════════════════════
 PERSONA_FS = [
     lambda c, l: (f"Act as a senior {l} engineer and API-doc author. Here are examples of "
                   f"method -> {_style(l)}:\n\n{_fewshot_block(l)}\n\nNow write {_style(l)} for this "
@@ -153,115 +176,275 @@ PERSONA_FS = [
                   f"```{l}\n{c[:MAX_CODE]}\n```"),
 ]
 
-METHODS = {
-    "persona_zeroshot":      {"family": PERSONA_ZS,  "meta": False},
-    "persona_zeroshot+meta": {"family": PERSONA_ZS,  "meta": True},
-    "persona_fewshot+meta":  {"family": PERSONA_FS,  "meta": True},
-    "persona_cot+meta":      {"family": PERSONA_COT, "meta": True},
+# ═══════════════════════════════════════════════════════════════════════════
+# SINGLE-PATTERN BASELINES — persona prefix stripped from the existing families.
+# Each prompt[i] = same instruction body as PERSONA_ZS/FS/COT[i],
+# but without the "Act as / You are / As a ..." opening clause.
+# This is the ablation baseline: same wording, no role.
+# ═══════════════════════════════════════════════════════════════════════════
+ZS = [
+    # ZS-0: PERSONA_ZS[0] with the "You are an experienced..." role clause removed
+    lambda c, l: (
+        "Write a Javadoc comment for the following Java method. "
+        "Start with a concise summary sentence, then document each parameter with @param, "
+        "the return value with @return (only if applicable), and any exceptions with @throws. "
+        "Output ONLY the Javadoc comment block (/** ... */). "
+        "Do not repeat the method code. Method: " + c[:MAX_CODE]
+    ),
+    # ZS-1: stripped from PERSONA_ZS[1] ("Act as a senior ... Write ..." -> "Write ...")
+    lambda c, l: (f"Write {_style(l)} for the method below, documenting ONLY what the code does. "
+                  f"Output ONLY the doc block.\n\n```{l}\n{c[:MAX_CODE]}\n```"),
+    # ZS-2: stripped from PERSONA_ZS[2] ("Take the role of..." -> "Write...")
+    lambda c, l: (f"Write {_style(l)} for this method, documenting only observable behaviour "
+                  f"(summary, @param, @return, @throws where they apply). "
+                  f"Output ONLY the doc block.\n\n```{l}\n{c[:MAX_CODE]}\n```"),
+    # ZS-3: stripped from PERSONA_ZS[3] ("Assume the persona of..." -> "Generate...")
+    lambda c, l: (f"Generate concise, accurate {_style(l)} for the method below; include a "
+                  f"one-sentence summary, @param for each parameter, @return only if it returns "
+                  f"a value, and @throws where applicable. "
+                  f"Output ONLY the doc block.\n\n```{l}\n{c[:MAX_CODE]}\n```"),
+    # ZS-4: stripped from PERSONA_ZS[4] ("As an expert..." -> "Write...")
+    lambda c, l: (f"Write {_style(l)} for the method below, grounded strictly in its code and "
+                  f"following standard Javadoc conventions. "
+                  f"Output ONLY the doc block.\n\n```{l}\n{c[:MAX_CODE]}\n```"),
+]
+
+FS = [
+    # FS-0: stripped from PERSONA_FS[0] ("Act as a senior... Here are examples" -> "Here are examples")
+    lambda c, l: (f"Here are examples of method -> {_style(l)}:\n\n{_fewshot_block(l)}\n\n"
+                  f"Now write {_style(l)} for this method in the same style. "
+                  f"Output ONLY the doc block.\n\n```{l}\n{c[:MAX_CODE]}\n```"),
+    # FS-1: stripped from PERSONA_FS[1] ("You are an expert... Study..." -> "Study...")
+    lambda c, l: (f"Study these worked examples, then document the new method consistently "
+                  f"with them:\n\n{_fewshot_block(l)}\n\n"
+                  f"NEW METHOD:\n```{l}\n{c[:MAX_CODE]}\n```\nOutput ONLY the {_style(l)}."),
+    # FS-2: stripped from PERSONA_FS[2] ("As a... library maintainer..." -> "Follow...")
+    lambda c, l: (f"Follow the documentation style shown below.\n\n"
+                  f"EXAMPLES:\n{_fewshot_block(l)}\n\nDocument this method the same way. "
+                  f"Output ONLY the {_style(l)} block.\n\n```{l}\n{c[:MAX_CODE]}\n```"),
+    # FS-3: stripped from PERSONA_FS[3] ("You write API docs for a... project." -> "Given...")
+    lambda c, l: (f"Given these reference pairs of code and {_style(l)}:\n\n{_fewshot_block(l)}\n\n"
+                  f"Produce {_style(l)} for the following method, matching their level of detail. "
+                  f"Output ONLY the doc block.\n\n```{l}\n{c[:MAX_CODE]}\n```"),
+    # FS-4: stripped from PERSONA_FS[4] ("Act as a senior... Learn from..." -> "Learn from...")
+    lambda c, l: (f"Learn from these examples of well-documented methods:\n\n{_fewshot_block(l)}\n\n"
+                  f"Apply the same conventions to write {_style(l)} for the method below. "
+                  f"Output ONLY the doc block.\n\n```{l}\n{c[:MAX_CODE]}\n```"),
+]
+
+COT = [
+    # CoT-0: stripped from PERSONA_COT[0] ("Act as a senior... Reason..." -> "Reason...")
+    lambda c, l: (f"Reason step by step about the method's single responsibility, its parameters, "
+                  f"return value and exceptions; then output ONLY the final {_style(l)} block "
+                  f"(hide the reasoning).\n\n```{l}\n{c[:MAX_CODE]}\n```"),
+    # CoT-1: stripped from PERSONA_COT[1] ("You are an expert... Think through..." -> "Think through...")
+    lambda c, l: (f"Think through what the code does first, then write {_style(l)} from that "
+                  f"analysis. Show ONLY the final doc block.\n\n```{l}\n{c[:MAX_CODE]}\n```"),
+    # CoT-2: stripped from PERSONA_COT[2] ("As a careful... work out..." -> "Work out...")
+    lambda c, l: (f"Work out the contract of this method (inputs, output, side effects, thrown "
+                  f"exceptions) step by step, then produce ONLY the resulting "
+                  f"{_style(l)}.\n\n```{l}\n{c[:MAX_CODE]}\n```"),
+    # CoT-3: stripped from PERSONA_COT[3] ("Act as a... reviewer. Reason..." -> "Reason...")
+    lambda c, l: (f"Reason through the method: identify the purpose, each parameter, the return, "
+                  f"and any @throws conditions; then output ONLY the final "
+                  f"{_style(l)} block.\n\n```{l}\n{c[:MAX_CODE]}\n```"),
+    # CoT-4: stripped from PERSONA_COT[4] ("You are a meticulous... First derive..." -> "First derive...")
+    lambda c, l: (f"First derive the method's behaviour by reasoning about its control flow, "
+                  f"then write grounded {_style(l)}. Return ONLY the doc block.\n\n"
+                  f"```{l}\n{c[:MAX_CODE]}\n```"),
+]
+
+# ═══════════════════════════════════════════════════════════════════════════
+# METHOD REGISTRY  (9 methods x 5 prompts = 45 conditions)
+# ═══════════════════════════════════════════════════════════════════════════
+METHODS: dict[str, tuple[list, bool]] = {
+    # single-pattern baselines (no persona) — NEW
+    "zeroshot":              (ZS,         False),
+    "fewshot":               (FS,         False),
+    "cot":                   (COT,        False),
+    # + persona — PERSONA_ZS/FS/COT preserved from exp_prompt_select.py
+    "persona_zeroshot":      (PERSONA_ZS, False),
+    "persona_fewshot":       (PERSONA_FS, False),   # was missing as standalone
+    "persona_cot":           (PERSONA_COT,False),   # was missing as standalone
+    # + persona + meta — from exp_prompt_select.py
+    "persona_zeroshot+meta": (PERSONA_ZS, True),
+    "persona_fewshot+meta":  (PERSONA_FS, True),
+    "persona_cot+meta":      (PERSONA_COT,True),
 }
 
+N_PROMPTS = 5
 
-def load_examples():
-    """The 10 fixed evaluation examples from the Excel (ID, code, comment, complexity)."""
+
+# ═══════════════════════════════════════════════════════════════════════════
+# DATA LOADING
+# ═══════════════════════════════════════════════════════════════════════════
+def load_examples() -> list[dict]:
     if not XLSX.exists():
-        raise SystemExit(f"Place the Excel at: {XLSX}")
+        raise SystemExit(f"[ERROR] Excel not found at: {XLSX}")
     ws = openpyxl.load_workbook(XLSX)[SHEET]
     hdr = {ws.cell(1, c).value: c for c in range(1, ws.max_column + 1)}
-    examples = []
+    out = []
     for r in range(2, ws.max_row + 1):
         cid = ws.cell(r, hdr["ID"]).value
         if cid is None:
             continue
-        code = strip_doc_comments(str(ws.cell(r, hdr["code"]).value or ""))
-        doc = str(ws.cell(r, hdr["comment"]).value or "").strip()
-        examples.append({
-            "pair_id": str(cid),
-            "code_unit": code,
-            "reference_doc": doc,
-            "language": "java",
-            "complexity": ws.cell(r, hdr["complexity_category"]).value,
+        comp = str(ws.cell(r, hdr["complexity_category"]).value or "")
+        comp = "complex" if comp == "very_complex" else comp
+        out.append({
+            "pair_id":       str(cid),
+            "code_unit":     strip_doc_comments(str(ws.cell(r, hdr["code"]).value or "")),
+            "reference_doc": str(ws.cell(r, hdr["comment"]).value or "").strip(),
+            "language":      "java",
+            "complexity":    comp,
         })
-    return examples
+    return out
 
 
-def generate(examples):
-    rows = []
-    items = [(ONLY_METHOD, METHODS[ONLY_METHOD])] if ONLY_METHOD else METHODS.items()
-    for mname, m in items:
+# ═══════════════════════════════════════════════════════════════════════════
+# GENERATION
+# ═══════════════════════════════════════════════════════════════════════════
+def run_one(model_key: str, examples: list[dict]) -> list[dict]:
+    spec = C.MODELS[model_key]
+    provider, model = spec["provider"], spec["model"]
+    C.TEMPERATURE = TEMP
+    # meta-refinement uses the SAME model, with the larger budget so the refined prompt isn't truncated
+    call_fn = lambda pr: LLM.call(provider, model, pr, max_tokens=MAX_TOKENS_GEN)
+
+    sleep_s = (C.SLEEP_GEMINI if provider == "gemini"
+               else C.SLEEP_HF  if provider in ("hf", "hf_text")
+               else getattr(C, "SLEEP_GROQ", 0.3) if provider == "groq"
+               else 0)
+
+    rows: list[dict] = []
+    methods_to_run = ({args.method: METHODS[args.method]}
+                      if args.method else METHODS)
+
+    for mname, (family, use_meta) in methods_to_run.items():
+        fail_left = 0
         for pid in range(N_PROMPTS):
-            builder = m["family"][pid]
+            builder = family[pid]
             for ex in examples:
-                code, lang = ex["code_unit"], ex["language"]
-                base = builder(code, lang)
-                # refine the prompt ONCE per (method, prompt, example); reuse across reruns
-                prompt = (meta_refine_prompt(base, call_fn, rounds=META_ROUNDS)
-                          if m["meta"] else base)
+                base = builder(ex["code_unit"], ex["language"])
+                if use_meta:
+                    prompt, meta_trace = meta_refine_prompt(base, call_fn, rounds=META_ROUNDS,
+                                                            return_trace=True)
+                else:
+                    prompt, meta_trace = base, None
                 for run in range(RUNS):
-                    out = LLM.call(PROVIDER, MODEL, prompt)
+                    # retry until we get a valid generation (or give up after MAX_RETRIES)
+                    out = ""
+                    for attempt in range(MAX_RETRIES):
+                        out = LLM.call(provider, model, prompt, max_tokens=MAX_TOKENS_GEN)
+                        if LLM.is_ok(out) and _clean(out).strip():
+                            break
+                        time.sleep(sleep_s)
+                    ok = LLM.is_ok(out) and bool(_clean(out).strip())
+                    if not ok:
+                        fail_left += 1
                     rows.append({
-                        "method": mname, "prompt_id": pid, "pair_id": ex["pair_id"],
-                        "complexity": ex["complexity"], "run": run, "temperature": TEMP,
+                        "model":         model_key,
+                        "method":        mname,
+                        "prompt_id":     pid,
+                        "pair_id":       ex["pair_id"],
+                        "complexity":    ex["complexity"],
+                        "run":           run,
+                        "temperature":   TEMP,
                         "reference_doc": ex["reference_doc"],
-                        "generated": _clean(out),
-                        "status": "ok" if LLM.is_ok(out) else "fail",
+                        "generated":     _clean(out),
+                        "status":        "ok" if ok else "fail",
+                        "refined_prompt": prompt if use_meta else None,
                     })
-                    time.sleep(C.SLEEP_GROQ)
-            OUT.parent.mkdir(parents=True, exist_ok=True)
-            with open(OUT, "w", encoding="utf-8") as f:        # crash-safe incremental
+                    time.sleep(sleep_s)
+
+            # crash-safe incremental save after every (method, prompt_id) block
+            suffix = f"_{args.method}" if args.method else ""
+            fp = C.DATA_RESULTS / f"prompt_select_v5_{model_key}{suffix}.jsonl"
+            fp.parent.mkdir(parents=True, exist_ok=True)
+            with open(fp, "w", encoding="utf-8") as f:
                 for x in rows:
                     f.write(json.dumps(x, ensure_ascii=False) + "\n")
-            done = sum(1 for x in rows if x["method"] == mname and x["prompt_id"] == pid)
-            print(f"[{mname}] prompt #{pid} done ({done} gens)")
+
+            done = sum(1 for x in rows
+                       if x["model"] == model_key
+                       and x["method"] == mname
+                       and x["prompt_id"] == pid)
+            ok_here = sum(1 for x in rows
+                          if x["model"] == model_key
+                          and x["method"] == mname
+                          and x["prompt_id"] == pid
+                          and x["status"] == "ok")
+            print(f"[{model_key}] {mname} #{pid} -> {ok_here}/{done} ok saved")
+
     return rows
 
 
-def score_and_select(rows):
+# ═══════════════════════════════════════════════════════════════════════════
+# SCORING + SUMMARY
+# ═══════════════════════════════════════════════════════════════════════════
+def score(rows: list[dict]) -> None:
     ok = [r for r in rows if r["status"] == "ok" and r["generated"]]
     if not ok:
-        raise SystemExit("No successful generations to score.")
-    f1 = M.bertscore_batch([r["reference_doc"] for r in ok],
-                           [r["generated"] for r in ok])
-    for r, b in zip(ok, f1):
+        print("[WARN] No successful generations to score.")
+        return
+
+    f1_scores = M.bertscore_batch(
+        [r["reference_doc"] for r in ok],
+        [r["generated"]     for r in ok],
+    )
+    for r, b in zip(ok, f1_scores):
         r["bertscore_f1"] = b
 
-    agg = collections.defaultdict(list)
+    agg: dict[tuple, list] = collections.defaultdict(list)
     for r in ok:
         if r.get("bertscore_f1") is not None:
-            agg[(r["method"], r["prompt_id"])].append(r["bertscore_f1"])
+            agg[(r["model"], r["method"], r["prompt_id"])].append(r["bertscore_f1"])
 
-    summary = [{
-        "method": mn, "prompt_id": pid, "n": len(v),
-        "bertscore_f1_mean": round(statistics.mean(v), 4),
-        "bertscore_f1_sd": round(statistics.pstdev(v), 4) if len(v) > 1 else 0.0,
-    } for (mn, pid), v in agg.items()]
-    summary.sort(key=lambda x: (x["method"], -x["bertscore_f1_mean"]))
+    summ = [
+        {"model": k[0], "method": k[1], "prompt_id": k[2], "n": len(v),
+         "f1_mean": round(statistics.mean(v), 4),
+         "f1_sd":   round(statistics.pstdev(v), 4) if len(v) > 1 else 0.0}
+        for k, v in agg.items()
+    ]
+    summ.sort(key=lambda x: (x["model"], x["method"], -x["f1_mean"]))
 
-    with open(SUMMARY, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=["method", "prompt_id", "n",
-                                          "bertscore_f1_mean", "bertscore_f1_sd"])
+    out_csv = C.DATA_RESULTS / "prompt_select_v5_summary.csv"
+    with open(out_csv, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=["model", "method", "prompt_id",
+                                           "n", "f1_mean", "f1_sd"])
         w.writeheader()
-        w.writerows(summary)
+        w.writerows(summ)
 
-    print("\n=== PER-PROMPT (mean BERTScore-F1) ===")
-    for s in summary:
-        star = "  <- user prompt" if (s["method"] == "persona_zeroshot" and s["prompt_id"] == 0) else ""
-        print(f"  {s['method']:24s} #{s['prompt_id']}  "
-              f"{s['bertscore_f1_mean']:.4f} (\u00b1{s['bertscore_f1_sd']:.4f}, n={s['n']}){star}")
+    print("\n=== BEST PROMPT PER (model, method) ===")
+    best: dict[tuple, dict] = {}
+    for s in summ:
+        best.setdefault((s["model"], s["method"]), s)
+    for (mdl, mth), s in best.items():
+        print(f"  {mdl:12s} | {mth:26s} -> #{s['prompt_id']}  "
+              f"F1={s['f1_mean']} (±{s['f1_sd']}, n={s['n']})")
 
-    best = {}
-    for s in summary:                       # first per method = highest (already sorted)
-        best.setdefault(s["method"], s)
-    print("\n=== BEST PROMPT PER METHOD ===")
-    for mn, s in best.items():
-        print(f"  {mn:24s} -> prompt #{s['prompt_id']}  "
-              f"F1={s['bertscore_f1_mean']} (\u00b1{s['bertscore_f1_sd']})")
-    print(f"\nWrote {SUMMARY}\nNext: confirm the 4 winners on the full 384 set + IRA with Nasser.")
+    print(f"\nSaved: {out_csv}")
+    print("\nAblation reads:")
+    print("  zeroshot vs persona_zeroshot      -> effect of persona")
+    print("  persona_X vs persona_X+meta       -> effect of meta-refinement")
+    print("  zeroshot vs fewshot vs cot        -> best base strategy")
 
 
+# ═══════════════════════════════════════════════════════════════════════════
+# ENTRY POINT
+# ═══════════════════════════════════════════════════════════════════════════
 if __name__ == "__main__":
-    ex = load_examples()
-    comp = collections.Counter(e["complexity"] for e in ex)
-    print(f"{len(ex)} fixed examples {dict(comp)} | {len(METHODS)} methods x {N_PROMPTS} "
-          f"prompts x {RUNS} runs = {len(METHODS)*N_PROMPTS*len(ex)*RUNS} generations @ temp={TEMP}")
-    rows = generate(ex)
-    score_and_select(rows)
+    examples = load_examples()
+    comp_dist = dict(collections.Counter(e["complexity"] for e in examples))
+    active_models  = [args.model]  if args.model  else MODEL_KEYS
+    active_methods = [args.method] if args.method else list(METHODS)
+
+    total = len(active_models) * len(active_methods) * N_PROMPTS * len(examples) * RUNS
+    print(f"{len(examples)} examples {comp_dist}")
+    print(f"models={active_models} | methods={active_methods}")
+    print(f"N_PROMPTS={N_PROMPTS} | RUNS={RUNS} | TEMP={TEMP} | total gens={total}")
+
+    all_rows: list[dict] = []
+    for mk in active_models:
+        all_rows += run_one(mk, examples)
+
+    score(all_rows)

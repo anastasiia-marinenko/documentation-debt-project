@@ -23,20 +23,29 @@ from generation.generate import _clean
 from generation import prompts as P
 
 
-def meta_refine_prompt(base_prompt, call_fn, rounds=2, converge=0.97):
-    """Iteratively ask the SAME model to improve the prompt. Stop early when a new
-    version is ~identical to the previous one (reasonably satisfied)."""
+# жорстке обмеження формату, яке завжди має лишатися в кінці промпта
+_FORMAT_GUARD = ("\n\nOutput ONLY the Javadoc comment block (/** ... */). "
+                 "Do not add explanations, prose, or the method code.")
+
+def meta_refine_prompt(base_prompt, call_fn, rounds=2, converge=0.97, return_trace=False):
+    """Iteratively ask the SAME model to improve the prompt, but PRESERVE the output
+    format (re-append a hard format guard after every round). Optionally return the trace."""
     current = base_prompt
+    trace = [base_prompt]
     for _ in range(rounds):
         improved = call_fn(P.question_refinement(current))
         if not LLM.is_ok(improved):
             break
         improved = improved.strip()
+        # re-attach the format guard if the refine step dropped it
+        if "Output ONLY" not in improved:
+            improved = improved + _FORMAT_GUARD
+        trace.append(improved)
         if difflib.SequenceMatcher(None, current, improved).ratio() >= converge:
             current = improved
-            break                      # converged -> stop refining
+            break
         current = improved
-    return current
+    return (current, trace) if return_trace else current
 
 
 def run_meta(pairs, model_key="groq", patterns=None, rounds=2, out_path=None):
