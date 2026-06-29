@@ -1,20 +1,25 @@
 """
-generation/run_meta.py — EXP-004b: META-PROMPTING AS A REFINEMENT LAYER.
+generation/run_meta.py — ITERATIVE PROMPT SELF-REFINEMENT (a refinement LAYER).
 
-Per supervisor feedback (Jun 11): meta-prompting is NOT a standalone variant.
-For EACH prompt pattern (Persona, Template, Recipe, ...) we:
-  1) build the pattern's base prompt,
-  2) ask the SAME LLM to improve that prompt iteratively (2-3 rounds, stop when
-     it converges) — White et al. 2023 §F (Question Refinement) applied per pattern,
-  3) generate documentation with the improved prompt.
-The improving model and the generating model are the SAME (a meta-prompting rule:
-if you refine with model X you must generate with model X).
+⚠️ TERMINOLOGY (important for the paper — avoid the "meta-prompting" mislabel):
+This module implements ITERATIVE SELF-REFINEMENT of the instruction prompt in the
+sense of Self-Refine (Madaan et al., 2023) and White et al. (2023) §F (Question
+Refinement): the SAME LLM rewrites its own task prompt for a few rounds under a
+fixed output-format constraint. This is NOT the multi-agent meta-prompting system
+of Suzgun & Kalai (2024) (conductor + expert roles + task decomposition). We keep
+the method tag "+meta" for continuity with earlier logs/slides, but describe it in
+the paper as "iterative prompt self-refinement", not "meta-prompting".
 
-Output variant = "<pattern>+meta"  (e.g. "v4_persona+meta") so the prompt-study
-table shows each pattern WITH and WITHOUT its meta-refinement, side by side.
+Per supervisor feedback (Jun 11 / Jun 25): refinement is applied PER PATTERN with the
+SAME LLM used for generation, and the number of rounds is NOT a fixed magic number —
+it is applied until the prompt is satisfactory (manual check), typically 2-3 rounds.
+
+To avoid a black box, meta_refine_prompt() returns a STRUCTURED trace: for every round
+it records the prompt, its length, and the line-level diff vs the previous round, so
+the refinement is fully reproducible and analysable (what was added/removed each round).
 """
 from __future__ import annotations
-import json, time, sys, difflib
+import json, time, sys, difflib, re
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parents[1]))
 import config as C
@@ -27,24 +32,58 @@ from generation import prompts as P
 _FORMAT_GUARD = ("\n\nOutput ONLY the Javadoc comment block (/** ... */). "
                  "Do not add explanations, prose, or the method code.")
 
+
+def _approx_tokens(s: str) -> int:
+    """Cheap token proxy (whitespace + punctuation) for length-controlled analysis."""
+    return len(re.findall(r"\w+|[^\w\s]", s))
+
+
+def _prompt_diff(prev: str, cur: str) -> dict:
+    """Line-level diff between two prompt versions: what the refine step added/removed."""
+    added, removed = [], []
+    for line in difflib.unified_diff(prev.splitlines(), cur.splitlines(), lineterm=""):
+        if line.startswith("+") and not line.startswith("+++"):
+            added.append(line[1:].strip())
+        elif line.startswith("-") and not line.startswith("---"):
+            removed.append(line[1:].strip())
+    return {"added": [a for a in added if a], "removed": [r for r in removed if r]}
+
+
 def meta_refine_prompt(base_prompt, call_fn, rounds=2, converge=0.97, return_trace=False):
-    """Iteratively ask the SAME model to improve the prompt, but PRESERVE the output
-    format (re-append a hard format guard after every round). Optionally return the trace."""
+    """Iteratively ask the SAME model to improve the prompt, PRESERVING output format
+    (re-append a hard format guard each round). Returns a STRUCTURED trace so the
+    refinement is not a black box.
+
+    trace = [
+      {"round": 0, "prompt": ..., "chars": .., "tokens": .., "diff": None},      # base
+      {"round": 1, "prompt": ..., "chars": .., "tokens": .., "diff": {added,removed},
+       "ratio": <similarity vs prev>, "format_guard_reattached": bool},
+      ...
+    ]
+    """
     current = base_prompt
-    trace = [base_prompt]
-    for _ in range(rounds):
+    trace = [{"round": 0, "prompt": base_prompt,
+              "chars": len(base_prompt), "tokens": _approx_tokens(base_prompt),
+              "diff": None}]
+    for i in range(1, rounds + 1):
         improved = call_fn(P.question_refinement(current))
         if not LLM.is_ok(improved):
             break
         improved = improved.strip()
-        # re-attach the format guard if the refine step dropped it
-        if "Output ONLY" not in improved:
+        reattached = "Output ONLY" not in improved          # refine dropped the constraint?
+        if reattached:
             improved = improved + _FORMAT_GUARD
-        trace.append(improved)
-        if difflib.SequenceMatcher(None, current, improved).ratio() >= converge:
-            current = improved
-            break
+        ratio = difflib.SequenceMatcher(None, current, improved).ratio()
+        trace.append({
+            "round": i, "prompt": improved,
+            "chars": len(improved), "tokens": _approx_tokens(improved),
+            "diff": _prompt_diff(current, improved),
+            "ratio": round(ratio, 3),
+            "format_guard_reattached": reattached,
+        })
         current = improved
+        if ratio >= converge:           # converged → stop early (manual-stop proxy)
+            break
     return (current, trace) if return_trace else current
 
 
