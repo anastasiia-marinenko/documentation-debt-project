@@ -1,100 +1,23 @@
-funcom
-├── challenge
-│   ├── __pycache__
-│   │   ├── model.cpython-36.pyc
-│   │   ├── myutils.cpython-36.pyc
-│   │   └── tokenizer.cpython-36.pyc
-│   ├── bleu.py
-│   ├── model.py
-│   ├── models
-│   │   ├── __init__.py
-│   │   ├── __pycache__
-│   │   │   ├── __init__.cpython-36.pyc
-│   │   │   ├── ast_attendgru.cpython-36.pyc
-│   │   │   ├── ast_attendgru_xtra.cpython-36.pyc
-│   │   │   ├── attendgru.cpython-36.pyc
-│   │   │   ├── pretrained.cpython-36.pyc
-│   │   │   ├── vae_astattendgru.cpython-36.pyc
-│   │   │   ├── vae_astattendgru300.cpython-36.pyc
-│   │   │   ├── vae_like.cpython-36.pyc
-│   │   │   ├── vae_like_ast.cpython-36.pyc
-│   │   │   └── vae_lstm_ast.cpython-36.pyc
-│   │   ├── ast_attendgru_xtra.py
-│   │   └── attendgru.py
-│   ├── myutils.py
-│   ├── outdir
-│   │   └── xtra_E03_TA0.63_VA0.60.h5
-│   ├── predict.py
-│   ├── predict_dual.py
-│   ├── tokenizer.py
-│   └── train.py
-├── data
-│   ├── sbt
-│   │   ├── coms.tok
-│   │   ├── dataset.pkl
-│   │   ├── dats.tok
-│   │   ├── output
-│   │   │   ├── coms.test
-│   │   │   ├── coms.train
-│   │   │   ├── coms.val
-│   │   │   ├── dataset.coms
-│   │   │   ├── dataset.dats
-│   │   │   ├── dataset.sbt
-│   │   │   ├── dats.test
-│   │   │   ├── dats.train
-│   │   │   ├── dats.val
-│   │   │   ├── sbt.test
-│   │   │   ├── sbt.train
-│   │   │   └── sbt.val
-│   │   └── smls.tok
-│   └── standard
-│       ├── coms.tok
-│       ├── dataset.pkl
-│       ├── dats.tok
-│       ├── output
-│       │   ├── coms.test
-│       │   ├── coms.train
-│       │   ├── coms.val
-│       │   ├── dataset.coms
-│       │   ├── dataset.dats
-│       │   ├── dataset.srcml
-│       │   ├── dats.test
-│       │   ├── dats.train
-│       │   ├── dats.val
-│       │   ├── smls.test
-│       │   ├── smls.train
-│       │   └── smls.val
-│       └── smls.tok
-└── standard
-    ├── __pycache__
-    │   ├── model.cpython-36.pyc
-    │   ├── myutils.cpython-36.pyc
-    │   ├── myutils_2.cpython-36.pyc
-    │   └── tokenizer.cpython-36.pyc
-    ├── bleu.py
-    ├── model.py
-    ├── models
-    │   ├── __init__.py
-    │   ├── __pycache__
-    │   │   ├── __init__.cpython-36.pyc
-    │   │   ├── ast_attendgru.cpython-36.pyc
-    │   │   ├── ast_attendgru_xtra.cpython-36.pyc
-    │   │   ├── attendgru.cpython-36.pyc
-    │   │   ├── pretrained.cpython-36.pyc
-    │   │   ├── vae_astattendgru.cpython-36.pyc
-    │   │   ├── vae_astattendgru300.cpython-36.pyc
-    │   │   ├── vae_like.cpython-36.pyc
-    │   │   ├── vae_like_ast.cpython-36.pyc
-    │   │   └── vae_lstm_ast.cpython-36.pyc
-    │   ├── ast_attendgru.png
-    │   ├── ast_attendgru.py
-    │   └── attendgru.py
-    ├── myutils.py
-    ├── myutils_2.py
-    ├── outdir
-    │   └── mdl-final-ast-attendgru.h5
-    ├── predict.py
-    ├── predict_dual.py
-    ├── tokenizer.py
-    ├── train.py
-    └── train_2.py
+7757462
+├── pentacet_clean_and_load_dump.sql
+├── pentacet_plain_sql_dump.tar
+├── pentacet_satd_comments.tsv
+├── soccminer_mined_data_jsons
+│   └── soccminer_mined_data_jsons
+│       ├── c1
+│       │   ├── c1_soccminer_mined_data.tar
+│       │   │   └── c1_soccminer_mined_data.tar
+│       │   └── c1_soccminer_mined_data.tar.gz
+│       ├── c2
+│       │   ├── c2_soccminer_mined_data.tar
+│       │   │   └── c2_soccminer_mined_data.tar
+│       │   └── c2_soccminer_mined_data.tar.gz
+│       ├── c3
+│       │   ├── c3_soccminer_mined_data.tar
+│       │   │   └── c3_soccminer_mined_data.tar
+│       │   └── c3_soccminer_mined_data.tar.gz
+│       └── c4
+│           ├── c4_soccminer_mined_data.tar
+│           │   └── c4_soccminer_mined_data.tar
+│           └── c4_soccminer_mined_data.tar.gz
+└── soccminer_mined_data_jsons.zip

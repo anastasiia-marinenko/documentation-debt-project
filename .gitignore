@@ -1,5 +1,7 @@
 data/raw/
 data/processed/
+files/unified_pipeline/unified_pipeline/data/raw/
+files/unified_pipeline/unified_pipeline/data/processed/
 *.parquet
 *.jsonl
 .venv/
