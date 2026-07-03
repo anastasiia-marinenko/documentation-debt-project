@@ -84,3 +84,10 @@ DEFAULT_PROMPT = "v3_template"
 # ── IRA sampling ──
 IRA_TOTAL_SAMPLES = 383   # statistically significant (95% conf, 5% margin); use sample-size calculator
 IRA_SEED = 42
+
+# ── Ollama / local-inference settings (required by generation/llm_clients._ollama) ──
+# Added for the patched native-API client: think=False + warm models + bounded budget.
+MAX_RETRIES       = 3        # retry an Ollama call this many times, then log an honest fail
+OLLAMA_KEEP_ALIVE = "30m"    # keep model weights warm in VRAM between calls (avoids reloads)
+OLLAMA_NUM_CTX    = 4096     # context window sized to the prompt (not huge) -> less VRAM/time
+OLLAMA_TIMEOUT    = 600      # seconds per /api/generate request
