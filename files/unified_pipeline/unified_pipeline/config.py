@@ -62,6 +62,11 @@ MODELS = {
     # Add it here with a provider once you obtain an endpoint.
     "pangu_coder": {"provider": "hf",      "model": "REPLACE_WITH_ACCESSIBLE_ENDPOINT",    "enabled": False},
     "deepseek_r1": {"provider": "ollama", "model": "deepseek-r1:8b", "enabled": True},
+    # Non-reasoning replacement for deepseek_r1: no <think> traces, faster, same family.
+    # Chosen because our own results show reasoning/CoT hurts short structured generation,
+    # so a reasoning model is a poor fit; this keeps a DeepSeek representative that emits
+    # clean Javadoc. Run its OWN Stage 1 (winning prompts differ per model).
+    "deepseek_coder_7b": {"provider": "ollama", "model": "deepseek-coder:6.7b-instruct", "enabled": True},
     "qwen_coder_14b": {"provider": "ollama", "model": "qwen2.5-coder:14b", "enabled": True},
     "codegemma_7b": {"provider": "ollama", "model": "codegemma:7b-instruct", "enabled": True},
 }

@@ -60,45 +60,54 @@ def _deepseek(model, prompt, max_tokens):
 def _ollama(model, prompt, max_tokens):
     """Local Ollama via the NATIVE /api/generate endpoint.
 
-    Key fix: thinking models (DeepSeek-R1) are called with think=False, so they
-    never spend the token budget on a <think> trace and never truncate before the
-    Javadoc block. This stabilises the valid-generation count n AND speeds things up.
-    We also keep the model warm in VRAM (keep_alive) and bound num_predict / num_ctx
-    so large models run on small GPUs without reloading each call.
+    Robust to Ollama versions / model capabilities:
+      * `think:false` is sent ONLY for reasoning models (e.g. deepseek-r1), because
+        non-thinking models (qwen2.5-coder, codegemma) reject the `think` field;
+      * if a request still fails because of `think`, we automatically retry WITHOUT it;
+      * the real HTTP error body is surfaced in the failure string for debugging.
 
-    NOTE: models are used at their default (un-quantised-by-us) Ollama weights; we do
-    not apply any extra quantisation here — we evaluate the models as shipped.
+    NOTE: models are used at their default Ollama weights — no extra quantisation.
     """
-    import requests, json
+    import requests
     base = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434").rstrip("/").removesuffix("/v1")
-    payload = {
-        "model": model,
-        "prompt": prompt,
-        "stream": False,
-        "think": False,                       # <-- disable reasoning trace (R1)
-        "keep_alive": C.OLLAMA_KEEP_ALIVE,     # keep weights warm between calls
-        "options": {
-            "temperature": C.TEMPERATURE,
-            "num_predict": max_tokens,         # Javadoc is short; 512 is plenty
-            "num_ctx": C.OLLAMA_NUM_CTX,       # size context to the prompt, not huge
-        },
-    }
+    is_reasoner = any(t in model.lower() for t in ("r1", "-think", "reason", "qwq"))
+
+    def _payload(use_think):
+        p = {
+            "model": model, "prompt": prompt, "stream": False,
+            "keep_alive": C.OLLAMA_KEEP_ALIVE,
+            "options": {"temperature": C.TEMPERATURE,
+                        "num_predict": max_tokens,
+                        "num_ctx": C.OLLAMA_NUM_CTX},
+        }
+        if use_think:
+            p["think"] = False          # only for reasoning models
+        return p
+
     last = ""
     for attempt in range(C.MAX_RETRIES):
-        try:
-            r = requests.post(base + "/api/generate", json=payload,
-                              timeout=C.OLLAMA_TIMEOUT)
-            r.raise_for_status()
-            text = (r.json().get("response") or "").strip()
-            # Safety net: strip any stray reasoning even though think=False
-            text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL)
-            text = re.sub(r"^.*?</think>", "", text, flags=re.DOTALL).strip()
-            if text:
-                return text
-            last = "ERROR:empty-response"
-        except Exception as e:
-            last = f"ERROR:{e}"
-    return last  # honest failure after MAX_RETRIES (caller logs it, does not crash)
+        for use_think in ([True, False] if is_reasoner else [False]):
+            try:
+                r = requests.post(base + "/api/generate",
+                                  json=_payload(use_think), timeout=C.OLLAMA_TIMEOUT)
+                if not r.ok:
+                    last = f"ERROR:HTTP{r.status_code}:{r.text[:200]}"
+                    # if the server rejected `think`, drop it and retry immediately
+                    if use_think and ("think" in r.text.lower() or r.status_code == 400):
+                        continue
+                    break
+                text = (r.json().get("response") or "").strip()
+                # strip any reasoning trace (well-formed or truncated)
+                text = re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL)
+                text = re.sub(r"^.*?</think>", "", text, flags=re.DOTALL).strip()
+                if text:
+                    return text
+                last = "ERROR:empty-response"
+                break
+            except Exception as e:
+                last = f"ERROR:{e}"
+        # small backoff between full retries
+    return last  # honest failure after retries (caller logs it, never crashes)
 
 _BACKENDS = {"groq": _groq, "gemini": _gemini, "hf": _hf,
              "hf_text": _hf_text, "deepseek": _deepseek, "ollama": _ollama}

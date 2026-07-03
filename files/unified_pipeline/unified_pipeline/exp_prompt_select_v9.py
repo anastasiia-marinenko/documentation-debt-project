@@ -73,7 +73,6 @@ import config as C
 from generation import llm_clients as LLM
 from generation.generate import _clean
 from generation.run_meta import meta_refine_prompt
-from generation.meta_prompting import meta_prompting_generate
 from evaluation import metrics as M
 from schema import strip_doc_comments
 import openpyxl
@@ -98,14 +97,7 @@ ap.add_argument("--stage",  type=int, default=1, choices=[1, 2],
                 help="1 = wording selection (5 patterns x 3, no meta); 2 = best wording x {baseline,+meta}")
 ap.add_argument("--meta-rounds", type=int, default=None, dest="meta_rounds",
                 help="override META_ROUNDS for stage 2 (set after manual inspection)")
-ap.add_argument("--meta-mode", default="orchestrate", choices=["refine", "orchestrate"],
-                help="'orchestrate' = true meta-prompting (writer->reviewer->writer, "
-                     "same LLM); 'refine' = the older iterative prompt-refinement "
-                     "(kept for the negative-result comparison)")
-# import-safe parsing: when this module is IMPORTED inside a notebook (not run as a
-# script), sys.argv carries Jupyter's own args (e.g. -f kernel.json) which argparse
-# would reject with SystemExit:2. parse_known_args ignores those unknown args.
-args, _unknown = ap.parse_known_args()
+args = ap.parse_args()
 
 random.seed(SEED)
 
@@ -407,18 +399,7 @@ def build_stage2(model_key: str) -> dict:
     return methods
 
 
-# ═══════════════════════════════════════════════════════════════════════════
-# GENERATION
-# ═══════════════════════════════════════════════════════════════════════════
-def builder_fn0(ex, builder):
-    """Wrap a pattern builder into a plain code->prompt function for the writer role
-    (first draft uses the pattern's own winning prompt, so meta-prompting is compared
-    fairly against that same pattern's baseline)."""
-    lang = ex["language"]
-    return lambda code: builder(code, lang)
 
-
-def run_one(model_key: str, examples: list[dict]) -> list[dict]:
     spec = C.MODELS[model_key]
     provider, model = spec["provider"], spec["model"]
     C.TEMPERATURE = TEMP
@@ -446,71 +427,26 @@ def run_one(model_key: str, examples: list[dict]) -> list[dict]:
 
     meta_rounds = args.meta_rounds if args.meta_rounds is not None else META_ROUNDS
 
-    # ── live progress meter (so generation isn't a black box) ──────────────
-    import time as _t
-    total_gens = sum(len(fam) for fam, _ in methods_to_run.values()) * len(examples) * RUNS
-    done_gens = 0
-    t0 = _t.time()
-
-    def _progress(tag):
-        pct = 100.0 * done_gens / max(total_gens, 1)
-        elapsed = _t.time() - t0
-        rate = done_gens / elapsed if elapsed > 0 else 0
-        eta = (total_gens - done_gens) / rate if rate > 0 else 0
-        bar_n = int(pct // 5)
-        bar = "█" * bar_n + "·" * (20 - bar_n)
-        print(f"\r  [{bar}] {pct:5.1f}%  {done_gens}/{total_gens} gens "
-              f"| {rate:4.1f}/s | ETA {eta/60:4.1f}m | {tag:28s}",
-              end="", flush=True)
-
     for mname, (family, use_meta) in methods_to_run.items():
         fail_left = 0
         n_wordings = len(family)              # stage 1: N_WORDINGS; stage 2: 1
         for pid in range(n_wordings):
             builder = family[pid]
-
-            # ── META ──────────────────────────────────────────────────────
-            # Two mechanisms, selectable via --meta-mode:
-            #  * 'orchestrate' (default, TRUE meta-prompting): writer->reviewer->writer
-            #    with the SAME LLM (Suzgun & Kalai style; no prompt rewriting, so no
-            #    contamination). Runs PER EXAMPLE (the review depends on the code).
-            #  * 'refine' (legacy): iterative prompt refinement on a {CODE} template;
-            #    kept only to reproduce the documented negative result.
-            refined_template, meta_trace = None, None
-            if use_meta and args.meta_mode == "refine":
-                lang0 = examples[0]["language"]
-                template = builder("{CODE}", lang0)          # placeholder, not real code
-                refined_template, meta_trace = meta_refine_prompt(
-                    template, call_fn, rounds=meta_rounds, return_trace=True)
-                # guard: refinement must keep the {CODE} placeholder; else fall back
-                if "{CODE}" not in refined_template:
-                    refined_template = template
-                    if meta_trace:
-                        meta_trace.append({"round": "guard", "note": "placeholder lost; reverted",
-                                           "chars": len(template), "tokens": None, "diff": None})
-
             for ex in examples:
-                use_orchestrate = use_meta and args.meta_mode == "orchestrate"
-                if use_meta and args.meta_mode == "refine":
-                    prompt = refined_template.replace("{CODE}", ex["code_unit"][:MAX_CODE])
+                base = builder(ex["code_unit"], ex["language"])
+                if use_meta:
+                    prompt, meta_trace = meta_refine_prompt(base, call_fn, rounds=meta_rounds,
+                                                            return_trace=True)
                 else:
-                    prompt = builder(ex["code_unit"], ex["language"])
+                    prompt, meta_trace = base, None
                 for run in range(RUNS):
-                    _progress(f"{mname} #{pid} ex={ex['pair_id']} run={run+1}")
                     # retry until we get a valid generation (or give up after MAX_RETRIES)
                     out = ""
                     for attempt in range(MAX_RETRIES):
-                        if use_orchestrate:
-                            out, meta_trace = meta_prompting_generate(
-                                ex["code_unit"][:MAX_CODE], builder_fn0(ex, builder),
-                                provider, model, MAX_TOKENS_GEN,
-                                rounds=meta_rounds, return_trace=True)
-                        else:
-                            out = LLM.call(provider, model, prompt, max_tokens=MAX_TOKENS_GEN)
+                        out = LLM.call(provider, model, prompt, max_tokens=MAX_TOKENS_GEN)
                         if LLM.is_ok(out) and _clean(out).strip():
                             break
                         time.sleep(sleep_s)
-                    done_gens += 1
                     ok = LLM.is_ok(out) and bool(_clean(out).strip())
                     if not ok:
                         fail_left += 1
@@ -551,14 +487,7 @@ def run_one(model_key: str, examples: list[dict]) -> list[dict]:
                           and x["method"] == mname
                           and x["prompt_id"] == pid
                           and x["status"] == "ok")
-            print(f"\n[{model_key}] {mname} #{pid} -> {ok_here}/{done} ok saved")
-            if ok_here == 0:
-                # show WHY everything failed (first error for this block) so 0/30 is debuggable
-                firstbad = next((x for x in rows
-                                 if x["model"] == model_key and x["method"] == mname
-                                 and x["prompt_id"] == pid and x["status"] != "ok"), None)
-                if firstbad:
-                    print(f"        ↳ fail reason: {str(firstbad.get('generated'))[:200]}")
+            print(f"[{model_key}] {mname} #{pid} -> {ok_here}/{done} ok saved")
 
     return rows
 

@@ -94,16 +94,22 @@ def build_prompt(code, language, variant="v3_template"):
 # This is what was previously (mis)labelled "meta": ask the LLM to improve the prompt.
 def question_refinement(base_prompt):
     """White et al. 2023 §F (format-preserving): clarify the prompt WITHOUT changing
-    its task, its required output format, or removing any in-context examples."""
+    its task, its required output format, or removing any in-context examples.
+    The prompt is a TEMPLATE containing a literal {CODE} placeholder (no real code),
+    so the model improves the INSTRUCTION and cannot leak an answer for a specific
+    method into the template."""
     return (
-        "You are improving a prompt that instructs a code LLM to write a Javadoc comment. "
-        "Rewrite the prompt below to be clearer and more precise, but you MUST:\n"
-        "  - keep the exact same task (generate a Javadoc comment for the given method);\n"
+        "You are improving a prompt TEMPLATE that instructs a code LLM to write a Javadoc "
+        "comment. The template contains a literal {CODE} placeholder where a Java method "
+        "will later be inserted. Rewrite the template to be clearer and more precise, but "
+        "you MUST:\n"
+        "  - keep the exact same task (generate a Javadoc comment for the {CODE} method);\n"
+        "  - keep the literal token {CODE} EXACTLY ONCE and do NOT replace it with any real "
+        "code, method, or example answer;\n"
         "  - KEEP the instruction to output ONLY the Javadoc block (/** ... */) with no prose;\n"
         "  - KEEP every code->Javadoc example verbatim if any are present;\n"
-        "  - keep the {placeholder}/method code intact;\n"
-        "  - keep it concise — do NOT make the output longer or add new requirements.\n"
-        "Return ONLY the improved prompt text, nothing else.\n\n---\n"
+        "  - keep it concise — do NOT make it longer or add new requirements.\n"
+        "Return ONLY the improved template text, nothing else.\n\n---\n"
         + base_prompt + "\n---"
     )
 
