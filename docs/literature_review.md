@@ -2,11 +2,9 @@
 
 **Author:** Anastasiia Marinenko · Mitacs Globalink Research Internship, University of Saskatchewan
 **Supervisor:** Dr. Zadia Codabux
-**Compiled:** June 2026 (Weeks 1–5)
+**Updated:** 06/26/2026
 
 This document consolidates the papers reviewed during the internship, organized by theme. Part A lists the **core reviewed papers** (the running literature-review set, ~32 papers). Part B lists **additional methodological references** that ground specific design choices (prompting foundations, evaluation metrics, datasets, and standards) and are cited throughout the experiments.
-
-> Note: citation details (year, venue, author order) should be verified against the original sources before inclusion in the paper.
 
 ---
 
